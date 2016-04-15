@@ -17,15 +17,21 @@
 // });
 
 chrome.pageAction.onClicked.addListener(function (tab) { //Fired when User Clicks ICON
-    concole.warn(tab)
-    // if (tab.url.indexOf("https://www.google.co.in/") != -1) { // Inspect whether the place where user clicked matches with our list of URL
-        // debugger;
-        chrome.tabs.executeScript(tab.id, {
-            "file": "js/troll_starver.js"
-        }, function () { // Execute your code
-            console.warn("Script Executed .. "); // Notification on Completion
-        });
-    // }
+  chrome.tabs.executeScript(tab.id, {
+      "file": "js/troll_starver.js"
+  }, function () { // Execute your code
+      console.log("Script Executed .. "); // Notification on Completion
+      console.warn("Script Executed .. "); // Notification on Completion
+      console.error("Script Executed .. "); // Notification on Completion
+  });
+
+  chrome.tabs.insertCss(tab.id, {
+      "file": "js/troll_starver.js"
+  }, function () { // Execute your code
+      console.log("CSS Executed .. "); // Notification on Completion
+      console.warn("CSS Executed .. "); // Notification on Completion
+      console.error("CSS Executed .. "); // Notification on Completion
+  });
 });
 
 
