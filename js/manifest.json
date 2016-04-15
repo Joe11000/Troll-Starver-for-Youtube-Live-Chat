@@ -1,0 +1,33 @@
+{
+  // Required
+  "manifest_version": 2,
+  "name": "Youtube Live Chat : Troll Starver",
+  "version": "1.0",
+
+  // Recommended
+  "default_locale": "en",
+  "description": "This extension doesn't show comments from people you don't feel like putting up with in live stream comments box.",
+  "background": {
+    "scripts": [./background.js]
+  },
+  "page_action": {
+    "default_icon": {                    // optional
+      "38": "images/trollx38.png"            // optional
+    },
+    "default_title": "Youtube Live Chat : Troll Starver"      // optional; shown in tooltip
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://www.youtube.com/*", "https://www.youtube.com/*"],
+      "css": ["mystyles.css"],
+      "js": ["jquery_v1.11.1_min.js", "myscript.js"],
+      "run_at": "document_end"
+    }
+  ],
+
+  "permissions": [
+    "activeTab",
+    "tabs", "http://www.youtube.com/*"
+  ]
+}

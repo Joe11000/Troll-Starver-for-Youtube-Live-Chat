@@ -1,0 +1,38 @@
+$('#live-comments-controls').append(`
+
+
+
+
+
+
+<!--  remove troll on close button click-->
+<!--   add troll on drop of username -->
+
+<div id='troll-extension-wrapper' style='padding-top: 10px; width: 100%; border-top: 1px solid #E2E2E2;'>
+  <div droppable='true' ondragover="event.preventDefault();" style='padding: 15px; display: inline-block; position: absolute; border: 1px solid black;' ondrop="users_id_url = event.dataTransfer.getData('text');
+  debugger;
+                        users_id = users_id_url.match(/channel\/(.+)$/)[1];
+                        selector_str = 'a[data-ytid=' + users_id + ']';
+                        name = $(selector_str).html();
+                        console.warn(name);
+                        "
+                        >
+    <img alt='Drag names of trolls to Ignore' src="http://bitsocialmedia.com/wp-content/uploads/2013/07/Internet-Troll.jpg" style='width: 50px; height: 50px;'>
+  </div>
+
+  <div id='troll-names-container' type='text' style='display: inline-block; position: relative; left: 150px; top: 0; height: 110px; overflow-y: scroll;'>
+    <div class='troll' style='margin-bottom: 10px; height: 18px; width: 245px;'>
+      <img src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/3d-transparent-glass-icons-alphanumeric/068005-3d-transparent-glass-icon-alphanumeric-circled-x3.png' style='display: inline; width:18px; height:18px; position: relative; top: 4px; cursor: pointer' onclick="console.warn('remove troll from list')"></img>
+      <label class='name' style='display: inline'>Joser Noonski</label>
+      <span class='comment-counter' style='margin-left: 5px;'>0</span>
+    </div>
+  </div>
+
+  <a href='#' onclick="event.preventDefault(); $('#all-comments').html('')">clear chat</a>
+</div>
+
+
+
+ `)
+
+

@@ -1,0 +1,98 @@
+
+// if($("#comments-scroller") !== null)
+// {
+ class TrollClener {
+
+    constructor() {
+      this.trolls = ['Joe Noonan', 'todd fuck that guy'];
+
+      $('#all-comments').bind('DOMNodeInserted', function(e) {
+          var $e = $(e.target);
+
+          $e.find('.author:contains')
+
+          for(var i = 0; i < troll_names.length; i++)
+          {
+            if($e.find(`.author:contains${troll_names[i]}`)) {
+              // $e.remove();
+            }
+          }
+      });
+
+      addTroll(name){
+
+      }
+    }
+  }
+};
+
+//   if($("#comments-scroller") !== null)
+//   {
+
+//     class TrollCleaner {
+//         work();
+//       }
+
+      work(){
+        this.trolls = getTrollNamesFromDom();
+
+        if($('#no-trolls').length == 0) {
+          $('#no-trolls').html(createCss());
+        }
+        else {
+          node = document.createElement('script');
+          node.id = 'no-trolls';
+          node.innerHTML = createCss();
+          $('body').append(node);
+        }
+      }
+
+//       getTrollNamesFromDom() {
+//         names = $('#live-comments-input-field').innerHTML.split(',').trim();
+//         return names
+//       }
+
+//       createCss(troll_names) {
+//         let css = ''
+
+//         for(var i = 0; i < troll_names.length; i++)
+//         {
+//           if(i > 0) {
+//             css = css.concat(',\n')
+//           }
+//           css = css.concat(`#all-comments li:has(.author):contains(${troll_names[i]})`)
+//         }
+
+//         css = css.concat(`{
+//           display: none !important !important;
+//         }`)
+//       }
+//     }
+//   }
+// })();
+
+
+
+
+
+
+
+
+
+// // create the field to place draggable names
+// $('#live-comments-controls').append(`<div id='troll-container' style='margin-top: 10px; width: 100%; border-top: 1px solid #E2E2E2;'>
+//   <div droppable='true' ondrop='function(){}' style='width: 20%'>
+//     <img alt='Drag names of trolls to Ignore' src="http://bitsocialmedia.com/wp-content/uploads/2013/07/Internet-Troll.jpg" width="30px">
+//   </div>
+
+//   <div type='text' style='height: 18px; width: 80%;'>
+//   label
+//     <div class='troll' style='display: inline'>
+//       <label for="">Joser Noonski</label>
+//       <button type=""></button>
+//          </div>
+//     <label for=''></label>
+//   </div>
+// </div>
+//                                     `)
+

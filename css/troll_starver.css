@@ -1,0 +1,42 @@
+#troll-extension-wrapper {
+  padding-top: 10px;
+  width: 100%;
+  border-top: 1px solid #E2E2E2;
+}
+
+/* contains the troll image */
+#troll-extension-wrapper #troll-image-wrapper {
+  padding: 10px;
+  display: inline-block;
+  position: absolute;
+  border: 1px solid black;
+  min-width: 60px;
+}
+
+/* contains list of troll  */
+#troll-extension-wrapper  ul#troll-names-wrapper{
+  height: 110px;
+  display: inline-block;
+  position: relative;
+  left: 150px;
+  top: 0;
+  overflow-y: scroll;
+}
+#troll-extension-wrapper  ul#troll-names-wrapper li.troll {
+  margin-bottom: 10px;
+  height: 18px;
+  width: 245px;
+}
+#troll-extension-wrapper  ul#troll-names-wrapper li.troll > * {
+  margin-right: 5px;
+  display: inline;
+}
+#troll-extension-wrapper  ul#troll-names-wrapper li.troll :last-element {
+  margin-right: 0;
+}
+#troll-extension-wrapper  ul#troll-names-wrapper li.troll .remove-name {
+  display: inline;
+  position: relative;
+  top: 4px;
+  cursor: pointer;
+}
