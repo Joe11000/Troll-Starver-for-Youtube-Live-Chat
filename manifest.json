@@ -9,28 +9,28 @@
   "description": "This extension doesn't show comments from people you don't feel like putting up with in live stream comments box.",
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["./js/jquery_v1.11.1_min.js", "background.js"]
   },
 
-  "page_action": {
+  "browser_action": {
     "default_icon": {                    // optional
-      "38": "images/trollx38.png"            // optional
+      "38": "images/trollx38.png"           // optional
     },
-    "default_title": "Youtube Live Chat : Troll Starver"      // optional; shown in tooltip
+    "default_title": "Browser Action"      // optional; shown in tooltip
   },
 
   "content_scripts": [
-    {
-      "matches": ["http://www.youtube.com/*", "https://www.youtube.com/*"],
-      "css": ["./css/troll_starver.css"],
-      "js": ["./js/troll_starver.js","./js/jquery_v1.11.1_min.js"],
-      "all_frames": true,
-      "run_at": "document_end"
-    }
+
   ],
 
   "permissions": [
     "activeTab",
-    "tabs", "http://www.youtube.com/*"
+    "tabs",
+    "http://www.youtube.com/*",
+    "https://www.youtube.com/*"
   ]
 }
+
+
+
+

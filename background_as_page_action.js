@@ -16,7 +16,7 @@
 //     chrome.tabs.executeScript(null, {"file": "js/troll_starver.js"});
 // });
 
-chrome.browserAction.onClicked.addListener(function (tab) { //Fired when User Clicks ICON
+chrome.pageAction.onClicked.addListener(function (tab) { //Fired when User Clicks ICON
   chrome.tabs.executeScript(tab.id, {
       "file": "js/troll_starver.js"
   }, function () { // Execute your code
