@@ -26,7 +26,7 @@ chrome.pageAction.onClicked.addListener(function (tab) { //Fired when User Click
   });
 
   chrome.tabs.insertCss(tab.id, {
-      "file": "js/troll_starver.js"
+      "file": "js/troll_starver.css"
   }, function () { // Execute your code
       console.log("CSS Executed .. "); // Notification on Completion
       console.warn("CSS Executed .. "); // Notification on Completion
