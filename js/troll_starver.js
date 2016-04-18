@@ -15,11 +15,11 @@ if ($('#troll-extension-wrapper').length == 0) {
   var remove_name_src;
 
     var removeExistingCommentsFromNewTroll = function removeExistingCommentsFromNewTroll(name) {
-      debugger;
+      // debugger;
     };
 
     var addTrollToList = function addTrollToList(name) {
-      debugger;
+      // debugger;
       $('#troll-names-list').append("\n          <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n            <label data-id='name'>" + name + "</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n        ");
     };
 
@@ -36,7 +36,7 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     // document.getElementById("someImage").src = imgURL;
 
-    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-list'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n            <label data-id='name'>here</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <a id=\"clear-all-comments\" href='#'>clear chat</a>\n    </div>\n  ");
+    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n            <label data-id='name'>here</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <div id='clear-all-comments-wrapper'>\n        <a id=\"clear-all-comments\" href='#'>clear chat</a>\n      </div>\n    </div>\n  ");
 
     // unabtrusive js
 
@@ -53,6 +53,8 @@ if ($('#troll-extension-wrapper').length == 0) {
       removeExistingCommentsFromNewTroll(name);
     });
 }
+
+
 
 
 

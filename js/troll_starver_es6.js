@@ -14,7 +14,7 @@ if($('#troll-extension-wrapper').length == 0) {
         <img alt='Drag names of trolls to Ignore' src=${troll_img_src}>
       </div>
 
-      <ul id='troll-names-list'>
+      <ul id='troll-names-wrapper'>
         <li class='troll'>
             <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
             <label data-id='name'>here</label>
@@ -22,7 +22,9 @@ if($('#troll-extension-wrapper').length == 0) {
           </li>
       </ul>
 
-      <a id="clear-all-comments" href='#'>clear chat</a>
+      <div id='clear-all-comments-wrapper'>
+        <a id="clear-all-comments" href='#'>clear chat</a>
+      </div>
     </div>
   `)
 
@@ -36,11 +38,11 @@ if($('#troll-extension-wrapper').length == 0) {
     });
 
     function removeExistingCommentsFromNewTroll(name){
-      debugger;
+
     }
 
     function addTrollToList(name){
-      debugger;
+      // debugger;
        $('#troll-names-list').append(`
           <li class='troll'>
             <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
@@ -50,7 +52,7 @@ if($('#troll-extension-wrapper').length == 0) {
         `);
     }
 
-    function removeTrollFromList(name){
+    function removeTrollFromList(element){
 
     }
 
