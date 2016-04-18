@@ -14,12 +14,12 @@ if($('#troll-extension-wrapper').length == 0) {
         <img alt='Drag names of trolls to Ignore' src=${troll_img_src}>
       </div>
 
-      <ul id='troll-names-wrapper'>
+      <ul id='troll-names-list'>
         <li class='troll'>
-          <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
-          <label data-id='name'>Joser Noonski</label>
-          <span data-id='comment-counter'>0</span>
-        </li>
+            <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
+            <label data-id='name'>here</label>
+            <span data-id='comment-counter'>0</span>
+          </li>
       </ul>
 
       <a id="clear-all-comments" href='#'>clear chat</a>
@@ -35,29 +35,33 @@ if($('#troll-extension-wrapper').length == 0) {
       $('all-comments').html('');
     });
 
-    function removeAllExistingCommentsFromTroll(name){
-
-    }
-
-    function newTroll(name){
-
-    }
-
-    function removeTroll(name){
-
-    }
-
-    $('#all-comments').on('dragstart', '.yt-thumb-img', function(event){
+    function removeExistingCommentsFromNewTroll(name){
       debugger;
-      event.dataTransfer.setData('name', this.alt);
-    });
+    }
+
+    function addTrollToList(name){
+      debugger;
+       $('#troll-names-list').append(`
+          <li class='troll'>
+            <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
+            <label data-id='name'>${name}</label>
+            <span data-id='comment-counter'>0</span>
+          </li>
+        `);
+    }
+
+    function removeTrollFromList(name){
+
+    }
+
+    // $('#all-comments').on('dragstart', '.yt-thumb-img', function(event){
+    //   event.originalEvent.dataTransfer.setData('name', this.alt);
+    // });
 
     $('#all-comments').on('dragend', '.yt-thumb-img', function(event){
-      debugger;
       event.preventDefault();
-      var data = event.dataTransfer.getData('name');
-      console.warn(data)
-      newTroll(name);
-      removeAllExistingCommentsFromTroll(name);
+      var name = this.alt // event.originalEvent.dataTransfer.getData('name')
+      addTrollToList(name);
+      removeExistingCommentsFromNewTroll(name);
     });
 }

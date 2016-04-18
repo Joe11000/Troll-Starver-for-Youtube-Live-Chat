@@ -14,18 +14,29 @@ if ($('#troll-extension-wrapper').length == 0) {
   var troll_img_src;
   var remove_name_src;
 
-    var removeAllExistingCommentsFromTroll = function removeAllExistingCommentsFromTroll(name) {};
+    var removeExistingCommentsFromNewTroll = function removeExistingCommentsFromNewTroll(name) {
+      debugger;
+    };
 
-    var newTroll = function newTroll(name) {};
+    var addTrollToList = function addTrollToList(name) {
+      debugger;
+      $('#troll-names-list').append("\n          <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n            <label data-id='name'>" + name + "</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n        ");
+    };
 
-    var removeTroll = function removeTroll(name) {};
+    var removeTrollFromList = function removeTrollFromList(name) {}
+
+    // $('#all-comments').on('dragstart', '.yt-thumb-img', function(event){
+    //   event.originalEvent.dataTransfer.setData('name', this.alt);
+    // });
+
+    ;
 
     troll_img_src = chrome.extension.getURL("images/trollx60.png");
     remove_name_src = chrome.extension.getURL("images/remove-name.png");
 
     // document.getElementById("someImage").src = imgURL;
 
-    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n          <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n          <label data-id='name'>Joser Noonski</label>\n          <span data-id='comment-counter'>0</span>\n        </li>\n      </ul>\n\n      <a id=\"clear-all-comments\" href='#'>clear chat</a>\n    </div>\n  ");
+    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-list'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n            <label data-id='name'>here</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <a id=\"clear-all-comments\" href='#'>clear chat</a>\n    </div>\n  ");
 
     // unabtrusive js
 
@@ -35,24 +46,13 @@ if ($('#troll-extension-wrapper').length == 0) {
       $('all-comments').html('');
     });
 
-    $('#all-comments').on('dragstart', '.yt-thumb-img', function (event) {
-      debugger;
-      event.dataTransfer.setData(this.alt);
-    });
-
     $('#all-comments').on('dragend', '.yt-thumb-img', function (event) {
-      debugger;
       event.preventDefault();
-      var data = event.dataTransfer.getData("Text");
-      console.warn(data);
-      newTroll(name);
-      removeAllExistingCommentsFromTroll(name);
+      var name = this.alt; // event.originalEvent.dataTransfer.getData('name')
+      addTrollToList(name);
+      removeExistingCommentsFromNewTroll(name);
     });
 }
-
-
-
-
 
 
 
