@@ -8,20 +8,26 @@
 
 
 
-
-
 "use strict";
 
 if ($('#troll-extension-wrapper').length == 0) {
+  var troll_img_src;
+  var remove_name_src;
 
-  var troll_img_src = chrome.extension.getURL("images/trollx60.png");
-  var remove_name_src = chrome.extension.getURL("images/remove-name.png");
-  // document.getElementById("someImage").src = imgURL;
+    var removeAllExistingCommentsFromTroll = function removeAllExistingCommentsFromTroll(name) {};
 
-  $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n          <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n          <label data-id='name'>Joser Noonski</label>\n          <span data-id='comment-counter'>0</span>\n        </li>\n      </ul>\n\n      <a id=\"clear-all-comments\" href='#'>clear chat</a>\n    </div>\n  ");
+    var newTroll = function newTroll(name) {};
 
+    var removeTroll = function removeTroll(name) {};
 
-  // unabtrusive js
+    troll_img_src = chrome.extension.getURL("images/trollx60.png");
+    remove_name_src = chrome.extension.getURL("images/remove-name.png");
+
+    // document.getElementById("someImage").src = imgURL;
+
+    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n          <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n          <label data-id='name'>Joser Noonski</label>\n          <span data-id='comment-counter'>0</span>\n        </li>\n      </ul>\n\n      <a id=\"clear-all-comments\" href='#'>clear chat</a>\n    </div>\n  ");
+
+    // unabtrusive js
 
     // clear chat room
     $('#clear-all-comments').on('click', function () {
@@ -29,30 +35,25 @@ if ($('#troll-extension-wrapper').length == 0) {
       $('all-comments').html('');
     });
 
+    $('#all-comments').on('dragstart', '.yt-thumb-img', function (event) {
+      debugger;
+      event.dataTransfer.setData(this.alt);
+    });
 
-
-    function removeAllExistingCommentsFromTroll(name){
-
-    }
-
-    function newTroll(name){
-
-    }
-
-    function removeTroll(name){
-
-    }
-
-    $('#troll-image-wrapper').on('drop', function () {
-      users_id_url = event.dataTransfer.getData('text');
-      users_id = users_id_url.match(/channel\/(.+)$/)[1];
-      selector_str = 'a[data-ytid=' + users_id + ']';
-      name = $(selector_str).html();
-
+    $('#all-comments').on('dragend', '.yt-thumb-img', function (event) {
+      debugger;
+      event.preventDefault();
+      var data = event.dataTransfer.getData("Text");
+      console.warn(data);
       newTroll(name);
       removeAllExistingCommentsFromTroll(name);
-
     });
 }
+
+
+
+
+
+
 
 })();

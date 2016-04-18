@@ -28,16 +28,36 @@ if($('#troll-extension-wrapper').length == 0) {
 
 
   // unabtrusive js
-  $('#clear-all-comments').on('click', function(){
-    event.preventDefault();
-    $('all-comments').html('');
-  });
 
-  $('#troll-image-wrapper').on('drop', function(){
-      users_id_url = event.dataTransfer.getData('text');
-      users_id = users_id_url.match(/channel\/(.+)$/)[1];
-      selector_str = 'a[data-ytid=' + users_id + ']';
-      name = $(selector_str).html();
-      console.warn(name);
-  });
+    // clear chat room
+    $('#clear-all-comments').on('click', function(){
+      event.preventDefault();
+      $('all-comments').html('');
+    });
+
+    function removeAllExistingCommentsFromTroll(name){
+
+    }
+
+    function newTroll(name){
+
+    }
+
+    function removeTroll(name){
+
+    }
+
+    $('#all-comments').on('dragstart', '.yt-thumb-img', function(event){
+      debugger;
+      event.dataTransfer.setData('name', this.alt);
+    });
+
+    $('#all-comments').on('dragend', '.yt-thumb-img', function(event){
+      debugger;
+      event.preventDefault();
+      var data = event.dataTransfer.getData('name');
+      console.warn(data)
+      newTroll(name);
+      removeAllExistingCommentsFromTroll(name);
+    });
 }
