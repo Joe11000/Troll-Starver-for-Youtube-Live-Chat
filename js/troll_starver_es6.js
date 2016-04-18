@@ -1,4 +1,5 @@
 var troll_img_src = chrome.extension.getURL("images/trollx60.png");
+var remove_name_src = chrome.extension.getURL("images/remove-name.png");
 // document.getElementById("someImage").src = imgURL;
 
 
@@ -20,12 +21,12 @@ $('#live-comments-controls').append(`
 
     <ul id='troll-names-wrapper'>
       <li class='troll'>
-        <img class='remove-name' src='../images/remove-name.png' onclick="console.warn('remove troll from list')"></img>
+        <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
         <label data-id='name'>Joser Noonski</label>
         <span data-id='comment-counter'>0</span>
       </li>
     </ul>
 
-    <a href='#' onclick="event.preventDefault(); $('#all-comments').html('')">clear chat</a>
+    <a href='#' onclick="event.preventDefault(); document.querySelector('#all-comments').innerHTML = ''">clear chat</a>
   </div>
 `)

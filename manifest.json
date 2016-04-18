@@ -9,7 +9,7 @@
   "description": "This extension doesn't show comments from people you don't feel like putting up with in live stream comments box.",
 
   "background": {
-    "scripts": ["./js/jquery_v1.11.1_min.js", "background.js"]
+    "scripts": ["js/jquery_v1.11.1_min.js", "background.js"]
   },
 
   "browser_action": {
@@ -27,7 +27,17 @@
     "activeTab",
     "tabs",
     "http://www.youtube.com/*",
-    "https://www.youtube.com/*"
+    "http://www.youtube.com/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+
+  "web_accessible_resources": [
+    "images/*"
+    // "style/double-rainbow.css",
+    // "script/double-rainbow.js",
+    // "script/main.js",
+    // "templates/*"
   ]
 }
 
