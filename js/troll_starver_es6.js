@@ -88,16 +88,19 @@ if($('#troll-extension-wrapper').length == 0) {
 
   // after new comment is appended remove comments by trolls, then increment the comment_counter of troll
   $('#all-comments').bind('DOMNodeInserted', function(event) {
+    if(window.troll_names.length > 0)
+    {
       var $comment_element = $(event.target);
-      let troll_names = Object.keys(window.troll_names)
-      for(let troll_name of troll_names)
+      let blocked_names = Object.keys(window.troll_names)
+      for(let blocked_name of blocked_names)
       {
-        if($comment_element.find(`.author:contains(${troll_name})`)) {
-          window.troll_names[troll_name] +=1
-          $(`.troll:contains(${troll_name}) > .comment-counter`).html(window.troll_names[troll_name])
+        if($comment_element.find(`.author:contains(${blocked_name})`).length > 0) {
+          window.troll_names[blocked_name] +=1
+          $(`.troll:contains(${blocked_name}) > .comment-counter`).html(window.troll_names[blocked_name])
           $comment_element.remove();
         }
       }
+    }
   });
 
 }
