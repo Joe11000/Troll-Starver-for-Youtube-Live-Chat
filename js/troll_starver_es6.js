@@ -31,6 +31,9 @@ if($('#troll-extension-wrapper').length == 0) {
 
   // unabtrusive js
 
+    window.troll_names = {};
+
+
     // clear chat room
     $('#clear-all-comments').on('click', function(){
       event.preventDefault();
@@ -38,16 +41,20 @@ if($('#troll-extension-wrapper').length == 0) {
     });
 
     function removeExistingCommentsFromNewTroll(dom_element){
-      debugger
-      return 5;
+      $trolls_existing_comments = $('#all-comments').find(`.comment:contains(${dom_element.alt})`)
+
+      comments_counter = $trolls_existing_comments.length
+      $trolls_existing_comments.remove();
+
+      return comments_counter;
     }
 
-    function addTrollToList(name, existing_comments=0){
-       $('#troll-names-list').append(`
+    function addTrollToList(name, existing_comments_counter=0){
+       $('#troll-names-wrapper').append(`
           <li class='troll'>
             <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
             <label data-id='name'>${name}</label>
-            <span data-id='comment-counter'>0</span>
+            <span data-id='comment-counter'>${existing_comments_counter}</span>
           </li>
         `);
     }
@@ -57,24 +64,42 @@ if($('#troll-extension-wrapper').length == 0) {
       console.warn("Still have to : Allow person's comments to be seen now + reset persons comment counter")
     }
 
+    function isTrollAlreadyInList(name) {
+      return( Object.keys(window.troll_names).indexOf(name) !== -1 )
+    }
 
     // add new troll to list, clear his old comments, and start ignoring new comments
     $('#all-comments').on('dragend', '.yt-thumb-img', function(event){
       event.preventDefault();
-      var number_of_existing_comments = removeExistingCommentsFromNewTroll(this) || 0;
-      addTrollToList(this.alt);
+      var troll_name = this.alt
+      if(isTrollAlreadyInList(troll_name) === false){
+        window.troll_names[troll_name] = 0; // make sure no additional comments added from troll while removing other comments
+        window.troll_names[troll_name] = removeExistingCommentsFromNewTroll(this) || 0;
+        addTrollToList(troll_name, window.troll_names[troll_name]);
+      }
     });
 
+    // click the remove image to remove that troll from list
     $('ul#troll-names-wrapper').on('click', '.remove-name', function(event){
-      removeTrollFromList(dom_element);
+      removeTrollFromList(this);
     });
 
 
+    // save users added as trolls to internalStorage if they want info saved, otherwise just to window.troll_names
 
-
-    // save users added as trolls to internalStorage
-
-    // after new comment is appended remove comments by trolls, then increment counter of troll
 
 
 }
+
+
+  // // after new comment is appended remove comments by trolls, then increment counter of troll
+  // $('#all-comments').bind('DOMNodeInserted', function(e) {
+  //     var $e = $(e.target);
+
+  //     for(var i = 0; i < troll_names.length; i++)
+  //     {
+  //       if($e.find(`.author:contains${troll_names[i]}`)) {
+  //         // $e.remove();
+  //       }
+  //     }
+  // });
