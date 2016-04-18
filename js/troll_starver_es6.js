@@ -16,7 +16,7 @@ if($('#troll-extension-wrapper').length == 0) {
 
       <ul id='troll-names-wrapper'>
         <li class='troll'>
-            <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
+            <img class='remove-name' src=${remove_name_src}></img>
             <label data-id='name'>here</label>
             <span data-id='comment-counter'>0</span>
           </li>
@@ -37,12 +37,12 @@ if($('#troll-extension-wrapper').length == 0) {
       $('all-comments').html('');
     });
 
-    function removeExistingCommentsFromNewTroll(name){
-
+    function removeExistingCommentsFromNewTroll(dom_element){
+      debugger
+      return 5;
     }
 
-    function addTrollToList(name){
-      // debugger;
+    function addTrollToList(name, existing_comments=0){
        $('#troll-names-list').append(`
           <li class='troll'>
             <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
@@ -52,18 +52,29 @@ if($('#troll-extension-wrapper').length == 0) {
         `);
     }
 
-    function removeTrollFromList(element){
-
+    function removeTrollFromList(dom_element){
+      $(dom_element).closest('li.troll').remove();
+      console.warn("Still have to : Allow person's comments to be seen now + reset persons comment counter")
     }
 
-    // $('#all-comments').on('dragstart', '.yt-thumb-img', function(event){
-    //   event.originalEvent.dataTransfer.setData('name', this.alt);
-    // });
 
+    // add new troll to list, clear his old comments, and start ignoring new comments
     $('#all-comments').on('dragend', '.yt-thumb-img', function(event){
       event.preventDefault();
-      var name = this.alt // event.originalEvent.dataTransfer.getData('name')
-      addTrollToList(name);
-      removeExistingCommentsFromNewTroll(name);
+      var number_of_existing_comments = removeExistingCommentsFromNewTroll(this) || 0;
+      addTrollToList(this.alt);
     });
+
+    $('ul#troll-names-wrapper').on('click', '.remove-name', function(event){
+      removeTrollFromList(dom_element);
+    });
+
+
+
+
+    // save users added as trolls to internalStorage
+
+    // after new comment is appended remove comments by trolls, then increment counter of troll
+
+
 }

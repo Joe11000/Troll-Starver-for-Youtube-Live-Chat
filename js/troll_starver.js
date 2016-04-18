@@ -7,28 +7,29 @@
 
 
 
-
 "use strict";
 
 if ($('#troll-extension-wrapper').length == 0) {
   var troll_img_src;
   var remove_name_src;
 
-    var removeExistingCommentsFromNewTroll = function removeExistingCommentsFromNewTroll(name) {
-      // debugger;
+    var removeExistingCommentsFromNewTroll = function removeExistingCommentsFromNewTroll(dom_element) {
+      debugger;
+      return 5;
     };
 
     var addTrollToList = function addTrollToList(name) {
-      // debugger;
+      var existing_comments = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
       $('#troll-names-list').append("\n          <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n            <label data-id='name'>" + name + "</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n        ");
     };
 
-    var removeTrollFromList = function removeTrollFromList(name) {}
+    var removeTrollFromList = function removeTrollFromList(dom_element) {
+      $(dom_element).closest('li.troll').remove();
+      console.warn("Still have to : Allow person's comments to be seen now + reset persons comment counter");
+    }
 
-    // $('#all-comments').on('dragstart', '.yt-thumb-img', function(event){
-    //   event.originalEvent.dataTransfer.setData('name', this.alt);
-    // });
-
+    // add new troll to list, clear his old comments, and start ignoring new comments
     ;
 
     troll_img_src = chrome.extension.getURL("images/trollx60.png");
@@ -36,7 +37,7 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     // document.getElementById("someImage").src = imgURL;
 
-    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + " onclick=\"console.warn('remove troll from list')\"></img>\n            <label data-id='name'>here</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <div id='clear-all-comments-wrapper'>\n        <a id=\"clear-all-comments\" href='#'>clear chat</a>\n      </div>\n    </div>\n  ");
+    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + "></img>\n            <label data-id='name'>here</label>\n            <span data-id='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <div id='clear-all-comments-wrapper'>\n        <a id=\"clear-all-comments\" href='#'>clear chat</a>\n      </div>\n    </div>\n  ");
 
     // unabtrusive js
 
@@ -48,13 +49,20 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     $('#all-comments').on('dragend', '.yt-thumb-img', function (event) {
       event.preventDefault();
-      var name = this.alt; // event.originalEvent.dataTransfer.getData('name')
-      addTrollToList(name);
-      removeExistingCommentsFromNewTroll(name);
+      var number_of_existing_comments = removeExistingCommentsFromNewTroll(this) || 0;
+      addTrollToList(this.alt);
     });
+
+    $('ul#troll-names-wrapper').on('click', '.remove-name', function (event) {
+      removeTrollFromList(dom_element);
+    });
+
+    // save users added as trolls to internalStorage
+
+    // after new comment is appended remove comments by trolls, then increment counter of troll
+
+
 }
-
-
 
 
 
