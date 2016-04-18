@@ -18,7 +18,7 @@ if($('#troll-extension-wrapper').length == 0) {
         <li class='troll'>
             <img class='remove-name' src=${remove_name_src}></img>
             <label data-id='name'>here</label>
-            <span data-id='comment-counter'>0</span>
+            <span class='comment-counter'>0</span>
           </li>
       </ul>
 
@@ -35,8 +35,7 @@ if($('#troll-extension-wrapper').length == 0) {
 
 
     // clear chat room
-    $('#clear-all-comments').on('click', function(){
-      event.preventDefault();
+    $('#clear-all-comments-wrapper').on('click', function(){
       $('all-comments').html('');
     });
 
@@ -52,9 +51,9 @@ if($('#troll-extension-wrapper').length == 0) {
     function addTrollToList(name, existing_comments_counter=0){
        $('#troll-names-wrapper').append(`
           <li class='troll'>
-            <img class='remove-name' src=${remove_name_src} onclick="console.warn('remove troll from list')"></img>
+            <img class='remove-name' src=${remove_name_src}></img>
             <label data-id='name'>${name}</label>
-            <span data-id='comment-counter'>${existing_comments_counter}</span>
+            <span class='comment-counter'>${existing_comments_counter}</span>
           </li>
         `);
     }
@@ -85,21 +84,23 @@ if($('#troll-extension-wrapper').length == 0) {
     });
 
 
-    // save users added as trolls to internalStorage if they want info saved, otherwise just to window.troll_names
 
 
+  // after new comment is appended remove comments by trolls, then increment the comment_counter of troll
+  $('#all-comments').bind('DOMNodeInserted', function(event) {
+      var $comment_element = $(event.target);
+      let troll_names = Object.keys(window.troll_names)
+      for(let troll_name of troll_names)
+      {
+        if($comment_element.find(`.author:contains(${troll_name})`)) {
+          window.troll_names[troll_name] +=1
+          $(`.troll:contains(${troll_name}) > .comment-counter`).html(window.troll_names[troll_name])
+          $comment_element.remove();
+        }
+      }
+  });
 
 }
 
 
-  // // after new comment is appended remove comments by trolls, then increment counter of troll
-  // $('#all-comments').bind('DOMNodeInserted', function(e) {
-  //     var $e = $(e.target);
-
-  //     for(var i = 0; i < troll_names.length; i++)
-  //     {
-  //       if($e.find(`.author:contains${troll_names[i]}`)) {
-  //         // $e.remove();
-  //       }
-  //     }
-  // });
+  // save users added as trolls to internalStorage if they want info saved, otherwise just to window.troll_names
