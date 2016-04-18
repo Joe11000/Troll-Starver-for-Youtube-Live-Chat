@@ -9,7 +9,7 @@
   "description": "This extension doesn't show comments from people you don't feel like putting up with in live stream comments box.",
 
   "background": {
-    "scripts": ["js/jquery_v1.11.1_min.js", "background.js"]
+    "page": "background.html"
   },
 
   "browser_action": {
