@@ -38,7 +38,7 @@ if($('#troll-extension-wrapper').length == 0) {
   `);
 
   // load trolls into table if any exist in localStorage
-  if(Object.keys(window.troll_names).length > 0 )
+  if(window.troll_names_hash && Object.keys(window.troll_names_hash).length > 0 )
   {
     for(let troll_name of Object.keys(window.troll_names)){
       addTrollToList(troll_name)

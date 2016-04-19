@@ -1,5 +1,5 @@
 #troll-extension-wrapper {
-  border: 1px solid black;
+  border: 1px solid black !important;
   position: relative;
   margin-top: 10px;
   width: 100%;
@@ -20,7 +20,7 @@
 #troll-extension-wrapper #troll-image-wrapper {
   left: 0;
   background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
-  border-right: 1px solid black;
+  border-right: 1px solid black !important;
   background-color: lightgray;
 
 }
@@ -31,6 +31,7 @@
   cursor: pointer;
   color: white;
   font-weight: bold;
+  border-left: 1px solid black !important;
 }
 
 
@@ -69,8 +70,8 @@
 #troll-extension-wrapper #troll-names-wrapper .troll .remove-name {
   display: inline;
   position: relative;
-  width: 100%;
   cursor: pointer;
+  min-width: 15px;
 }
 #troll-extension-wrapper #troll-names-wrapper .troll .comment-counter{
   color: red;
