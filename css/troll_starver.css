@@ -1,4 +1,5 @@
 #troll-extension-wrapper {
+
   position: relative;
   margin-top: 10px;
   width: 100%;
@@ -8,12 +9,14 @@
 
 /* contains the troll image */
 #troll-extension-wrapper #troll-image-wrapper {
+  width: 15%;
+  min-width: 60px;
+
   margin-top: 15px;
   padding: 10px;
   display: inline-block;
-  position: absolute;
+  /*position: absolute;*/
   border: 1px solid black;
-  min-width: 60px;
 }
 
 /* contains list of troll  */
@@ -46,6 +49,12 @@
 #troll-extension-wrapper #troll-names-wrapper .troll :last-element {
   /*margin-right: 0;*/
 }
+
+#troll-extension-wrapper #troll-names-wrapper .troll .remove-name {
+  max-width: 140px;
+  width: 33%;
+}
+
 #troll-extension-wrapper #troll-names-wrapper .troll .remove-name {
   display: inline;
   position: relative;

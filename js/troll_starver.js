@@ -9,18 +9,33 @@
 
 
 
+
+
+
+
+
+
 "use strict";
 
 if ($('#troll-extension-wrapper').length == 0) {
   var troll_img_src;
   var remove_name_src;
 
-    var removeExistingCommentsFromNewTroll = function removeExistingCommentsFromNewTroll(dom_element) {
 
-      $trolls_existing_comments = $('#all-comments').find(".comment:not(:last):contains(" + dom_element.alt + ")"); // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
+    // input name of troll
+    // return int : # of comments of his were deleted in chatroom
 
-      comments_counter = $trolls_existing_comments.length;
-      $trolls_existing_comments.remove();
+    var removeExistingCommentsFromNewTroll = function removeExistingCommentsFromNewTroll(troll_name) {
+
+      var $all_comments = $('#all-comments .comment'); // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
+      var comments_counter = 0;
+
+      $all_comments.each(function (element, index) {
+        if ($(this).find('.author [data-name]').html() === troll_name) {
+          comments_counter++;
+          $(this).remove();
+        }
+      });
 
       return comments_counter;
     };
@@ -28,7 +43,7 @@ if ($('#troll-extension-wrapper').length == 0) {
     var addTrollToList = function addTrollToList(name) {
       var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-      $('#troll-names-wrapper').prepend("\n          <tr class='troll'>\n            <td><img class='remove-name' src=" + remove_name_src + "></img></td>\n            <td class='troll-name'>" + name + "</td>\n            <td class='comment-counter'>" + existing_comments_counter + "</td>\n          </tr>\n        ");
+      $("\n          <tr class='troll'>\n            <td><img class='remove-name' src=" + remove_name_src + "></img></td>\n            <td class='troll-name'>" + name + "</td>\n            <td class='comment-counter'>" + existing_comments_counter + "</td>\n          </tr>\n        ").insertAfter($('#troll-names-wrapper #table-header'));
       $('#troll-names-wrapper').scrollTop(0);
     };
 
@@ -50,7 +65,7 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     // document.getElementById("someImage").src = imgURL;
 
-    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <table id='troll-names-wrapper'>\n        <caption>Blocking Comments</caption>\n        <tr>\n          <th></th>\n          <th>Name</th>\n          <th>#</th>\n        </th>\n      </table>\n\n      <button type='button' id='clear-all-comments'>Clear Chat</button>\n    </div>\n  ");
+    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <table id='troll-names-wrapper'>\n        <caption>Blocking Comments</caption>\n        <tr id='table-header'>\n          <th></th>\n          <th>Name</th>\n          <th>#</th>\n        </th>\n      </table>\n\n      <button type='button' id='clear-all-comments'>Clear Chat</button>\n    </div>\n  ");
 
     // unabtrusive js
 
@@ -58,15 +73,21 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     // clear chat room
     $('#clear-all-comments').on('click', function () {
-      $('all-comments').html('');
+      $('#all-comments').html('');
+    });$('#all-comments').on('dragstart', '.yt-thumb-img', function (event) {
+      event.dataTransfer = event.originalEvent.dataTransfer;
+      var troll_name = this.alt || $(this).closest('.comment').find('.author [data-name]').html();
+      event.dataTransfer.setData('troll-name', troll_name);
     });
 
-    $('#all-comments').on('dragend', '.yt-thumb-img', function (event) {
+    $('#troll-image-wrapper').on('drop', function (event) {
       event.preventDefault();
-      var troll_name = this.alt;
+      event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
+      var troll_name = event.dataTransfer.getData('troll-name');
+
       if (isTrollAlreadyInList(troll_name) === false) {
         window.troll_names_hash[troll_name] = 0; // make sure no additional comments added from troll while removing other comments
-        window.troll_names_hash[troll_name] = removeExistingCommentsFromNewTroll(this) || 0;
+        window.troll_names_hash[troll_name] = removeExistingCommentsFromNewTroll(troll_name) || 0;
         addTrollToList(troll_name, window.troll_names_hash[troll_name]);
       }
     });
@@ -112,6 +133,12 @@ if ($('#troll-extension-wrapper').length == 0) {
       }
     });
 }
+
+
+
+
+
+
 
 
 

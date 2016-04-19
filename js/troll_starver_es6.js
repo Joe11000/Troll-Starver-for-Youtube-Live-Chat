@@ -16,7 +16,7 @@ if($('#troll-extension-wrapper').length == 0) {
 
       <table id='troll-names-wrapper'>
         <caption>Blocking Comments</caption>
-        <tr>
+        <tr id='table-header'>
           <th></th>
           <th>Name</th>
           <th>#</th>
@@ -35,27 +35,35 @@ if($('#troll-extension-wrapper').length == 0) {
 
     // clear chat room
     $('#clear-all-comments').on('click', function(){
-      $('all-comments').html('');
+      $('#all-comments').html('');
     });
 
-    function removeExistingCommentsFromNewTroll(dom_element){
+    // input name of troll
+    // return int : # of comments of his were deleted in chatroom
+    function removeExistingCommentsFromNewTroll(troll_name) {
 
-      $trolls_existing_comments = $('#all-comments').find(`.comment:not(:last):contains(${dom_element.alt})`);// Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
+      let $all_comments = $('#all-comments .comment') // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
+      let comments_counter = 0;
 
-      comments_counter = $trolls_existing_comments.length
-      $trolls_existing_comments.remove();
+      $all_comments.each(function(element, index){
+        if( $(this).find('.author [data-name]').html() === troll_name )
+        {
+          comments_counter++;
+          $(this).remove();
+        }
+      });
 
       return comments_counter;
     }
 
     function addTrollToList(name, existing_comments_counter=0){
-       $('#troll-names-wrapper').prepend(`
+       $(`
           <tr class='troll'>
             <td><img class='remove-name' src=${remove_name_src}></img></td>
             <td class='troll-name'>${name}</td>
             <td class='comment-counter'>${existing_comments_counter}</td>
           </tr>
-        `);
+        `).insertAfter($('#troll-names-wrapper #table-header'));
        $('#troll-names-wrapper').scrollTop(0);
     }
 
@@ -70,12 +78,20 @@ if($('#troll-extension-wrapper').length == 0) {
     }
 
     // add new troll to list, clear his old comments, and start ignoring new comments
-    $('#all-comments').on('dragend', '.yt-thumb-img', function(event){
+    $('#all-comments').on('dragstart', '.yt-thumb-img', function(event){
+      event.dataTransfer = event.originalEvent.dataTransfer;
+      let troll_name = this.alt || $(this).closest('.comment').find('.author [data-name]').html();
+      event.dataTransfer.setData('troll-name', troll_name)
+    });
+
+    $('#troll-image-wrapper').on('drop', function(event){
       event.preventDefault();
-      var troll_name = this.alt
+      event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
+      let troll_name = event.dataTransfer.getData('troll-name')
+
       if(isTrollAlreadyInList(troll_name) === false){
         window.troll_names_hash[troll_name] = 0; // make sure no additional comments added from troll while removing other comments
-        window.troll_names_hash[troll_name] = removeExistingCommentsFromNewTroll(this) || 0;
+        window.troll_names_hash[troll_name] = removeExistingCommentsFromNewTroll(troll_name) || 0;
         addTrollToList(troll_name, window.troll_names_hash[troll_name]);
       }
     });
@@ -84,8 +100,6 @@ if($('#troll-extension-wrapper').length == 0) {
     $('#troll-names-wrapper').on('click', '.remove-name', function(event){
       removeTrollFromList(this);
     });
-
-
 
 
   // after new comment is appended remove comments by trolls, then increment the comment_counter of troll
@@ -113,3 +127,4 @@ if($('#troll-extension-wrapper').length == 0) {
 // });
 
   // save users added as trolls to internalStorage if they want info saved, otherwise just to window.troll_names_hash
+
