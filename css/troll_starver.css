@@ -1,39 +1,62 @@
 #troll-extension-wrapper {
-
+  border: 1px solid black;
   position: relative;
   margin-top: 10px;
   width: 100%;
-  border-top: 1px solid #E2E2E2;
-  height: 124px;
+  border: 1px solid #E2E2E2;
+  height: 110px;
 }
 
 /* contains the troll image */
-#troll-extension-wrapper #troll-image-wrapper {
-  width: 15%;
-  min-width: 60px;
-
-  margin-top: 15px;
-  padding: 10px;
+#troll-extension-wrapper #troll-image-wrapper,
+#troll-extension-wrapper #clear-all-comments {
+  top: 0;
+  height: 100%;
   display: inline-block;
-  /*position: absolute;*/
-  border: 1px solid black;
+  position: absolute;
+  width: 85px;
 }
 
-/* contains list of troll  */
-#troll-extension-wrapper #troll-names-wrapper{
+#troll-extension-wrapper #troll-image-wrapper {
+  left: 0;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
+  border-right: 1px solid black;
+  background-color: lightgray;
 
+}
+
+#troll-extension-wrapper #clear-all-comments {
+  right: 0;
+  background-color: rgba(22,122,198,0.9);
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+
+/* contains list of troll  */
+#troll-extension-wrapper #troll-names-wrapper {
+  width: 55%;
+  min-width: 180px;
   height: 110px;
   display: inline-block;
-  position: relative;
-  left: 100px;
-  top: 0;
   overflow-y: scroll;
+  margin-left: 85px;
+}
+
+#troll-extension-wrapper #troll-names-wrapper table {
+  margin: auto;
 }
 
 #troll-extension-wrapper #troll-names-wrapper th,
 #troll-extension-wrapper #troll-names-wrapper td {
     border-bottom: 1px solid #ddd;
     padding: 5px;
+}
+#troll-extension-wrapper #troll-names-wrapper th,
+#troll-extension-wrapper #troll-names-wrapper caption
+{
+  font-weight: bold;
 }
 
 #troll-extension-wrapper #troll-names-wrapper .troll {
@@ -42,23 +65,11 @@
   width: 200px;
   overflow: ellipsis;
 }
-#troll-extension-wrapper #troll-names-wrapper .troll > * {
-  /*margin-right: 5px;*/
-  /*display: inline;*/
-}
-#troll-extension-wrapper #troll-names-wrapper .troll :last-element {
-  /*margin-right: 0;*/
-}
-
-#troll-extension-wrapper #troll-names-wrapper .troll .remove-name {
-  max-width: 140px;
-  width: 33%;
-}
 
 #troll-extension-wrapper #troll-names-wrapper .troll .remove-name {
   display: inline;
   position: relative;
-  top: 4px;
+  width: 100%;
   cursor: pointer;
 }
 #troll-extension-wrapper #troll-names-wrapper .troll .comment-counter{
@@ -68,24 +79,5 @@
 
 #troll-extension-wrapper #clear-all-comments-wrapper {
   display: inline;
-
+  border-left: 1px solid black;
 }
-
-#troll-extension-wrapper #clear-all-comments {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 95px;
-  height: 100%;
-  background-color: lightblue;
-}
-
-
-
-      /*<ul >
-        <li class='troll'>
-          <img class='remove-name' src=${remove_name_src}></img>
-          <label class='troll-name'>here</label>
-        </li>
-      </ul>*/

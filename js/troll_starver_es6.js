@@ -1,31 +1,51 @@
 if($('#troll-extension-wrapper').length == 0) {
 
-  var troll_img_src = chrome.extension.getURL("images/trollx60.png");
   var remove_name_src = chrome.extension.getURL("images/remove-name.png");
-  // document.getElementById("someImage").src = imgURL;
+
+
+  function addTrollToList(name, existing_comments_counter=0){
+     $(`
+        <tr class='troll'>
+          <td><img class='remove-name' src=${remove_name_src}></img></td>
+          <td class='troll-name'>${name}</td>
+          <td class='comment-counter'>${existing_comments_counter}</td>
+        </tr>
+      `).insertAfter($('#troll-names-wrapper #table-header'));
+     $('#troll-names-wrapper').scrollTop(0);
+  }
 
 
   $('#live-comments-controls').append(`
 
     <div id='troll-extension-wrapper'>
       <div id='troll-image-wrapper' droppable='true' ondragover="event.preventDefault();">
-
-
-        <img alt='Drag names of trolls to Ignore' src=${troll_img_src}>
       </div>
 
-      <table id='troll-names-wrapper'>
-        <caption>Blocking Comments</caption>
-        <tr id='table-header'>
-          <th></th>
-          <th>Name</th>
-          <th>#</th>
-        </th>
-      </table>
+      <div id='troll-names-wrapper'>
+        <table>
+          <caption>Blocking Comments</caption>
+          <tr id='table-header'>
+            <th></th>
+            <th>Name</th>
+            <th>#</th>
+          </th>
+        </table>
+      </div>
+
 
       <button type='button' id='clear-all-comments'>Clear Chat</button>
     </div>
-  `)
+  `);
+
+  // load trolls into table if any exist in localStorage
+  if(Object.keys(window.troll_names).length > 0 )
+  {
+    for(let troll_name of Object.keys(window.troll_names)){
+      addTrollToList(troll_name)
+    }
+  }
+
+
 
 
   // unabtrusive js
@@ -56,21 +76,14 @@ if($('#troll-extension-wrapper').length == 0) {
       return comments_counter;
     }
 
-    function addTrollToList(name, existing_comments_counter=0){
-       $(`
-          <tr class='troll'>
-            <td><img class='remove-name' src=${remove_name_src}></img></td>
-            <td class='troll-name'>${name}</td>
-            <td class='comment-counter'>${existing_comments_counter}</td>
-          </tr>
-        `).insertAfter($('#troll-names-wrapper #table-header'));
-       $('#troll-names-wrapper').scrollTop(0);
-    }
+
 
     function removeTrollFromList(dom_element){
-      let name = $(dom_element).find('.troll_name').html();
-      $(dom_element).closest('li.troll').remove();
+      var $element_to_delete = $(dom_element).closest('.troll')
+      let name = $element_to_delete.find('.troll-name').html()
+      $element_to_delete.remove();
       delete window.troll_names_hash[name]
+      console.warn('sync localStorage with chromes localStorage');
     }
 
     function isTrollAlreadyInList(name) {

@@ -10,17 +10,25 @@
 
 
 
-
-
-
-
-
-"use strict";
+'use strict';
 
 if ($('#troll-extension-wrapper').length == 0) {
-  var troll_img_src;
   var remove_name_src;
 
+  var _iteratorNormalCompletion;
+
+  var _didIteratorError;
+
+  var _iteratorError;
+
+  var _iterator, _step;
+
+    var addTrollToList = function addTrollToList(name) {
+      var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+      $('\n        <tr class=\'troll\'>\n          <td><img class=\'remove-name\' src=' + remove_name_src + '></img></td>\n          <td class=\'troll-name\'>' + name + '</td>\n          <td class=\'comment-counter\'>' + existing_comments_counter + '</td>\n        </tr>\n      ').insertAfter($('#troll-names-wrapper #table-header'));
+      $('#troll-names-wrapper').scrollTop(0);
+    };
 
     // input name of troll
     // return int : # of comments of his were deleted in chatroom
@@ -40,17 +48,12 @@ if ($('#troll-extension-wrapper').length == 0) {
       return comments_counter;
     };
 
-    var addTrollToList = function addTrollToList(name) {
-      var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-      $("\n          <tr class='troll'>\n            <td><img class='remove-name' src=" + remove_name_src + "></img></td>\n            <td class='troll-name'>" + name + "</td>\n            <td class='comment-counter'>" + existing_comments_counter + "</td>\n          </tr>\n        ").insertAfter($('#troll-names-wrapper #table-header'));
-      $('#troll-names-wrapper').scrollTop(0);
-    };
-
     var removeTrollFromList = function removeTrollFromList(dom_element) {
-      var name = $(dom_element).find('.troll_name').html();
-      $(dom_element).closest('li.troll').remove();
+      var $element_to_delete = $(dom_element).closest('.troll');
+      var name = $element_to_delete.find('.troll-name').html();
+      $element_to_delete.remove();
       delete window.troll_names_hash[name];
+      console.warn('sync localStorage with chromes localStorage');
     };
 
     var isTrollAlreadyInList = function isTrollAlreadyInList(name) {
@@ -60,12 +63,37 @@ if ($('#troll-extension-wrapper').length == 0) {
     // add new troll to list, clear his old comments, and start ignoring new comments
     ;
 
-    troll_img_src = chrome.extension.getURL("images/trollx60.png");
     remove_name_src = chrome.extension.getURL("images/remove-name.png");
 
-    // document.getElementById("someImage").src = imgURL;
+    $('#live-comments-controls').append('\n\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th></th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
 
-    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <table id='troll-names-wrapper'>\n        <caption>Blocking Comments</caption>\n        <tr id='table-header'>\n          <th></th>\n          <th>Name</th>\n          <th>#</th>\n        </th>\n      </table>\n\n      <button type='button' id='clear-all-comments'>Clear Chat</button>\n    </div>\n  ");
+    // load trolls into table if any exist in localStorage
+    if (Object.keys(window.troll_names).length > 0) {
+      _iteratorNormalCompletion = true;
+      _didIteratorError = false;
+      _iteratorError = undefined;
+
+      try {
+        for (_iterator = Object.keys(window.troll_names)[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var troll_name = _step.value;
+
+          addTrollToList(troll_name);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator['return']) {
+            _iterator['return']();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
 
     // unabtrusive js
 
@@ -102,41 +130,37 @@ if ($('#troll-extension-wrapper').length == 0) {
       if (Object.keys(window.troll_names_hash).length > 0) {
         var $comment_element = $(event.target);
         var blocked_names = Object.keys(window.troll_names_hash);
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
 
         try {
-          for (var _iterator = blocked_names[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var blocked_name = _step.value;
+          for (var _iterator2 = blocked_names[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var blocked_name = _step2.value;
 
             if ($comment_element.find(".author [data-name]").html() === blocked_name) {
               window.troll_names_hash[blocked_name] += 1;
-              $(".troll:contains(" + blocked_name + ") > .comment-counter").html(window.troll_names_hash[blocked_name]);
+              $('.troll:contains(' + blocked_name + ') > .comment-counter').html(window.troll_names_hash[blocked_name]);
               $comment_element.remove();
             }
           }
         } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion && _iterator["return"]) {
-              _iterator["return"]();
+            if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+              _iterator2['return']();
             }
           } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
+            if (_didIteratorError2) {
+              throw _iteratorError2;
             }
           }
         }
       }
     });
 }
-
-
-
-
 
 
 
