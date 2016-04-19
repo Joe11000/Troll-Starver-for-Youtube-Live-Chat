@@ -14,15 +14,16 @@ if($('#troll-extension-wrapper').length == 0) {
         <img alt='Drag names of trolls to Ignore' src=${troll_img_src}>
       </div>
 
-      <ul id='troll-names-wrapper'>
-        <li class='troll'>
-            <img class='remove-name' src=${remove_name_src}></img>
-            <label class='troll-name'>here</label>
-            <span class='comment-counter'>0</span>
-          </li>
-      </ul>
+      <table id='troll-names-wrapper'>
+        <caption>Blocking Comments</caption>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>#</th>
+        </th>
+      </table>
 
-      <button id='clear-all-comments'>Clear Chat</button>
+      <button type='button' id='clear-all-comments'>Clear Chat</button>
     </div>
   `)
 
@@ -49,11 +50,11 @@ if($('#troll-extension-wrapper').length == 0) {
 
     function addTrollToList(name, existing_comments_counter=0){
        $('#troll-names-wrapper').prepend(`
-          <li class='troll'>
-            <img class='remove-name' src=${remove_name_src}></img>
-            <label class='troll-name'>${name}</label>
-            <span class='comment-counter'>${existing_comments_counter}</span>
-          </li>
+          <tr class='troll'>
+            <td><img class='remove-name' src=${remove_name_src}></img></td>
+            <td class='troll-name'>${name}</td>
+            <td class='comment-counter'>${existing_comments_counter}</td>
+          </tr>
         `);
        $('#troll-names-wrapper').scrollTop(0);
     }
@@ -80,7 +81,7 @@ if($('#troll-extension-wrapper').length == 0) {
     });
 
     // click the remove image to remove that troll from list
-    $('ul#troll-names-wrapper').on('click', '.remove-name', function(event){
+    $('#troll-names-wrapper').on('click', '.remove-name', function(event){
       removeTrollFromList(this);
     });
 

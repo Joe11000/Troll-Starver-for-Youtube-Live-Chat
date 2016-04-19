@@ -9,7 +9,6 @@
 
 
 
-
 "use strict";
 
 if ($('#troll-extension-wrapper').length == 0) {
@@ -29,7 +28,7 @@ if ($('#troll-extension-wrapper').length == 0) {
     var addTrollToList = function addTrollToList(name) {
       var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-      $('#troll-names-wrapper').prepend("\n          <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + "></img>\n            <label class='troll-name'>" + name + "</label>\n            <span class='comment-counter'>" + existing_comments_counter + "</span>\n          </li>\n        ");
+      $('#troll-names-wrapper').prepend("\n          <tr class='troll'>\n            <td><img class='remove-name' src=" + remove_name_src + "></img></td>\n            <td class='troll-name'>" + name + "</td>\n            <td class='comment-counter'>" + existing_comments_counter + "</td>\n          </tr>\n        ");
       $('#troll-names-wrapper').scrollTop(0);
     };
 
@@ -51,7 +50,7 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     // document.getElementById("someImage").src = imgURL;
 
-    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + "></img>\n            <label class='troll-name'>here</label>\n            <span class='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <button id='clear-all-comments'>Clear Chat</button>\n    </div>\n  ");
+    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <table id='troll-names-wrapper'>\n        <caption>Blocking Comments</caption>\n        <tr>\n          <th></th>\n          <th>Name</th>\n          <th>#</th>\n        </th>\n      </table>\n\n      <button type='button' id='clear-all-comments'>Clear Chat</button>\n    </div>\n  ");
 
     // unabtrusive js
 
@@ -73,7 +72,7 @@ if ($('#troll-extension-wrapper').length == 0) {
     });
 
     // click the remove image to remove that troll from list
-    $('ul#troll-names-wrapper').on('click', '.remove-name', function (event) {
+    $('#troll-names-wrapper').on('click', '.remove-name', function (event) {
       removeTrollFromList(this);
     });
 
@@ -113,8 +112,6 @@ if ($('#troll-extension-wrapper').length == 0) {
       }
     });
 }
-
-
 
 
 

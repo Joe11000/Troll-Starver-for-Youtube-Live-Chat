@@ -17,7 +17,8 @@
 }
 
 /* contains list of troll  */
-#troll-extension-wrapper  ul#troll-names-wrapper{
+#troll-extension-wrapper #troll-names-wrapper{
+
   height: 110px;
   display: inline-block;
   position: relative;
@@ -25,26 +26,33 @@
   top: 0;
   overflow-y: scroll;
 }
-#troll-extension-wrapper  ul#troll-names-wrapper li.troll {
+
+#troll-extension-wrapper #troll-names-wrapper th,
+#troll-extension-wrapper #troll-names-wrapper td {
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+}
+
+#troll-extension-wrapper #troll-names-wrapper .troll {
   margin-bottom: 10px;
   height: 18px;
   width: 200px;
   overflow: ellipsis;
 }
-#troll-extension-wrapper  ul#troll-names-wrapper li.troll > * {
-  margin-right: 5px;
-  display: inline;
+#troll-extension-wrapper #troll-names-wrapper .troll > * {
+  /*margin-right: 5px;*/
+  /*display: inline;*/
 }
-#troll-extension-wrapper  ul#troll-names-wrapper li.troll :last-element {
-  margin-right: 0;
+#troll-extension-wrapper #troll-names-wrapper .troll :last-element {
+  /*margin-right: 0;*/
 }
-#troll-extension-wrapper  ul#troll-names-wrapper li.troll .remove-name {
+#troll-extension-wrapper #troll-names-wrapper .troll .remove-name {
   display: inline;
   position: relative;
   top: 4px;
   cursor: pointer;
 }
-#troll-extension-wrapper  ul#troll-names-wrapper li.troll .comment-counter{
+#troll-extension-wrapper #troll-names-wrapper .troll .comment-counter{
   color: red;
   font-weight: bold;
 }
@@ -65,3 +73,10 @@
 }
 
 
+
+      /*<ul >
+        <li class='troll'>
+          <img class='remove-name' src=${remove_name_src}></img>
+          <label class='troll-name'>here</label>
+        </li>
+      </ul>*/
