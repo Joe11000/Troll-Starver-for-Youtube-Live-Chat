@@ -9,6 +9,7 @@
 
 
 
+
 'use strict';
 
 if ($('#troll-extension-wrapper').length == 0) {
@@ -67,6 +68,9 @@ if ($('#troll-extension-wrapper').length == 0) {
     $('#live-comments-controls').append('\n\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th></th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
 
     // load trolls into table if any exist in localStorage
+    if (window.troll_names_hash === undefined) {
+      window.troll_names_hash = {};
+    }
     if (window.troll_names_hash && Object.keys(window.troll_names_hash).length > 0) {
       _iteratorNormalCompletion = true;
       _didIteratorError = false;
@@ -95,8 +99,6 @@ if ($('#troll-extension-wrapper').length == 0) {
     }
 
     // unabtrusive js
-
-    window.troll_names_hash = {};
 
     // clear chat room
     $('#clear-all-comments').on('click', function () {
@@ -160,6 +162,7 @@ if ($('#troll-extension-wrapper').length == 0) {
       }
     });
 }
+
 
 
 

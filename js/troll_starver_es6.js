@@ -38,19 +38,16 @@ if($('#troll-extension-wrapper').length == 0) {
   `);
 
   // load trolls into table if any exist in localStorage
-  if(window.troll_names_hash && Object.keys(window.troll_names_hash).length > 0 )
-  {
-    for(let troll_name of Object.keys(window.troll_names)){
-      addTrollToList(troll_name)
+  chrome.storage.local.get('saved_trolls', function(troll_names_hash) {
+    if( (typeof troll_names_hash == "Object" ) && Object.keys(window.troll_names_hash).length > 0 ) {
+      for(let troll_name of Object.keys(window.troll_names)) {
+        addTrollToList(troll_name)
+      }
     }
-  }
-
-
-
+  });
 
   // unabtrusive js
 
-    window.troll_names_hash = {};
 
 
     // clear chat room
@@ -131,13 +128,4 @@ if($('#troll-extension-wrapper').length == 0) {
       }
     }
   });
-
 }
-
-// chrome.storage.sync.set({'value': theValue}, function() {
-//   // Notify that we saved.
-//   message('Settings saved');
-// });
-
-  // save users added as trolls to internalStorage if they want info saved, otherwise just to window.troll_names_hash
-
