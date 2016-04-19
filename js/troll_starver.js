@@ -10,18 +10,13 @@
 
 
 
+
+
+
 'use strict';
 
 if ($('#troll-extension-wrapper').length == 0) {
   var remove_name_src;
-
-  var _iteratorNormalCompletion;
-
-  var _didIteratorError;
-
-  var _iteratorError;
-
-  var _iterator, _step;
 
     var addTrollToList = function addTrollToList(name) {
       var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -67,36 +62,36 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     $('#live-comments-controls').append('\n\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th></th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
 
-    // load trolls into table if any exist in localStorage
-    if (window.troll_names_hash === undefined) {
-      window.troll_names_hash = {};
-    }
-    if (window.troll_names_hash && Object.keys(window.troll_names_hash).length > 0) {
-      _iteratorNormalCompletion = true;
-      _didIteratorError = false;
-      _iteratorError = undefined;
+    // populate the trolls table with saved data from a previous session
+    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+      if (typeof troll_names_hash == "object" && Object.keys(troll_names_hash).length > 0) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
 
-      try {
-        for (_iterator = Object.keys(window.troll_names)[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var troll_name = _step.value;
-
-          addTrollToList(troll_name);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator['return']) {
-            _iterator['return']();
+          for (var _iterator = Object.keys(troll_names_hash)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var troll_name = _step.value;
+
+            addTrollToList(troll_name, troll_names_hash[troll_name]);
           }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
         } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
+          try {
+            if (!_iteratorNormalCompletion && _iterator['return']) {
+              _iterator['return']();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
           }
         }
       }
-    }
+    });
 
     // unabtrusive js
 
@@ -162,6 +157,12 @@ if ($('#troll-extension-wrapper').length == 0) {
       }
     });
 }
+
+// chrome.storage.local.set({ 'troll_names_hash': {'joe is awesome': 556} })
+
+
+
+
 
 
 

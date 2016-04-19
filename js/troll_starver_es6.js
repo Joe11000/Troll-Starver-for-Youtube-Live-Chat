@@ -37,18 +37,19 @@ if($('#troll-extension-wrapper').length == 0) {
     </div>
   `);
 
-  // load trolls into table if any exist in localStorage
-  chrome.storage.local.get('saved_trolls', function(troll_names_hash) {
-    if( (typeof troll_names_hash == "Object" ) && Object.keys(window.troll_names_hash).length > 0 ) {
-      for(let troll_name of Object.keys(window.troll_names)) {
-        addTrollToList(troll_name)
+  // populate the trolls table with saved data from a previous session
+  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+    let troll_names_hash = trolls_chrome_extension_info['troll_names_hash']
+    if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
+      for(let troll_name of Object.keys(troll_names_hash)) {
+        addTrollToList(troll_name, troll_names_hash[troll_name]);
       }
     }
   });
 
+
+
   // unabtrusive js
-
-
 
     // clear chat room
     $('#clear-all-comments').on('click', function(){
@@ -129,3 +130,5 @@ if($('#troll-extension-wrapper').length == 0) {
     }
   });
 }
+
+  // chrome.storage.local.set({ 'troll_names_hash': {'joe is awesome': 556} })
