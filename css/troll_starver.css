@@ -1,5 +1,6 @@
 #troll-extension-wrapper {
-  padding-top: 10px;
+  position: relative;
+  margin-top: 10px;
   width: 100%;
   border-top: 1px solid #E2E2E2;
   height: 124px;
@@ -28,6 +29,7 @@
   margin-bottom: 10px;
   height: 18px;
   width: 200px;
+  overflow: ellipsis;
 }
 #troll-extension-wrapper  ul#troll-names-wrapper li.troll > * {
   margin-right: 5px;
@@ -47,7 +49,19 @@
   font-weight: bold;
 }
 
-#troll-extension-wrapper #clear-all-comments-wrapper{
+#troll-extension-wrapper #clear-all-comments-wrapper {
   display: inline;
 
 }
+
+#troll-extension-wrapper #clear-all-comments {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 95px;
+  height: 100%;
+  background-color: lightblue;
+}
+
+

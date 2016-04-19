@@ -10,7 +10,6 @@
 
 
 
-
 "use strict";
 
 if ($('#troll-extension-wrapper').length == 0) {
@@ -18,7 +17,8 @@ if ($('#troll-extension-wrapper').length == 0) {
   var remove_name_src;
 
     var removeExistingCommentsFromNewTroll = function removeExistingCommentsFromNewTroll(dom_element) {
-      $trolls_existing_comments = $('#all-comments').find(".comment:contains(" + dom_element.alt + ")");
+
+      $trolls_existing_comments = $('#all-comments').find(".comment:not(:last):contains(" + dom_element.alt + ")"); // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
 
       comments_counter = $trolls_existing_comments.length;
       $trolls_existing_comments.remove();
@@ -29,16 +29,18 @@ if ($('#troll-extension-wrapper').length == 0) {
     var addTrollToList = function addTrollToList(name) {
       var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-      $('#troll-names-wrapper').append("\n          <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + "></img>\n            <label data-id='name'>" + name + "</label>\n            <span class='comment-counter'>" + existing_comments_counter + "</span>\n          </li>\n        ");
+      $('#troll-names-wrapper').prepend("\n          <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + "></img>\n            <label class='troll-name'>" + name + "</label>\n            <span class='comment-counter'>" + existing_comments_counter + "</span>\n          </li>\n        ");
+      $('#troll-names-wrapper').scrollTop(0);
     };
 
     var removeTrollFromList = function removeTrollFromList(dom_element) {
+      var name = $(dom_element).find('.troll_name').html();
       $(dom_element).closest('li.troll').remove();
-      console.warn("Still have to : Allow person's comments to be seen now + reset persons comment counter");
+      delete window.troll_names_hash[name];
     };
 
     var isTrollAlreadyInList = function isTrollAlreadyInList(name) {
-      return Object.keys(window.troll_names).indexOf(name) !== -1;
+      return Object.keys(window.troll_names_hash).indexOf(name) !== -1;
     }
 
     // add new troll to list, clear his old comments, and start ignoring new comments
@@ -49,14 +51,14 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     // document.getElementById("someImage").src = imgURL;
 
-    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + "></img>\n            <label data-id='name'>here</label>\n            <span class='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <div id='clear-all-comments-wrapper'>\n        <a id=\"clear-all-comments\" href='#'>clear chat</a>\n      </div>\n    </div>\n  ");
+    $('#live-comments-controls').append("\n\n    <div id='troll-extension-wrapper'>\n      <div id='troll-image-wrapper' droppable='true' ondragover=\"event.preventDefault();\">\n\n\n        <img alt='Drag names of trolls to Ignore' src=" + troll_img_src + ">\n      </div>\n\n      <ul id='troll-names-wrapper'>\n        <li class='troll'>\n            <img class='remove-name' src=" + remove_name_src + "></img>\n            <label class='troll-name'>here</label>\n            <span class='comment-counter'>0</span>\n          </li>\n      </ul>\n\n      <button id='clear-all-comments'>Clear Chat</button>\n    </div>\n  ");
 
     // unabtrusive js
 
-    window.troll_names = {};
+    window.troll_names_hash = {};
 
     // clear chat room
-    $('#clear-all-comments-wrapper').on('click', function () {
+    $('#clear-all-comments').on('click', function () {
       $('all-comments').html('');
     });
 
@@ -64,9 +66,9 @@ if ($('#troll-extension-wrapper').length == 0) {
       event.preventDefault();
       var troll_name = this.alt;
       if (isTrollAlreadyInList(troll_name) === false) {
-        window.troll_names[troll_name] = 0; // make sure no additional comments added from troll while removing other comments
-        window.troll_names[troll_name] = removeExistingCommentsFromNewTroll(this) || 0;
-        addTrollToList(troll_name, window.troll_names[troll_name]);
+        window.troll_names_hash[troll_name] = 0; // make sure no additional comments added from troll while removing other comments
+        window.troll_names_hash[troll_name] = removeExistingCommentsFromNewTroll(this) || 0;
+        addTrollToList(troll_name, window.troll_names_hash[troll_name]);
       }
     });
 
@@ -77,38 +79,41 @@ if ($('#troll-extension-wrapper').length == 0) {
 
     // after new comment is appended remove comments by trolls, then increment the comment_counter of troll
     $('#all-comments').bind('DOMNodeInserted', function (event) {
-      var $comment_element = $(event.target);
-      var troll_names = Object.keys(window.troll_names);
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+      if (Object.keys(window.troll_names_hash).length > 0) {
+        var $comment_element = $(event.target);
+        var blocked_names = Object.keys(window.troll_names_hash);
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
 
-      try {
-        for (var _iterator = troll_names[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var troll_name = _step.value;
-
-          if ($comment_element.find(".author:contains(" + troll_name + ")").length > 0) {
-            window.troll_names[troll_name] += 1;
-            $(".troll:contains(" + troll_name + ") > .comment-counter").html(window.troll_names[troll_name]);
-            $comment_element.remove();
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator["return"]) {
-            _iterator["return"]();
+          for (var _iterator = blocked_names[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var blocked_name = _step.value;
+
+            if ($comment_element.find(".author [data-name]").html() === blocked_name) {
+              window.troll_names_hash[blocked_name] += 1;
+              $(".troll:contains(" + blocked_name + ") > .comment-counter").html(window.troll_names_hash[blocked_name]);
+              $comment_element.remove();
+            }
           }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
         } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
+          try {
+            if (!_iteratorNormalCompletion && _iterator["return"]) {
+              _iterator["return"]();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
           }
         }
       }
     });
 }
+
 
 
 

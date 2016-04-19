@@ -17,30 +17,29 @@ if($('#troll-extension-wrapper').length == 0) {
       <ul id='troll-names-wrapper'>
         <li class='troll'>
             <img class='remove-name' src=${remove_name_src}></img>
-            <label data-id='name'>here</label>
+            <label class='troll-name'>here</label>
             <span class='comment-counter'>0</span>
           </li>
       </ul>
 
-      <div id='clear-all-comments-wrapper'>
-        <a id="clear-all-comments" href='#'>clear chat</a>
-      </div>
+      <button id='clear-all-comments'>Clear Chat</button>
     </div>
   `)
 
 
   // unabtrusive js
 
-    window.troll_names = {};
+    window.troll_names_hash = {};
 
 
     // clear chat room
-    $('#clear-all-comments-wrapper').on('click', function(){
+    $('#clear-all-comments').on('click', function(){
       $('all-comments').html('');
     });
 
     function removeExistingCommentsFromNewTroll(dom_element){
-      $trolls_existing_comments = $('#all-comments').find(`.comment:contains(${dom_element.alt})`)
+
+      $trolls_existing_comments = $('#all-comments').find(`.comment:not(:last):contains(${dom_element.alt})`);// Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
 
       comments_counter = $trolls_existing_comments.length
       $trolls_existing_comments.remove();
@@ -49,22 +48,24 @@ if($('#troll-extension-wrapper').length == 0) {
     }
 
     function addTrollToList(name, existing_comments_counter=0){
-       $('#troll-names-wrapper').append(`
+       $('#troll-names-wrapper').prepend(`
           <li class='troll'>
             <img class='remove-name' src=${remove_name_src}></img>
-            <label data-id='name'>${name}</label>
+            <label class='troll-name'>${name}</label>
             <span class='comment-counter'>${existing_comments_counter}</span>
           </li>
         `);
+       $('#troll-names-wrapper').scrollTop(0);
     }
 
     function removeTrollFromList(dom_element){
+      let name = $(dom_element).find('.troll_name').html();
       $(dom_element).closest('li.troll').remove();
-      console.warn("Still have to : Allow person's comments to be seen now + reset persons comment counter")
+      delete window.troll_names_hash[name]
     }
 
     function isTrollAlreadyInList(name) {
-      return( Object.keys(window.troll_names).indexOf(name) !== -1 )
+      return( Object.keys(window.troll_names_hash).indexOf(name) !== -1 )
     }
 
     // add new troll to list, clear his old comments, and start ignoring new comments
@@ -72,9 +73,9 @@ if($('#troll-extension-wrapper').length == 0) {
       event.preventDefault();
       var troll_name = this.alt
       if(isTrollAlreadyInList(troll_name) === false){
-        window.troll_names[troll_name] = 0; // make sure no additional comments added from troll while removing other comments
-        window.troll_names[troll_name] = removeExistingCommentsFromNewTroll(this) || 0;
-        addTrollToList(troll_name, window.troll_names[troll_name]);
+        window.troll_names_hash[troll_name] = 0; // make sure no additional comments added from troll while removing other comments
+        window.troll_names_hash[troll_name] = removeExistingCommentsFromNewTroll(this) || 0;
+        addTrollToList(troll_name, window.troll_names_hash[troll_name]);
       }
     });
 
@@ -88,15 +89,15 @@ if($('#troll-extension-wrapper').length == 0) {
 
   // after new comment is appended remove comments by trolls, then increment the comment_counter of troll
   $('#all-comments').bind('DOMNodeInserted', function(event) {
-    if(window.troll_names.length > 0)
+    if( Object.keys(window.troll_names_hash).length > 0 )
     {
       var $comment_element = $(event.target);
-      let blocked_names = Object.keys(window.troll_names)
+      let blocked_names = Object.keys(window.troll_names_hash);
       for(let blocked_name of blocked_names)
       {
-        if($comment_element.find(`.author:contains(${blocked_name})`).length > 0) {
-          window.troll_names[blocked_name] +=1
-          $(`.troll:contains(${blocked_name}) > .comment-counter`).html(window.troll_names[blocked_name])
+        if($comment_element.find(".author [data-name]").html() === blocked_name) {
+          window.troll_names_hash[blocked_name] +=1;
+          $(`.troll:contains(${blocked_name}) > .comment-counter`).html(window.troll_names_hash[blocked_name]);
           $comment_element.remove();
         }
       }
@@ -105,5 +106,9 @@ if($('#troll-extension-wrapper').length == 0) {
 
 }
 
+// chrome.storage.sync.set({'value': theValue}, function() {
+//   // Notify that we saved.
+//   message('Settings saved');
+// });
 
-  // save users added as trolls to internalStorage if they want info saved, otherwise just to window.troll_names
+  // save users added as trolls to internalStorage if they want info saved, otherwise just to window.troll_names_hash

@@ -26,6 +26,7 @@
   "permissions": [
     "activeTab",
     "tabs",
+    "storage",
     "http://www.youtube.com/*",
     "http://www.youtube.com/*",
     "http://*/*",
