@@ -1,5 +1,6 @@
 #troll-extension-wrapper {
   border: 1px solid black !important;
+  border-radius: 5px;
   position: relative;
   margin-top: 10px;
   width: 100%;
