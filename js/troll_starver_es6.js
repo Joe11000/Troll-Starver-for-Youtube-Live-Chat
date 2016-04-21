@@ -1,5 +1,14 @@
 if(document.getElementById('troll-extension-wrapper') === null) {
 
+
+
+  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+    if(trolls_chrome_extension_info === null)
+      chrome.storage.local.set('troll_names_hash', {});
+
+  });
+
+
   // put the widget on the screen
   $('.live-chat-widget').append(`
 
@@ -64,18 +73,27 @@ if(document.getElementById('troll-extension-wrapper') === null) {
 
 
   // populate the trolls table with saved data from a previous session
-  getSavedinfoAndDo(function(troll_names_hash){
-    if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-      let keys = Object.keys(troll_names_hash)
-      let current_troll_comments = removeExistingCommentsFromNewTrolls(keys);
+  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
 
-      for(let i = 0; i < keys.length; i++)
-      {
-        troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
-        addTrollToList(keys[i], troll_names_hash[keys[i]]);
+    if(trolls_chrome_extension_info['troll_names_hash'] === undefined) {
+      chrome.storage.local.set({'troll_names_hash': {} }, function(){});
+    }
+    else {
+
+      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+
+      if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
+        let keys = Object.keys(troll_names_hash)
+        let current_troll_comments = removeExistingCommentsFromNewTrolls(keys);
+
+        for(let i = 0; i < keys.length; i++)
+        {
+          troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
+          addTrollToList(keys[i], troll_names_hash[keys[i]]);
+        }
+
+        chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function(){});
       }
-
-      chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function(){});
     }
   });
 
