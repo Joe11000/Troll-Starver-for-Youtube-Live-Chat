@@ -48,6 +48,7 @@
 
 #troll-extension-wrapper #troll-names-wrapper table {
   margin: auto;
+  min-width: 200px;
 }
 
 #troll-extension-wrapper #troll-names-wrapper th,
@@ -55,7 +56,9 @@
     border-bottom: 1px solid #ddd;
     padding: 5px;
 }
-#troll-extension-wrapper #troll-names-wrapper th,
+#troll-extension-wrapper #troll-names-wrapper th{
+  color: rgba(22, 122, 198, 0.901961);
+}
 #troll-extension-wrapper #troll-names-wrapper caption
 {
   font-weight: bold;

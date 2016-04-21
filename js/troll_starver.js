@@ -18,6 +18,10 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
 
 
+
+
+
+
   var remove_name_src;
 
     var getSavedinfoAndDo = function getSavedinfoAndDo(func) {
@@ -29,37 +33,21 @@ if (document.getElementById('troll-extension-wrapper') === null) {
     var replaceAllSavedInfo = function replaceAllSavedInfo(entire_hash) {
       chrome.storage.local.set({ 'troll_names_hash': entire_hash });
       return entire_hash;
-    };
+    }
 
-    var deleteSavedInfo = function deleteSavedInfo(keys_array) {
+    //
+    ;
+
+    var deleteSavedInfo = function deleteSavedInfo(troll_names_array) {
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
-        updating_hash = trolls_chrome_extension_info['troll_names_hash'];
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
 
-        try {
-          for (var _iterator = keys_array[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            key = _step.value;
+        var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
 
-            delete updating_hash[key];
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator['return']) {
-              _iterator['return']();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
+        for (var i = 0; i < troll_names_array.length; i++) {
+          delete updating_hash[troll_names_array[i]];
         }
 
-        chrome.storage.local.set({ 'troll_names_hash': updating_hash }); //here
+        chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function () {}); //here
       });
     };
 
@@ -75,30 +63,29 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
     var removeExistingCommentsFromNewTrolls = function removeExistingCommentsFromNewTrolls(troll_name_array) {
       var $all_comments = $('#all-comments .comment'); // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
-      var comments_counter = 0;
 
       var result = {};
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
       try {
-        for (var _iterator3 = troll_name_array[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var t = _step3.value;
+        for (var _iterator = troll_name_array[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var t = _step.value;
 
           result[t] = 0;
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _didIteratorError = true;
+        _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3['return']) {
-            _iterator3['return']();
+          if (!_iteratorNormalCompletion && _iterator['return']) {
+            _iterator['return']();
           }
         } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
+          if (_didIteratorError) {
+            throw _iteratorError;
           }
         }
       }
@@ -113,10 +100,9 @@ if (document.getElementById('troll-extension-wrapper') === null) {
         }
       });
 
-      return comments_counter;
+      return result;
     };
 
-    //*
     remove_name_src = chrome.extension.getURL("images/remove-name.png");
 
     $('.live-chat-widget').append('\n\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th></th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
@@ -124,32 +110,15 @@ if (document.getElementById('troll-extension-wrapper') === null) {
     // populate the trolls table with saved data from a previous session
     getSavedinfoAndDo(function (troll_names_hash) {
       if (typeof troll_names_hash == "object" && Object.keys(troll_names_hash).length > 0) {
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
+        var keys = Object.keys(troll_names_hash);
+        var current_troll_comments = removeExistingCommentsFromNewTrolls(keys);
 
-        try {
-          for (var _iterator2 = Object.keys(troll_names_hash)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var troll_name = _step2.value;
-
-            addTrollToList(troll_name, troll_names_hash[troll_name]);
-          }
-        } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-              _iterator2['return']();
-            }
-          } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
-            }
-          }
+        for (var i = 0; i < keys.length; i++) {
+          troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
+          addTrollToList(keys[i], troll_names_hash[keys[i]]);
         }
 
-        removeExistingCommentsFromNewTrolls(Object.keys(troll_names_hash));
+        chrome.storage.local.set({ 'troll_names_hash': troll_names_hash }, function () {});
       }
     });
 
@@ -167,23 +136,18 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
       getSavedinfoAndDo(function (troll_names_hash) {
         if (troll_names_hash[troll_name] === undefined) {
-          // make sure no additional comments added from troll while removing other comments
-          troll_names_hash[troll_name] = 0;
-          chrome.storage.local.set({ 'troll_names_hash': troll_names_hash });
-
           // save with real number of comments removed
           troll_names_hash[troll_name] = removeExistingCommentsFromNewTrolls([troll_name])[troll_name] || 0;
-          chrome.storage.local.set({ 'troll_names_hash': troll_names_hash });
-
-          addTrollToList(troll_name, troll_names_hash[troll_name]);
+          chrome.storage.local.set({ 'troll_names_hash': troll_names_hash }, function () {
+            addTrollToList(troll_name, troll_names_hash[troll_name]);
+          });
         }
       });
     });
 
     // clear chat room
     $('#clear-all-comments').on('click', function () {
-      $('#all-comments').scrollTop($('#all-comments')[0].scrollHeight);
-      $('#all-comments').html();
+      $('#all-comments').html('');
     });
 
     //*
@@ -192,15 +156,17 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       var $element_to_delete = $(this).closest('.troll');
       var name = $element_to_delete.find('.troll-name').html();
       $element_to_delete.remove();
-      deleteSavedInfo(name);
+      deleteSavedInfo([name]);
     });
 
     // after new comment is appended remove comments by trolls, then increment the comment_counter of troll
-    $('#all-comments').bind('DOMNodeInserted', function (event) {
-      if (event.isPropagationStopped()) console.warn('propogattion stopped');
-      event.stopPropagation();
-      event.preventDefault();
-      // event.stopImmediatePropagation();
+    $('#all-comments').on('DOMNodeInserted', function (event) {
+
+      // the chat room doubles up on this comment for when you start sending a comment and when it is done. So ignore the first one
+      if (event.target.className.indexOf('sending-in-progress') != -1) {
+        return;
+      }
+
       getSavedinfoAndDo(function (troll_names_hash) {
 
         if (Object.keys(troll_names_hash).length > 0) {
@@ -216,14 +182,20 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
           if (index_of_troll_in_blocked_names >= 0) {
             troll_names_hash[blocked_names[index_of_troll_in_blocked_names]]++;
-            chrome.storage.local.set({ 'troll_names_hash': troll_names_hash });
             $('.troll:contains(' + commenters_name + ') > .comment-counter').html(troll_names_hash[commenters_name]);
             $comment_element.remove();
+            chrome.storage.local.set({ 'troll_names_hash': troll_names_hash }, function () {});
           }
         }
       });
     });
 }
+
+
+
+
+
+
 
 
 
