@@ -1,13 +1,5 @@
 if(document.getElementById('troll-extension-wrapper') === null) {
 
-
-
-  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-    if(trolls_chrome_extension_info === null)
-      chrome.storage.local.set({'troll_names_hash': {} }, ()=>{});
-  });
-
-
   // put the widget on the screen
   $('.live-chat-widget').append(`
     <div id='troll-extension-wrapper'>
@@ -28,12 +20,6 @@ if(document.getElementById('troll-extension-wrapper') === null) {
       <div><button type='button' id='clear-all-comments'>Clear Chat</button></div>
     </div>
   `);
-
-  function getSavedinfoAndDo(func) {
-    chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-      func(trolls_chrome_extension_info['troll_names_hash']);
-    });
-  }
 
   function replaceAllSavedInfo(entire_hash) {
     chrome.storage.local.set({ 'troll_names_hash': entire_hash });
@@ -68,18 +54,24 @@ if(document.getElementById('troll-extension-wrapper') === null) {
 
   // populate the trolls table with saved data from a previous session
   chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+    if(trolls_chrome_extension_info['troll_names_hash'] === undefined) {
+      chrome.storage.local.set({'troll_names_hash': {} }, function(){});
+    }
+    else {
 
-    if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-      let keys = Object.keys(troll_names_hash);
-      let current_troll_comments = removeExistingCommentsFromNewTrolls(keys);
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
-      for(let i = 0; i < keys.length; i++) {
-        troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
-        addTrollToList(keys[i], troll_names_hash[keys[i]]);
+      if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
+        let keys = Object.keys(troll_names_hash);
+        let current_troll_comments = removeExistingCommentsFromNewTrolls(keys);
+
+        for(let i = 0; i < keys.length; i++) {
+          troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
+          addTrollToList(keys[i], troll_names_hash[keys[i]]);
+        }
+
+        chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function() {});
       }
-
-      chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function() {});
     }
   });
 
