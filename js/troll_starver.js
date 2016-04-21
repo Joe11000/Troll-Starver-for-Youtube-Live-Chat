@@ -11,14 +11,6 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
 
 
-
-
-
-
-
-
-
-
     var getSavedinfoAndDo = function getSavedinfoAndDo(func) {
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
         func(trolls_chrome_extension_info['troll_names_hash']);
@@ -46,7 +38,7 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       });
     }
 
-    //
+    // add new row on to troll table on the DOM
     ;
 
     var addTrollToList = function addTrollToList(name) {
@@ -108,10 +100,9 @@ if (document.getElementById('troll-extension-wrapper') === null) {
     ;
 
     // put the widget on the screen
-    $('.live-chat-widget').append('\n\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
+    $('.live-chat-widget').append('\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
 
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
-
       var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       if (typeof troll_names_hash == "object" && Object.keys(troll_names_hash).length > 0) {
@@ -155,7 +146,6 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       $('#all-comments').html('');
     });
 
-    //*
     // click the remove image to remove that troll from list
     $('#troll-names-wrapper').on('click', '.remove-name', function (event) {
       var $element_to_delete = $(this).closest('.troll');
@@ -196,17 +186,6 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       });
     });
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 })();
