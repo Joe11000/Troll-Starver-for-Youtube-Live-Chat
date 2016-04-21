@@ -4,8 +4,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
 
   chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
     if(trolls_chrome_extension_info === null)
-      chrome.storage.local.set('troll_names_hash', {});
-
+      chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function(){});
   });
 
 
@@ -80,7 +79,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     }
     else {
 
-      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+      let troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
         let keys = Object.keys(troll_names_hash)
