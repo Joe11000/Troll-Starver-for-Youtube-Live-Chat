@@ -54,7 +54,9 @@
 #troll-extension-wrapper #troll-names-wrapper th,
 #troll-extension-wrapper #troll-names-wrapper td {
     border-bottom: 1px solid #ddd;
-    padding: 5px;
+    padding: 5px 5px 5px 0;
+    text-align: left;
+
 }
 #troll-extension-wrapper #troll-names-wrapper th{
   color: rgba(22, 122, 198, 0.901961);
