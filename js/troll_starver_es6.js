@@ -1,5 +1,13 @@
 if(document.getElementById('troll-extension-wrapper') === null) {
 
+
+
+  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+    if(trolls_chrome_extension_info === null)
+      chrome.storage.local.set({'troll_names_hash': {} }, ()=>{});
+  });
+
+
   // put the widget on the screen
   $('.live-chat-widget').append(`
     <div id='troll-extension-wrapper'>

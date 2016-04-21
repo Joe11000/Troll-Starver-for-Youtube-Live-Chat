@@ -17,6 +17,7 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
 
 
+
     var getSavedinfoAndDo = function getSavedinfoAndDo(func) {
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
         func(trolls_chrome_extension_info['troll_names_hash']);
@@ -26,10 +27,7 @@ if (document.getElementById('troll-extension-wrapper') === null) {
     var replaceAllSavedInfo = function replaceAllSavedInfo(entire_hash) {
       chrome.storage.local.set({ 'troll_names_hash': entire_hash });
       return entire_hash;
-    }
-
-    //
-    ;
+    };
 
     var deleteSavedInfo = function deleteSavedInfo(troll_names_array) {
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
@@ -50,7 +48,7 @@ if (document.getElementById('troll-extension-wrapper') === null) {
     var addTrollToList = function addTrollToList(name) {
       var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-      $('\n        <tr class=\'troll\'>\n          <td><img class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></td>\n          <td class=\'troll-name\'>' + name + '</td>\n          <td class=\'comment-counter\'>' + existing_comments_counter + '</td>\n        </tr>\n      ').insertAfter($('#troll-names-wrapper #table-header'));
+      $('\n      <tr class=\'troll\'>\n        <td><img class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></td>\n        <td class=\'troll-name\'>' + name + '</td>\n        <td class=\'comment-counter\'>' + existing_comments_counter + '</td>\n      </tr>\n    ').insertAfter($('#troll-names-wrapper #table-header'));
       $('#troll-names-wrapper').scrollTop(0);
     }
 
@@ -105,8 +103,12 @@ if (document.getElementById('troll-extension-wrapper') === null) {
     // when a user's image is dragged and dropped onto the troll, save troll to saved chrome.storage and
     ;
 
+    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      if (trolls_chrome_extension_info === null) chrome.storage.local.set({ 'troll_names_hash': {} }, function () {});
+    });
+
     // put the widget on the screen
-    $('.live-chat-widget').append('\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
+    $('.live-chat-widget').append('\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n      <div><button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button></div>\n    </div>\n  ');
 
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
@@ -192,8 +194,6 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       });
     });
 }
-
-
 
 
 })();
