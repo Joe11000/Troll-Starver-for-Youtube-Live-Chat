@@ -53,7 +53,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
   function addTrollToList(name, existing_comments_counter=0){
      $(`
         <tr class='troll'>
-          <td><img class='remove-name' src=${chrome.extension.getURL("images/remove-name.png");}></img></td>
+          <td><img class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
           <td class='troll-name'>${name}</td>
           <td class='comment-counter'>${existing_comments_counter}</td>
         </tr>
@@ -176,10 +176,3 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     });
   });
 }
-
-
-
-// $.extend({}, trolls_chrome_extension_info['troll_names_hash'], hash);
-
-
-
