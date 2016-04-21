@@ -17,7 +17,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
         </table>
       </div>
 
-      <button type='button' id='clear-all-comments'>Clear Chat</button>
+      <div><button type='button' id='clear-all-comments'>Clear Chat</button></div>
     </div>
   `);
 
@@ -32,7 +32,6 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     return entire_hash;
   }
 
-  //
   function deleteSavedInfo(troll_names_array) {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
 
@@ -49,14 +48,14 @@ if(document.getElementById('troll-extension-wrapper') === null) {
 
   // add new row on to troll table on the DOM
   function addTrollToList(name, existing_comments_counter=0) {
-     $(`
-        <tr class='troll'>
-          <td><img class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
-          <td class='troll-name'>${name}</td>
-          <td class='comment-counter'>${existing_comments_counter}</td>
-        </tr>
-      `).insertAfter($('#troll-names-wrapper #table-header'));
-     $('#troll-names-wrapper').scrollTop(0);
+   $(`
+      <tr class='troll'>
+        <td><img class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
+        <td class='troll-name'>${name}</td>
+        <td class='comment-counter'>${existing_comments_counter}</td>
+      </tr>
+    `).insertAfter($('#troll-names-wrapper #table-header'));
+   $('#troll-names-wrapper').scrollTop(0);
   }
 
   // populate the trolls table with saved data from a previous session

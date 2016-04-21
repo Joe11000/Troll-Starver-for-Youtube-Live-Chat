@@ -11,6 +11,12 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
 
 
+
+
+
+
+
+
     var getSavedinfoAndDo = function getSavedinfoAndDo(func) {
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
         func(trolls_chrome_extension_info['troll_names_hash']);
@@ -186,6 +192,8 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       });
     });
 }
+
+
 
 
 })();

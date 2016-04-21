@@ -13,14 +13,14 @@
   },
 
   "browser_action": {
-    "default_icon": {                    // optional
-      "38": "images/trollx38.png"           // optional
-    },
-    "default_title": "Browser Action"      // optional; shown in tooltip
+    "default_title": "Youtube Live Chat : Troll Starver"     // optional; shown in tooltip
   },
 
-  "content_scripts": [
+  "icons": { "16": "images/trollx16.png",
+           "48": "images/trollx48.png",
+          "128": "images/trollx128.png" },
 
+  "content_scripts": [
   ],
 
   "permissions": [
@@ -33,10 +33,6 @@
 
   "web_accessible_resources": [
     "images/*"
-    // "style/double-rainbow.css",
-    // "script/double-rainbow.js",
-    // "script/main.js",
-    // "templates/*"
   ]
 }
 
