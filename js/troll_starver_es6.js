@@ -80,7 +80,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     }
     else {
 
-      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
         let keys = Object.keys(troll_names_hash)
@@ -137,7 +137,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     let troll_name = event.dataTransfer.getData('troll-name')
 
     chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       if(troll_names_hash[troll_name] === undefined){
         // save with real number of comments removed
@@ -174,7 +174,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     }
 
     chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       if( Object.keys(troll_names_hash).length > 0 )
       {
