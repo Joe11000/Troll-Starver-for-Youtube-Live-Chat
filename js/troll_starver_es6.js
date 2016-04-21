@@ -53,7 +53,7 @@ if(document.getElementById('troll-extension-wrapper') === null) {
   function addTrollToList(name, existing_comments_counter=0){
      $(`
         <tr class='troll'>
-          <td><img class='remove-name' src=${chrome.extension.getURL("images/remove-name.png");}></img></td>
+          <td><img class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
           <td class='troll-name'>${name}</td>
           <td class='comment-counter'>${existing_comments_counter}</td>
         </tr>
@@ -64,7 +64,9 @@ if(document.getElementById('troll-extension-wrapper') === null) {
 
 
   // populate the trolls table with saved data from a previous session
-  getSavedinfoAndDo(function(troll_names_hash){
+  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+    troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+
     if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
       let keys = Object.keys(troll_names_hash)
       let current_troll_comments = removeExistingCommentsFromNewTrolls(keys);
@@ -118,7 +120,9 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
     let troll_name = event.dataTransfer.getData('troll-name')
 
-    getSavedinfoAndDo(function(troll_names_hash){
+    chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+
       if(troll_names_hash[troll_name] === undefined){
         // save with real number of comments removed
         troll_names_hash[troll_name] = removeExistingCommentsFromNewTrolls([troll_name])[troll_name] || 0
@@ -153,7 +157,8 @@ if(document.getElementById('troll-extension-wrapper') === null) {
       return;
     }
 
-    getSavedinfoAndDo(function(troll_names_hash) {
+    chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       if( Object.keys(troll_names_hash).length > 0 )
       {
@@ -176,10 +181,3 @@ if(document.getElementById('troll-extension-wrapper') === null) {
     });
   });
 }
-
-
-
-// $.extend({}, trolls_chrome_extension_info['troll_names_hash'], hash);
-
-
-

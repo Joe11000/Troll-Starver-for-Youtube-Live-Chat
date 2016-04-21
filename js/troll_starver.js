@@ -21,9 +21,6 @@ if (document.getElementById('troll-extension-wrapper') === null) {
 
 
 
-
-  var remove_name_src;
-
     var getSavedinfoAndDo = function getSavedinfoAndDo(func) {
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
         func(trolls_chrome_extension_info['troll_names_hash']);
@@ -54,9 +51,12 @@ if (document.getElementById('troll-extension-wrapper') === null) {
     var addTrollToList = function addTrollToList(name) {
       var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-      $('\n        <tr class=\'troll\'>\n          <td><img class=\'remove-name\' src=' + remove_name_src + '></img></td>\n          <td class=\'troll-name\'>' + name + '</td>\n          <td class=\'comment-counter\'>' + existing_comments_counter + '</td>\n        </tr>\n      ').insertAfter($('#troll-names-wrapper #table-header'));
+      $('\n        <tr class=\'troll\'>\n          <td><img class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></td>\n          <td class=\'troll-name\'>' + name + '</td>\n          <td class=\'comment-counter\'>' + existing_comments_counter + '</td>\n        </tr>\n      ').insertAfter($('#troll-names-wrapper #table-header'));
       $('#troll-names-wrapper').scrollTop(0);
-    };
+    }
+
+    // populate the trolls table with saved data from a previous session
+    ;
 
     // input: ie [name_1, name_2, name_3]               array of troll names to remove from chat
     // return int : {name_1: 2, name_2: 15, name_3: 0}  num of comments of his were deleted in chatroom
@@ -101,14 +101,17 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       });
 
       return result;
-    };
+    }
 
-    remove_name_src = chrome.extension.getURL("images/remove-name.png");
+    // when a user's image is dragged and dropped onto the troll, save troll to saved chrome.storage and
+    ;
 
-    $('.live-chat-widget').append('\n\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th></th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
+    // put the widget on the screen
+    $('.live-chat-widget').append('\n\n    <div id=\'troll-extension-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th></th>\n            <th>Name</th>\n            <th>#</th>\n          </th>\n        </table>\n      </div>\n\n      <button type=\'button\' id=\'clear-all-comments\'>Clear Chat</button>\n    </div>\n  ');
 
-    // populate the trolls table with saved data from a previous session
-    getSavedinfoAndDo(function (troll_names_hash) {
+    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+
       if (typeof troll_names_hash == "object" && Object.keys(troll_names_hash).length > 0) {
         var keys = Object.keys(troll_names_hash);
         var current_troll_comments = removeExistingCommentsFromNewTrolls(keys);
@@ -127,14 +130,14 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       event.dataTransfer = event.originalEvent.dataTransfer;
       var troll_name = this.alt || $(this).closest('.comment').find('.author [data-name]').html();
       event.dataTransfer.setData('troll-name', troll_name);
-    });
-
-    $('#troll-image-wrapper').on('drop', function (event) {
+    });$('#troll-image-wrapper').on('drop', function (event) {
       event.preventDefault();
       event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
       var troll_name = event.dataTransfer.getData('troll-name');
 
-      getSavedinfoAndDo(function (troll_names_hash) {
+      chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+        troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+
         if (troll_names_hash[troll_name] === undefined) {
           // save with real number of comments removed
           troll_names_hash[troll_name] = removeExistingCommentsFromNewTrolls([troll_name])[troll_name] || 0;
@@ -167,7 +170,8 @@ if (document.getElementById('troll-extension-wrapper') === null) {
         return;
       }
 
-      getSavedinfoAndDo(function (troll_names_hash) {
+      chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+        troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
         if (Object.keys(troll_names_hash).length > 0) {
           var $comment_element = $(event.target);
@@ -190,8 +194,6 @@ if (document.getElementById('troll-extension-wrapper') === null) {
       });
     });
 }
-
-
 
 
 
