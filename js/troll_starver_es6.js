@@ -122,12 +122,9 @@ $('#troll-image-wrapper').on('drop', function(event) {
     var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
     if(troll_names_hash[troll_name] === undefined) {
-      // save with real number of comments removed
       troll_names_hash[troll_name] = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_name])[troll_name] || 0;
 
-      chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function() {});
-
-      chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function() {
+      db.replaceAllTrollInfo(troll_names_hash, function() {
         dom_manipulating.addEntryToTrollsTable(troll_name, troll_names_hash[troll_name]);
       });
     }
@@ -176,7 +173,8 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
         troll_names_hash[blocked_names[index_of_troll_in_blocked_names]]++;
         $(`.troll:contains(${commenters_name}) > .comment-counter`).html(troll_names_hash[commenters_name]);
         $comment_element.remove();
-        chrome.storage.local.set({'troll_names_hash': troll_names_hash }, function() {});
+
+        db.replaceAllTrollInfo(troll_names_hash, ()=>{})
       }
     }
   });
