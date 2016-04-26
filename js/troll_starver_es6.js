@@ -56,12 +56,8 @@ var dom_manipulating = {
     return result;
   },
 
-  updateTotalNamesBlocked: function(new_total_known_in_advance) {
-    var total = new_total_known_in_advance;
-
-    if(total !== undefined) {
-      total = Number.parse($('#troll-extension-wrapper #troll-names-wrapper table img.remove-name').length) || 0;
-    }
+  updateTotalNamesBlocked: function() {
+    var total = $('#troll-extension-wrapper #troll-names-wrapper table img.remove-name').length || 0
 
     $('#troll-extension-wrapper #troll-names-wrapper #table-troll-name-counter').html(`current(${total})`)
   },
@@ -151,6 +147,7 @@ $('#troll-image-wrapper').on('drop', function(event) {
       db.asyncReplaceAllTrollInfo(troll_names_hash, function() {
         dom_manipulating.addEntryToTrollsTable(troll_name, troll_names_hash[troll_name]);
         dom_manipulating.updateTotalNamesBlocked();
+        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
       });
     }
   });
