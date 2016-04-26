@@ -59,17 +59,17 @@ var dom_manipulating = {
   updateTotalNamesBlocked: function() {
     var total = $('#troll-extension-wrapper #troll-names-wrapper table img.remove-name').length || 0
 
-    $('#troll-extension-wrapper #troll-names-wrapper #table-troll-name-counter').html(`current(${total})`)
+    $('#troll-extension-wrapper #troll-names-wrapper #header-name').html(`Name(${total})`)
   },
 
   // calculated differently than updateTotalNamesBlocked, because if someone removes a troll, then I still want to remember the total amount of comments blocked that are no longer represented in the table.
   updateTotalCommentsBlocked: function(increase_total_by=1) {
-      let current_total = Number.parseInt($('#troll-extension-wrapper #troll-names-wrapper #table-comment-counter').html().match(/total\((\d.*)\)/)[1]) || 0
+      let string = $('#troll-extension-wrapper #troll-names-wrapper #header-count').html() || "";
+      let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0
       let new_total = current_total + increase_total_by
-    $('#troll-extension-wrapper #troll-names-wrapper #table-comment-counter').html(`total(${new_total})`)
+    $('#troll-extension-wrapper #troll-names-wrapper #header-count').html(`#(${new_total})`)
   }
 }
-
 
 // put the widget on the screen
 $('.live-chat-widget').append(`
@@ -82,15 +82,9 @@ $('.live-chat-widget').append(`
         <caption>Blocking Comments</caption>
         <tr id='table-header'>
           <th>x</th>
-          <th id='header-name'>Name</th>
-          <th id='header-count'>#</th>
+          <th id='header-name'>Name(0)</th>
+          <th id='header-count'>#(0)</th>
         </th>
-
-        <tr id='table-counters'>
-          <td></td>
-          <td id='table-troll-name-counter'>current(0)</td>
-          <td id='table-comment-counter'>total(0)</td>
-        </tr>
       </table>
     </div>
 
