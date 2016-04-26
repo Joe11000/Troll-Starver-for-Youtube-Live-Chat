@@ -1,11 +1,10 @@
 // reusable db manipulting functions
-db = {
-  replaceAllTrollInfo: function(entire_hash, callback) {
+var db = {
+  asyncReplaceAllTrollInfo: function(entire_hash, callback) {
     chrome.storage.local.set({ 'troll_names_hash': entire_hash }, callback);
-    return entire_hash;
   },
 
-  deleteTrollNames: function(troll_names_array) {
+  asyncDeleteTrollNames: function(troll_names_array) {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
 
       var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
@@ -14,13 +13,13 @@ db = {
         delete updating_hash[troll_names_array[i]];
       }
 
-      chrome.storage.local.set({'troll_names_hash': updating_hash }, function() {}); //here
+      chrome.storage.local.set({'troll_names_hash': updating_hash }, ()=>{}); //here
     });
   }
 };
 
 // reusable dom manipulting functions
-dom_manipulating = {
+var dom_manipulating = {
   // add new row on to troll table on the DOM
   addEntryToTrollsTable: function (name, existing_comments_counter=0) {
    $(`
@@ -55,9 +54,25 @@ dom_manipulating = {
     });
 
     return result;
+  },
+
+  updateTotalNamesBlocked: function(new_total_known_in_advance) {
+    var total = new_total_known_in_advance;
+
+    if(total !== undefined) {
+      total = Number.parse($('#troll-extension-wrapper #troll-names-wrapper table img.remove-name').length) || 0;
+    }
+
+    $('#troll-extension-wrapper #troll-names-wrapper #table-troll-name-counter').html(`current(${total})`)
+  },
+
+  // calculated differently than updateTotalNamesBlocked, because if someone removes a troll, then I still want to remember the total amount of comments blocked that are no longer represented in the table.
+  updateTotalCommentsBlocked: function(increase_total_by=1) {
+      let current_total = Number.parseInt($('#troll-extension-wrapper #troll-names-wrapper #table-comment-counter').html().match(/total\((\d.*)\)/)[1]) || 0
+      let new_total = current_total + increase_total_by
+    $('#troll-extension-wrapper #troll-names-wrapper #table-comment-counter').html(`total(${new_total})`)
   }
 }
-
 
 
 // put the widget on the screen
@@ -71,9 +86,15 @@ $('.live-chat-widget').append(`
         <caption>Blocking Comments</caption>
         <tr id='table-header'>
           <th>x</th>
-          <th>Name</th>
-          <th>#</th>
+          <th id='header-name'>Name</th>
+          <th id='header-count'>#</th>
         </th>
+
+        <tr id='table-counters'>
+          <td></td>
+          <td id='table-troll-name-counter'>current(0)</td>
+          <td id='table-comment-counter'>total(0)</td>
+        </tr>
       </table>
     </div>
 
@@ -84,7 +105,7 @@ $('.live-chat-widget').append(`
 // populate the trolls table with saved data from a previous session
 chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
   if(trolls_chrome_extension_info['troll_names_hash'] === undefined) {
-    db.replaceAllTrollInfo({}, ()=>{});
+    db.asyncReplaceAllTrollInfo({}, ()=>{});
   }
   else {
 
@@ -97,9 +118,12 @@ chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_in
       for(let i = 0; i < keys.length; i++) {
         troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
         dom_manipulating.addEntryToTrollsTable(keys[i], troll_names_hash[keys[i]]);
+        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[keys[i]]);
       }
 
-      db.replaceAllTrollInfo(troll_names_hash, ()=>{});
+      dom_manipulating.updateTotalNamesBlocked();
+
+      db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
     }
   }
 });
@@ -124,8 +148,9 @@ $('#troll-image-wrapper').on('drop', function(event) {
     if(troll_names_hash[troll_name] === undefined) {
       troll_names_hash[troll_name] = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_name])[troll_name] || 0;
 
-      db.replaceAllTrollInfo(troll_names_hash, function() {
+      db.asyncReplaceAllTrollInfo(troll_names_hash, function() {
         dom_manipulating.addEntryToTrollsTable(troll_name, troll_names_hash[troll_name]);
+        dom_manipulating.updateTotalNamesBlocked();
       });
     }
   });
@@ -142,11 +167,12 @@ $('#troll-names-wrapper').on('click', '.remove-name', function(event) {
   var $element_to_delete = $(this).closest('.troll');
   let name = $element_to_delete.find('.troll-name').html();
   $element_to_delete.remove();
-  db.deleteTrollNames([name]);
+  dom_manipulating.updateTotalNamesBlocked();
+  db.asyncDeleteTrollNames([name]);
 });
 
 
-// after new comment is appended remove comments by trolls, then increment the comment_counter of troll
+// if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
 $('#all-comments').on('DOMNodeInserted', function(event) {
 
   // the chat room doubles up on this comment for when you start sending a comment and when it is done. So ignore the first one
@@ -173,8 +199,8 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
         troll_names_hash[blocked_names[index_of_troll_in_blocked_names]]++;
         $(`.troll:contains(${commenters_name}) > .comment-counter`).html(troll_names_hash[commenters_name]);
         $comment_element.remove();
-
-        db.replaceAllTrollInfo(troll_names_hash, ()=>{})
+        dom_manipulating.updateTotalCommentsBlocked(1);
+        db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
       }
     }
   });

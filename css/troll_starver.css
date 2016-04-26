@@ -11,7 +11,7 @@
 /* contains the troll image */
 #troll-extension-wrapper #troll-image-wrapper,
 #troll-extension-wrapper #clear-all-comments {
-  height: 110px;
+  height: 100%;
   display: inline-block;
   min-width: 60px;
   width: 24%;
@@ -41,7 +41,7 @@
 #troll-extension-wrapper #troll-names-wrapper {
   width: 50%;
   min-width: 180px;
-  height: 110px;
+  height: 100%;
   display: inline-block;
   overflow-y: scroll;
 }
