@@ -57,7 +57,7 @@ var dom_manipulating = {
   },
 
   updateTotalNamesBlocked: function() {
-    var total = $('#troll-extension-wrapper #troll-names-wrapper table img.remove-name').length || 0
+    var total = $('#troll-extension-wrapper #troll-names-wrapper table img.remove-name').length || 0;
 
     $('#troll-extension-wrapper #troll-names-wrapper #header-name').html(`Name(${total})`)
   },
@@ -65,9 +65,9 @@ var dom_manipulating = {
   // calculated differently than updateTotalNamesBlocked, because if someone removes a troll, then I still want to remember the total amount of comments blocked that are no longer represented in the table.
   updateTotalCommentsBlocked: function(increase_total_by=1) {
       let string = $('#troll-extension-wrapper #troll-names-wrapper #header-count').html() || "";
-      let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0
-      let new_total = current_total + increase_total_by
-    $('#troll-extension-wrapper #troll-names-wrapper #header-count').html(`#(${new_total})`)
+      let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
+      let new_total = current_total + increase_total_by;
+    $('#troll-extension-wrapper #troll-names-wrapper #header-count').html(`#(${new_total})`);
   }
 }
 
@@ -94,6 +94,10 @@ $('.live-chat-widget').append(`
 
 // populate the trolls table with saved data from a previous session
 chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+  $('#all-comments .comment').each(function(){
+     $(this).addClass('approved-comment'); // make all comments visible
+  });
+
   if(trolls_chrome_extension_info['troll_names_hash'] === undefined) {
     db.asyncReplaceAllTrollInfo({}, ()=>{});
   }
@@ -105,10 +109,10 @@ chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_in
       let keys = Object.keys(troll_names_hash);
       let current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
 
-      for(let i = 0; i < keys.length; i++) {
-        troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
-        dom_manipulating.addEntryToTrollsTable(keys[i], troll_names_hash[keys[i]]);
-        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[keys[i]]);
+      for(let key of keys){
+        troll_names_hash[key] = current_troll_comments[key] || 0;
+        dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
+        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
       }
 
       dom_manipulating.updateTotalNamesBlocked();
@@ -116,6 +120,10 @@ chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_in
       db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
     }
   }
+
+  // then scroll to most recent message
+  var $scroll_box = $('#all-comments').parent()
+  $scroll_box.scrollTop($scroll_box[0].scrollHeight);
 });
 
 // add new troll to list, clear his old comments, and start ignoring new comments
@@ -171,28 +179,37 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
     return;
   }
 
+    var bool_scroll_to_bottom = $('#live-comments-setting-bottom-scroll:visible').length > 0
+
+
   chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
     var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
-    if( Object.keys(troll_names_hash).length > 0 )
+    if( troll_names_hash !== {} && troll_names_hash !== undefined )
     {
       var $comment_element = $(event.target);
-      let blocked_names = Object.keys(troll_names_hash);
       let commenters_name = $comment_element.find(".author [data-name]").html();
 
       if(commenters_name === undefined) {
         return false;
       }
 
-      let index_of_troll_in_blocked_names = blocked_names.indexOf(commenters_name);
-
-      if(index_of_troll_in_blocked_names >= 0) {
-        troll_names_hash[blocked_names[index_of_troll_in_blocked_names]]++;
+      if(troll_names_hash[commenters_name] != undefined) {
+        troll_names_hash[commenters_name]++;
         $(`.troll:contains(${commenters_name}) > .comment-counter`).html(troll_names_hash[commenters_name]);
         $comment_element.remove();
         dom_manipulating.updateTotalCommentsBlocked(1);
         db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
+        return;
       }
     }
+
+    // approve this
+    $(event.target).addClass('approved-comment');
+    // does scroll to the bottom if a random person posts and you are looking back at other posts? I don't want it to , but it might.
+    var $scroll_box = $('#all-comments').parent()
+    $scroll_box.scrollTop($scroll_box[0].scrollHeight);
   });
 });
+
+

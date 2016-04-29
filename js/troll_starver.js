@@ -14,10 +14,7 @@
     //
     // troll_starver_es6.js starts here after being translated through Babel.
 
-
     // reusable db manipulting functions
-    'use strict';
-
     var db = {
       asyncReplaceAllTrollInfo: function asyncReplaceAllTrollInfo(entire_hash, callback) {
         chrome.storage.local.set({ 'troll_names_hash': entire_hash }, callback);
@@ -113,6 +110,10 @@
 
     // populate the trolls table with saved data from a previous session
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      $('#all-comments .comment').each(function () {
+        $(this).addClass('approved-comment'); // make all comments visible
+      });
+
       if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
         db.asyncReplaceAllTrollInfo({}, function () {});
       } else {
@@ -123,10 +124,31 @@
           var keys = Object.keys(troll_names_hash);
           var current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
 
-          for (var i = 0; i < keys.length; i++) {
-            troll_names_hash[keys[i]] = current_troll_comments[keys[i]] || 0;
-            dom_manipulating.addEntryToTrollsTable(keys[i], troll_names_hash[keys[i]]);
-            dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[keys[i]]);
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = keys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var key = _step2.value;
+
+              troll_names_hash[key] = current_troll_comments[key] || 0;
+              dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
+              dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+                _iterator2['return']();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
+            }
           }
 
           dom_manipulating.updateTotalNamesBlocked();
@@ -134,6 +156,10 @@
           db.asyncReplaceAllTrollInfo(troll_names_hash, function () {});
         }
       }
+
+      // then scroll to most recent message
+      var $scroll_box = $('#all-comments').parent();
+      $scroll_box.scrollTop($scroll_box[0].scrollHeight);
     });
 
     // add new troll to list, clear his old comments, and start ignoring new comments
@@ -186,28 +212,34 @@
         return;
       }
 
+      var bool_scroll_to_bottom = $('#live-comments-setting-bottom-scroll:visible').length > 0;
+
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
         var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
-        if (Object.keys(troll_names_hash).length > 0) {
+        if (troll_names_hash !== {} && troll_names_hash !== undefined) {
           var $comment_element = $(event.target);
-          var blocked_names = Object.keys(troll_names_hash);
           var commenters_name = $comment_element.find(".author [data-name]").html();
 
           if (commenters_name === undefined) {
             return false;
           }
 
-          var index_of_troll_in_blocked_names = blocked_names.indexOf(commenters_name);
-
-          if (index_of_troll_in_blocked_names >= 0) {
-            troll_names_hash[blocked_names[index_of_troll_in_blocked_names]]++;
+          if (troll_names_hash[commenters_name] != undefined) {
+            troll_names_hash[commenters_name]++;
             $('.troll:contains(' + commenters_name + ') > .comment-counter').html(troll_names_hash[commenters_name]);
             $comment_element.remove();
             dom_manipulating.updateTotalCommentsBlocked(1);
             db.asyncReplaceAllTrollInfo(troll_names_hash, function () {});
+            return;
           }
         }
+
+        // approve this
+        $(event.target).addClass('approved-comment');
+        // does scroll to the bottom if a random person posts and you are looking back at other posts? I don't want it to , but it might.
+        var $scroll_box = $('#all-comments').parent();
+        $scroll_box.scrollTop($scroll_box[0].scrollHeight);
       });
     });
 

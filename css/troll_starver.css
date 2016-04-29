@@ -92,3 +92,11 @@
 }
 
 
+/* Below css prevents all and selects shows approved comments */
+#all-comments > li{
+  display: none;
+}
+
+#all-comments > li.approved-comment{
+  display: inherit;
+}
