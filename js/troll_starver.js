@@ -102,6 +102,11 @@
         var current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
         var new_total = current_total + increase_total_by;
         $('#troll-extension-wrapper #troll-names-wrapper #header-count').html('#(' + new_total + ')');
+      },
+
+      scrollToBottomOfChatBox: function scrollToBottomOfChatBox() {
+        var $scroll_box = $('#all-comments').parent();
+        $scroll_box.scrollTop($scroll_box[0].scrollHeight);
       }
     };
 
@@ -157,9 +162,7 @@
         }
       }
 
-      // then scroll to most recent message
-      var $scroll_box = $('#all-comments').parent();
-      $scroll_box.scrollTop($scroll_box[0].scrollHeight);
+      dom_manipulating.scrollToBottomOfChatBox();
     });
 
     // add new troll to list, clear his old comments, and start ignoring new comments
@@ -192,6 +195,7 @@
 
     // clear chat room
     $('#clear-all-comments').on('click', function () {
+      dom_manipulating.scrollToBottomOfChatBox();
       $('#all-comments').html('');
     });
 
@@ -211,8 +215,6 @@
       if (event.target.className.indexOf('sending-in-progress') != -1) {
         return;
       }
-
-      var bool_scroll_to_bottom = $('#live-comments-setting-bottom-scroll:visible').length > 0;
 
       chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
         var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
@@ -235,13 +237,11 @@
           }
         }
 
-        // approve this
         $(event.target).addClass('approved-comment');
-        // does scroll to the bottom if a random person posts and you are looking back at other posts? I don't want it to , but it might.
-        var $scroll_box = $('#all-comments').parent();
-        $scroll_box.scrollTop($scroll_box[0].scrollHeight);
+        dom_manipulating.scrollToBottomOfChatBox();
       });
     });
+
 
   //
   // troll_starver_es6.js ends here after being translated through Babel.
