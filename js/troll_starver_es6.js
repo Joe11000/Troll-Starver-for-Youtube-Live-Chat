@@ -130,14 +130,15 @@ $('.live-chat-widget').append(`
         <textarea id='import-names-textarea' placeholder='paste exported names.'></textarea>
         <input id='import-names-button' type='button' value='import'>
       </div>
+    </form>
 
-      <div id='export-names-wrapper'>
-        <label for='export-textarea'>exported names</label>
-        <textarea id='export-textarea'></textarea>
-        <form id='export-form'>
-          <input id='close-button' type='button' value='close'>
-        </form>
-      </div>
+
+    <div id='export-names-wrapper'>
+      <label for='export-textarea'>exported names</label>
+      <textarea id='export-textarea'></textarea>
+      <form id='export-form'>
+        <input id='close-button' type='button' value='close'>
+      </form>
     </div>
 
   </div>

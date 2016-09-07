@@ -127,7 +127,7 @@
 }
 
 #troll-extension-wrapper #troll-import-export-wrapper {
-  margin-top: 5px;
+  margin: 5px 0;
 
 }
 #troll-extension-wrapper #import-export-links-wrapper {
@@ -143,12 +143,6 @@
   display: inline;
   float: right;
   margin-right: 50px;
-}
-
-
-
-#export-names-wrapper, #import-names-wrapper {
-  display: none;
 }
 
 #troll-extension-wrapper #import-names-wrapper textarea#import-names-textarea {
@@ -174,4 +168,11 @@
 #troll-extension-wrapper textarea#export-textarea {
   height: 14px;
   vertical-align: middle;
+  margin-left: 5px;
+  margin-right: 15px;
+  width: 175px;
+}
+
+#troll-table-wrapper #export-form {
+  display: inline;
 }
