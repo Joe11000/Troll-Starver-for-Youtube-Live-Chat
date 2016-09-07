@@ -15,6 +15,17 @@ var db = {
 
       chrome.storage.local.set({'troll_names_hash': updating_hash }, ()=>{}); //here
     });
+  },
+
+  // importListOfTrollNames: function(troll_names_array){
+  //   for(let troll)
+  //   addEntryToTrollsTable()
+
+
+  // }
+
+  exportListOfTrollNames: function(troll_names_array){
+
   }
 };
 
@@ -57,17 +68,17 @@ var dom_manipulating = {
   },
 
   updateTotalNamesBlocked: function() {
-    var total = $('#troll-extension-wrapper #troll-names-wrapper table img.remove-name').length || 0;
+    var total = $('#troll-table-wrapper #troll-names-wrapper table img.remove-name').length || 0;
 
-    $('#troll-extension-wrapper #troll-names-wrapper #header-name').html(`Name(${total})`)
+    $('#troll-table-wrapper #troll-names-wrapper #header-name').html(`Name(${total})`)
   },
 
   // calculated differently than updateTotalNamesBlocked, because if someone removes a troll, then I still want to remember the total amount of comments blocked that are no longer represented in the table.
   updateTotalCommentsBlocked: function(increase_total_by=1) {
-      let string = $('#troll-extension-wrapper #troll-names-wrapper #header-count').html() || "";
+      let string = $('#troll-table-wrapper #troll-names-wrapper #header-count').html() || "";
       let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
       let new_total = current_total + increase_total_by;
-    $('#troll-extension-wrapper #troll-names-wrapper #header-count').html(`#(${new_total})`);
+    $('#troll-table-wrapper #troll-names-wrapper #header-count').html(`#(${new_total})`);
   },
 
   scrollToBottomOfChatBox: function(){
@@ -79,26 +90,50 @@ var dom_manipulating = {
 // put the widget on the screen
 $('.live-chat-widget').append(`
   <div id='troll-extension-wrapper'>
-    <div id='troll-image-wrapper' droppable='true' ondragover="event.preventDefault();">
+    <div id='troll-table-wrapper'>
+      <div id='troll-image-wrapper' droppable='true' ondragover="event.preventDefault();">
+      </div>
+
+      <div id='troll-names-wrapper'>
+        <table>
+          <caption>Blocking Comments</caption>
+          <tr id='table-header'>
+            <th>x</th>
+            <th id='header-name'>Name(0)</th>
+            <th id='header-count'>#(0)</th>
+          </th>
+        </table>
+      </div>
+
+      <div><button type='button' id='clear-all-comments'>Clear Chat</button></div>
     </div>
 
-    <div id='troll-names-wrapper'>
-      <table>
-        <caption>Blocking Comments</caption>
-        <tr id='table-header'>
-          <th>x</th>
-          <th id='header-name'>Name(0)</th>
-          <th id='header-count'>#(0)</th>
-        </th>
-      </table>
+    <div id='troll-import-export-wrapper'>
+      <div id='import-export-links-wrapper'>
+        <a id='import-names-link' href='#'><span>'import names'</span></a>
+        <a id='export-names-link' href='#'><span>'export names'</span></a>
+      </div>
+
+      <form id='import-form'>
+        <input type='radio' name='import' value='append' checked> append
+        <input type='radio' name='import' value='overwrite'> overwrite
+        <input id='import-textbox' type='text'>
+        <input type='button' value='import'>
+      </div>
+
+      <form id='export-form'>
+        <label for='close-button'>exported names</label>
+        <textarea id='exported-troll-names-list'></textarea>
+        <input id='close-button' type='button' value='close'>
+      </form>
     </div>
 
-    <div><button type='button' id='clear-all-comments'>Clear Chat</button></div>
   </div>
 `);
 
 // populate the trolls table with saved data from a previous session
 chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+
   $('#all-comments .comment').each(function(){
      $(this).addClass('approved-comment'); // make all comments visible
   });
