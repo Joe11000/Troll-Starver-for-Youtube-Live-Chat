@@ -1,4 +1,3 @@
-
 #all-comments .comment a.avatar { position: absolute; }
 #all-comments .comment .content { margin-left: 45px; margin-right: 15px; }
 #all-comments .comment .actions-menu {
@@ -7,9 +6,16 @@
     top: 10px;
 }
 
+#troll-extension-wrapper input[type='button'] {
+  background-color: rgba(22,122,198,0.9);
+  color: white;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
 
-#troll-extension-wrapper {
+#troll-table-wrapper {
   border: 1px solid black !important;
   border-radius: 5px;
   position: relative;
@@ -20,22 +26,22 @@
 }
 
 /* contains the troll image */
-#troll-extension-wrapper #troll-image-wrapper,
-#troll-extension-wrapper #clear-all-comments {
+#troll-table-wrapper #troll-image-wrapper,
+#troll-table-wrapper #clear-all-comments {
   height: 100%;
   display: inline-block;
   min-width: 60px;
   width: 24%;
 }
 
-#troll-extension-wrapper #troll-image-wrapper {
+#troll-table-wrapper #troll-image-wrapper {
   background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
   border-right: 1px solid black !important;
   background-color: lightgray;
   border-radius: 5px 0 0 5px;
 }
 
-#troll-extension-wrapper #clear-all-comments {
+#troll-table-wrapper #clear-all-comments {
   background-color: rgba(22,122,198,0.9);
   cursor: pointer;
   color: white;
@@ -49,7 +55,7 @@
 
 
 /* contains list of troll  */
-#troll-extension-wrapper #troll-names-wrapper {
+#troll-table-wrapper #troll-names-wrapper {
   width: 50%;
   min-width: 180px;
   height: 100%;
@@ -57,47 +63,47 @@
   overflow-y: scroll;
 }
 
-#troll-extension-wrapper #troll-names-wrapper table {
+#troll-table-wrapper #troll-names-wrapper table {
   margin: auto;
   width: 100%;
 }
-#troll-extension-wrapper #troll-names-wrapper table #table-header{
+#troll-table-wrapper #troll-names-wrapper table #table-header{
   border-bottom: 2px solid black;
 }
 
-#troll-extension-wrapper #troll-names-wrapper table th,
-#troll-extension-wrapper #troll-names-wrapper table td {
+#troll-table-wrapper #troll-names-wrapper table th,
+#troll-table-wrapper #troll-names-wrapper table td {
   border-bottom: 1px solid #ddd;
   padding: 5px 5px 5px 0;
   text-align: left;
 
 }
-#troll-extension-wrapper #troll-names-wrapper table th{
+#troll-table-wrapper #troll-names-wrapper table th{
   color: rgba(22, 122, 198, 0.901961);
 }
-#troll-extension-wrapper #troll-names-wrapper table caption
+#troll-table-wrapper #troll-names-wrapper table caption
 {
   font-weight: bold;
 }
 
-#troll-extension-wrapper #troll-names-wrapper .troll {
+#troll-table-wrapper #troll-names-wrapper .troll {
   margin-bottom: 10px;
   height: 18px;
   overflow: ellipsis;
 }
 
-#troll-extension-wrapper #troll-names-wrapper .troll .remove-name {
+#troll-table-wrapper #troll-names-wrapper .troll .remove-name {
   display: inline;
   position: relative;
   cursor: pointer;
   min-width: 15px;
 }
 
-#troll-extension-wrapper #troll-names-wrapper .troll .troll-name{
+#troll-table-wrapper #troll-names-wrapper .troll .troll-name{
   max-width: 100px;
 }
 
-#troll-extension-wrapper #troll-names-wrapper .troll .comment-counter{
+#troll-table-wrapper #troll-names-wrapper .troll .comment-counter{
   color: red;
   font-weight: bold;
 }
@@ -110,4 +116,96 @@
 
 #all-comments > li.approved-comment{
   display: inherit;
+}
+
+
+
+
+#import-names-wrapper,
+#export-names-wrapper {
+  margin-bottom: 5px;
+  display: none;
+}
+
+#troll-extension-wrapper #troll-import-export-wrapper {
+  margin: 5px 0;
+
+}
+#troll-extension-wrapper #import-export-links-wrapper {
+  width: 100%;
+  height: 15px;
+}
+#troll-extension-wrapper #import-export-links-wrapper #import-names-link {
+  display: inline;
+  float: left;
+  margin-left: 50px;
+}
+#troll-extension-wrapper #import-export-links-wrapper #export-names-link {
+  display: inline;
+  float: right;
+  margin-right: 50px;
+}
+
+#troll-extension-wrapper #import-names-wrapper #import-buttons {
+  display: inline;
+  float: right;
+  width: 34%;
+  min-width: 107px;
+}
+
+#troll-extension-wrapper #import-names-wrapper textarea#import-names-textarea {
+  width: 95%;
+  margin: auto;
+  position: relative;
+  top: 4px;
+}
+
+#troll-extension-wrapper #import-names-wrapper #import-names-textarea-wrapper {
+  max-width: 200px;
+  width: 40%;
+  display: inline-block;
+}
+
+#troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper {
+  max-width: 100px;
+  min-width: 80px;
+  width: 23%;
+  display: inline-block;
+}
+
+#troll-extension-wrapper #import-names-wrapper #import-names-button {
+  float: right;
+  position: relative;
+  top: 5px;
+}
+#troll-extension-wrapper #import-names-wrapper #import-close-button {
+  float: right;
+  position: relative;
+  top: 5px;
+  background-color: gray;
+  margin-left: 5px;
+}
+
+#troll-extension-wrapper #export-names-wrapper #export-close-button {
+  float: right;
+  position: relative;
+  margin: 0 23% 0 0;
+  background-color: gray;
+}
+#troll-extension-wrapper textarea#export-names-textarea {
+  width: 95%;
+  margin: auto;
+}
+
+#export-names-wrapper #export-names-textarea-wrapper{
+  max-width: 200px;
+  width: 50%;
+  display: inline-block;
+  vertical-align: middle;
+}
+#export-names-wrapper #export-form-wrapper {
+  position: relative;
+    width: 20%;
+    float: right;
+    top: 7px;
 }
