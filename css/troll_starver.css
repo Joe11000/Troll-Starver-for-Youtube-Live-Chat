@@ -6,6 +6,13 @@
     top: 10px;
 }
 
+#troll-extension-wrapper input[type='button'] {
+  background-color: rgba(22,122,198,0.9);
+  color: white;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
 
 #troll-table-wrapper {
@@ -114,8 +121,8 @@
 
 
 
-#troll-table-wrapper #import-form,
-#troll-table-wrapper #export-form {
+#troll-table-wrapper #import-names-wrapper,
+#troll-table-wrapper #export-names-wrapper {
   /*display: none;*/
 }
 
@@ -130,12 +137,41 @@
 #troll-extension-wrapper #import-export-links-wrapper #import-names-link {
   display: inline;
   float: left;
-  margin-left: 15px;
+  margin-left: 50px;
 }
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link {
   display: inline;
   float: right;
-  margin-right: 15px;
+  margin-right: 50px;
 }
 
 
+
+#export-names-wrapper, #import-names-wrapper {
+  display: none;
+}
+
+#troll-extension-wrapper #import-names-wrapper textarea#import-names-textarea {
+  height: 14px;
+  position: relative;
+  top: -4px;
+  margin-right: 15px;
+  width: 175px;
+}
+#troll-extension-wrapper #import-names-wrapper #import-names-button {
+  position: relative;
+  top: -10px;
+}
+#troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper {
+  width: 100px;
+  display: inline-block;
+}
+#troll-extension-wrapper #import-names-wrapper .import-form-radio-row {
+  width: 100%;
+}
+
+
+#troll-extension-wrapper textarea#export-textarea {
+  height: 14px;
+  vertical-align: middle;
+}

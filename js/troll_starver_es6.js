@@ -105,7 +105,7 @@ $('.live-chat-widget').append(`
         </table>
       </div>
 
-      <div><button type='button' id='clear-all-comments'>Clear Chat</button></div>
+      <div><form><input type='button' id='clear-all-comments' value='Clear Chat'</input></form></div>
     </div>
 
     <div id='troll-import-export-wrapper'>
@@ -114,18 +114,30 @@ $('.live-chat-widget').append(`
         <a id='export-names-link' href='#'><span>'export names'</span></a>
       </div>
 
-      <form id='import-form'>
-        <input type='radio' name='import' value='append' checked> append
-        <input type='radio' name='import' value='overwrite'> overwrite
-        <input id='import-textbox' type='text'>
-        <input type='button' value='import'>
+      <form id='import-names-wrapper'>
+        <div id='import-names-radio-wrapper'>
+          <div class='import-names-radio-row'>
+            <input id='append-label' type='radio' name='import' value='append' checked>
+            <label for='append-label'>append</label>
+          </div>
+
+          <div class='import-names-radio-row'>
+            <input id='overwrite-label' type='radio' name='import' value='overwrite'>
+            <label for='overwrite-label'>overwrite</label>
+          </div>
+        </div>
+
+        <textarea id='import-names-textarea' placeholder='paste exported names.'></textarea>
+        <input id='import-names-button' type='button' value='import'>
       </div>
 
-      <form id='export-form'>
-        <label for='close-button'>exported names</label>
-        <textarea id='exported-troll-names-list'></textarea>
-        <input id='close-button' type='button' value='close'>
-      </form>
+      <div id='export-names-wrapper'>
+        <label for='export-textarea'>exported names</label>
+        <textarea id='export-textarea'></textarea>
+        <form id='export-form'>
+          <input id='close-button' type='button' value='close'>
+        </form>
+      </div>
     </div>
 
   </div>
