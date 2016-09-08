@@ -21,7 +21,6 @@ var db = {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
 
-      debugger;
       // append troll name if it doesn't exist already
       for(let i = 0; i < troll_names_array.length; i++) {
         if(updating_hash[troll_names_array[i]] === undefined) {
@@ -29,7 +28,7 @@ var db = {
         }
       }
 
-      chrome.storage.local.set({'troll_names_hash': updating_hash}, ()=>{}); //here
+      chrome.storage.local.set({'troll_names_hash': updating_hash}, ()=>{ dom_manipulating.makeTableReflectSavedTrollNames() }); //here
     });
   }
 };
@@ -110,7 +109,7 @@ var dom_manipulating = {
        $('#export-textarea').val("");
       }
       else if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-        let result = "'" + Object.keys(troll_names_hash).map((b) => { return(b + 'a') } ) + "'"
+        let result = "'" + Object.keys(troll_names_hash).map((b) => { return(b + 'a') } ).join("' '") + "'"
         $('#export-textarea').val(result);
       }
     });
@@ -327,15 +326,12 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
 
       // delete all trolls if overwrite radio button is checked
       if( $("#import-names-radio-wrapper :checked").val() === 'overwrite') {
-        debugger;
         db.asyncReplaceAllTrollInfo({}, ()=>{});
       }
 
-      debugger;
-
       // get names and remove extra quotes on beginning and end of troll name
       let importing_names_array = $('#import-names-textarea').val().match(/'([^']*)'/g).map(function(troll_name){
-        return( troll_name.substr(1, troll_name.length - 1) );
+        return( troll_name.substr(1, troll_name.length - 2) );
       });
 
       db.asyncAppendArrayOfTrollNames(importing_names_array);

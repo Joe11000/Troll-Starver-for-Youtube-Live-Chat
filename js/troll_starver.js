@@ -146,7 +146,7 @@ var dom_manipulating = {
       } else if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
         var result = "'" + Object.keys(troll_names_hash).map(function (b) {
           return b + 'a';
-        }) + "'";
+        }).join("' '") + "'";
         $('#export-textarea').val(result);
       }
     });
@@ -330,7 +330,7 @@ $('#all-comments').on('DOMNodeInserted', function (event) {
 
       // get names and remove extra quotes on beginning and end of troll name
       var importing_names_array = $('#import-names-textarea').val().match(/'([^']*)'/g).map(function (troll_name) {
-        return troll_name.substr(1, troll_name.length - 1);
+        return troll_name.substr(1, troll_name.length - 2);
       });
 
       db.asyncAppendArrayOfTrollNames(importing_names_array);
