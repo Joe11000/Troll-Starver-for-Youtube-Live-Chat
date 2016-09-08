@@ -38,11 +38,30 @@ var db = {
 
       chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function () {}); //here
     });
+  },
+
+  asyncAppendArrayOfTrollNames: function asyncAppendArrayOfTrollNames(troll_names_array) {
+    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
+
+      debugger;
+      // append troll name if it doesn't exist already
+      for (var i = 0; i < troll_names_array.length; i++) {
+        if (updating_hash[troll_names_array[i]] === undefined) {
+          updating_hash[troll_names_array[i]] = 0;
+        }
+      }
+
+      chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function () {}); //here
+    });
   }
 };
 
 // reusable dom manipulting functions
 var dom_manipulating = {
+
+  makeTableReflectSavedTrollNames: function makeTableReflectSavedTrollNames() {},
+
   // add new row on to troll table on the DOM
   addEntryToTrollsTable: function addEntryToTrollsTable(name) {
     var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -125,11 +144,11 @@ var dom_manipulating = {
       if (trolls_chrome_extension_info['troll_names_hash'] === undefined || (typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length === 0) {
         $('#export-textarea').val("");
       } else if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
-        console.log('b');
-        $('#export-textarea').val("'" + JSON.stringify(troll_names_hash) + "'");
-        console.log("'" + JSON.stringify(troll_names_hash) + "'");
+        var result = "'" + Object.keys(troll_names_hash).map(function (b) {
+          return b + 'a';
+        }) + "'";
+        $('#export-textarea').val(result);
       }
-      console.log('c');
     });
   }
 };
@@ -224,7 +243,7 @@ $('#clear-all-comments').on('click', function () {
   $('#all-comments').html('');
 });
 
-// click the remove image to remove that troll from list
+// remove single troll from list
 $('#troll-names-wrapper').on('click', '.remove-name', function (event) {
   var $element_to_delete = $(this).closest('.troll');
   var name = $element_to_delete.find('.troll-name').html();
@@ -266,58 +285,60 @@ $('#all-comments').on('DOMNodeInserted', function (event) {
     dom_manipulating.scrollToBottomOfChatBox();
   });
 
-  // click link into export view
-  // print troll names into textbox as JSON.stringify
+  // in normal view, click on export link.
   $('#export-names-link').on('click', function (e) {
     $('#import-export-links-wrapper').hide();
     $('#export-names-wrapper').show();
     dom_manipulating.exportTrollsNamesToTextbox();
   });
 
-  // click close button in export view
+  // In normal view, click inport button view
+  $('#import-names-link').on('click', function (e) {
+    $('#import-export-links-wrapper').hide();
+    $('#import-names-wrapper').show();
+  });
+
+  // In export view, click close button to exit.
   $('#export-names-wrapper #export-close-button').on('click', function () {
     $('#import-export-links-wrapper').show();
     $('#export-names-wrapper').hide();
     $('#export-textarea').val("");
   });
 
-  // click link into import view
-  $('#import-names-link').on('click', function (e) {
-    $('#import-export-links-wrapper').hide();
-    $('#import-names-wrapper').show();
-  });
-
-  // click close button out of import view
+  // In the import view, click the close button to exit.
   $('#import-names-wrapper #import-close-button').on('click', function () {
     $('#import-names-textarea').val('');
     $('#import-export-links-wrapper').show();
     $('#import-names-wrapper').hide();
   });
 
-  // click import button in import view
+  // In the import view, click import button.
   $("#import-names-wrapper input[value='import']").on('click', function () {
 
-    var importing_names = $('#import-names-textarea').val();
+    var importing_names_string_with_quotes = $('#import-names-textarea').val();
 
-    // if there is
-    if (importing_names.length() > 0) {
-      var radio_val = $("#import-names-radio-wrapper :checked").val();
+    // if there is an import string in the
+    if (importing_names_string_with_quotes.length > 0) {
 
-      if (typeof json_parse_of_imported_names !== 'undefined') {
-        if (radio_val === 'overwrite') {
-          var _json_parse_of_imported_names = JSON.parse(radio_val);
-          db.asyncReplaceAllTrollInfo(_json_parse_of_imported_names);
-        } else if (radio_val === 'append') {
-          var _json_parse_of_imported_names2 = JSON.parse(radio_val);
-          db.asyncReplaceAllTrollInfo(_json_parse_of_imported_names2);
-        }
+      // delete all trolls if overwrite radio button is checked
+      if ($("#import-names-radio-wrapper :checked").val() === 'overwrite') {
+        debugger;
+        db.asyncReplaceAllTrollInfo({}, function () {});
       }
+
+      debugger;
+
+      // get names and remove extra quotes on beginning and end of troll name
+      var importing_names_array = $('#import-names-textarea').val().match(/'([^']*)'/g).map(function (troll_name) {
+        return troll_name.substr(1, troll_name.length - 1);
+      });
+
+      db.asyncAppendArrayOfTrollNames(importing_names_array);
     }
 
-    // do the actual import
-    $('#import-names-textarea').val('');
     $('#import-export-links-wrapper').show();
     $('#import-names-wrapper').hide();
+    $('#import-names-textarea').val('');
   });
 });
 
