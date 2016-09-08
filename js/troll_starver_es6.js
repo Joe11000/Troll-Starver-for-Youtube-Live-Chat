@@ -28,7 +28,7 @@ var db = {
         }
       }
 
-      chrome.storage.local.set({'troll_names_hash': updating_hash}, ()=>{ dom_manipulating.makeTableReflectSavedTrollNames() }); //here
+      chrome.storage.local.set({'troll_names_hash': updating_hash}, (trolls_chrome_extension_info)=>{ dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info); }); //here
     });
   }
 };
@@ -36,8 +36,23 @@ var db = {
 // reusable dom manipulting functions
 var dom_manipulating = {
 
-  makeTableReflectSavedTrollNames: function(){
+  makeTableReflectSavedTrollNames: function(trolls_chrome_extension_info){
+    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
+    if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
+      let keys = Object.keys(troll_names_hash);
+      let current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
+
+      for(let key of keys){
+        troll_names_hash[key] = current_troll_comments[key] || 0;
+        dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
+        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
+      }
+
+      dom_manipulating.updateTotalNamesBlocked();
+
+      db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
+    }
   },
 
   // add new row on to troll table on the DOM
@@ -186,23 +201,7 @@ chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_in
     db.asyncReplaceAllTrollInfo({}, ()=>{});
   }
   else {
-
-    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-    if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-      let keys = Object.keys(troll_names_hash);
-      let current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
-
-      for(let key of keys){
-        troll_names_hash[key] = current_troll_comments[key] || 0;
-        dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
-        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
-      }
-
-      dom_manipulating.updateTotalNamesBlocked();
-
-      db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
-    }
+    dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info);
   }
 
   dom_manipulating.scrollToBottomOfChatBox();

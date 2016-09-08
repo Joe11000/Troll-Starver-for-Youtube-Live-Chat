@@ -51,8 +51,8 @@ var db = {
         }
       }
 
-      chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function () {
-        dom_manipulating.makeTableReflectSavedTrollNames();
+      chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function (trolls_chrome_extension_info) {
+        dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info);
       }); //here
     });
   }
@@ -61,7 +61,45 @@ var db = {
 // reusable dom manipulting functions
 var dom_manipulating = {
 
-  makeTableReflectSavedTrollNames: function makeTableReflectSavedTrollNames() {},
+  makeTableReflectSavedTrollNames: function makeTableReflectSavedTrollNames(trolls_chrome_extension_info) {
+    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+
+    if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
+      var keys = Object.keys(troll_names_hash);
+      var current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = keys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var key = _step.value;
+
+          troll_names_hash[key] = current_troll_comments[key] || 0;
+          dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
+          dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      dom_manipulating.updateTotalNamesBlocked();
+
+      db.asyncReplaceAllTrollInfo(troll_names_hash, function () {});
+    }
+  },
 
   // add new row on to troll table on the DOM
   addEntryToTrollsTable: function addEntryToTrollsTable(name) {
@@ -77,27 +115,27 @@ var dom_manipulating = {
     var $all_comments = $('#all-comments .comment'); // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
 
     var result = {};
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
 
     try {
-      for (var _iterator = troll_name_array[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var t = _step.value;
+      for (var _iterator2 = troll_name_array[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var t = _step2.value;
 
         result[t] = 0;
       }
     } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
         }
       } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
+        if (_didIteratorError2) {
+          throw _iteratorError2;
         }
       }
     }
@@ -167,44 +205,7 @@ chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_i
   if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
     db.asyncReplaceAllTrollInfo({}, function () {});
   } else {
-
-    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-    if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
-      var keys = Object.keys(troll_names_hash);
-      var current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = keys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var key = _step2.value;
-
-          troll_names_hash[key] = current_troll_comments[key] || 0;
-          dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
-          dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      dom_manipulating.updateTotalNamesBlocked();
-
-      db.asyncReplaceAllTrollInfo(troll_names_hash, function () {});
-    }
+    dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info);
   }
 
   dom_manipulating.scrollToBottomOfChatBox();
