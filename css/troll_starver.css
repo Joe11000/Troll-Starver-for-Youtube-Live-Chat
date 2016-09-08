@@ -121,9 +121,10 @@
 
 
 
-#troll-table-wrapper #import-names-wrapper,
-#troll-table-wrapper #export-names-wrapper {
-  /*display: none;*/
+#import-names-wrapper,
+#export-names-wrapper {
+  margin-bottom: 5px;
+  display: none;
 }
 
 #troll-extension-wrapper #troll-import-export-wrapper {
@@ -145,19 +146,44 @@
   margin-right: 50px;
 }
 
+#troll-extension-wrapper #import-names-wrapper #import-buttons {
+  width: 20%;
+  display: inline;
+  min-width: 100px;
+
+}
+
 #troll-extension-wrapper #import-names-wrapper textarea#import-names-textarea {
   height: 14px;
   position: relative;
   top: -4px;
-  margin-right: 15px;
-  width: 175px;
+  width: 39%;
 }
+
+
 #troll-extension-wrapper #import-names-wrapper #import-names-button {
+  float: right;
   position: relative;
-  top: -10px;
+  top: 5px;
 }
+#troll-extension-wrapper #import-names-wrapper #import-close-button {
+  float: right;
+  position: relative;
+  top: 5px;
+  background-color: gray;
+  margin-left: 5px;
+}
+#troll-extension-wrapper #export-names-wrapper #export-close-button {
+  float: right;
+  position: relative;
+  top: 5px;
+  background-color: gray;
+}
+
 #troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper {
-  width: 100px;
+  max-width: 100px;
+  min-width: 80px;
+  width: 20%;
   display: inline-block;
 }
 #troll-extension-wrapper #import-names-wrapper .import-form-radio-row {

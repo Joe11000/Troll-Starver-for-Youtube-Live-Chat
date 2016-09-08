@@ -16,6 +16,7 @@
 
 
 
+
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -37,15 +38,7 @@ var db = {
 
       chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function () {}); //here
     });
-  },
-
-  // importListOfTrollNames: function(troll_names_array){
-  //   for(let troll)
-  //   addEntryToTrollsTable()
-
-  // }
-
-  exportListOfTrollNames: function exportListOfTrollNames(troll_names_array) {}
+  }
 };
 
 // reusable dom manipulting functions
@@ -121,11 +114,28 @@ var dom_manipulating = {
   scrollToBottomOfChatBox: function scrollToBottomOfChatBox() {
     var $scroll_box = $('#all-comments').parent();
     $scroll_box.scrollTop($scroll_box[0].scrollHeight);
+  },
+
+  // here
+  exportTrollsNamesToTextbox: function exportTrollsNamesToTextbox() {
+    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+      // console.log($('#export-textarea').val(""));
+
+      if (trolls_chrome_extension_info['troll_names_hash'] === undefined || (typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length === 0) {
+        $('#export-textarea').val("");
+      } else if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
+        console.log('b');
+        $('#export-textarea').val("'" + JSON.stringify(troll_names_hash) + "'");
+        console.log("'" + JSON.stringify(troll_names_hash) + "'");
+      }
+      console.log('c');
+    });
   }
 };
 
 // put the widget on the screen
-$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>\'import names\'</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>\'export names\'</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n\n        <textarea id=\'import-names-textarea\' placeholder=\'paste exported names.\'></textarea>\n        <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n      </div>\n    </form>\n\n\n    <div id=\'export-names-wrapper\'>\n      <label for=\'export-textarea\'>exported names</label>\n      <textarea id=\'export-textarea\'></textarea>\n      <form id=\'export-form\'>\n        <input id=\'close-button\' type=\'button\' value=\'close\'>\n      </form>\n    </div>\n\n  </div>\n');
+$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n\n        <textarea id=\'import-names-textarea\' placeholder=\'paste exported names.\'></textarea>\n        <div id=\'import-buttons\'>\n          <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n          <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n        </div>\n      </form>\n\n      <div id=\'export-names-wrapper\'>\n        <label for=\'export-textarea\'>exported names</label>\n        <textarea id=\'export-textarea\'></textarea>\n        <form id=\'export-form\'>\n          <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n\n  </div>\n');
 
 // populate the trolls table with saved data from a previous session
 chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
@@ -207,6 +217,111 @@ $('#troll-image-wrapper').on('drop', function (event) {
     }
   });
 });
+
+// clear chat room
+$('#clear-all-comments').on('click', function () {
+  dom_manipulating.scrollToBottomOfChatBox();
+  $('#all-comments').html('');
+});
+
+// click the remove image to remove that troll from list
+$('#troll-names-wrapper').on('click', '.remove-name', function (event) {
+  var $element_to_delete = $(this).closest('.troll');
+  var name = $element_to_delete.find('.troll-name').html();
+  $element_to_delete.remove();
+  dom_manipulating.updateTotalNamesBlocked();
+  db.asyncDeleteTrollNames([name]);
+});
+
+// if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
+$('#all-comments').on('DOMNodeInserted', function (event) {
+
+  // the chat room doubles up on this comment for when you start sending a comment and when it is done. So ignore the first one
+  if (event.target.className.indexOf('sending-in-progress') != -1) {
+    return;
+  }
+
+  chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+
+    if (troll_names_hash !== {} && troll_names_hash !== undefined) {
+      var $comment_element = $(event.target);
+      var commenters_name = $comment_element.find(".author [data-name]").html();
+
+      if (commenters_name === undefined) {
+        return false;
+      }
+
+      if (troll_names_hash[commenters_name] != undefined) {
+        troll_names_hash[commenters_name]++;
+        $('.troll:contains(' + commenters_name + ') > .comment-counter').html(troll_names_hash[commenters_name]);
+        $comment_element.remove();
+        dom_manipulating.updateTotalCommentsBlocked(1);
+        db.asyncReplaceAllTrollInfo(troll_names_hash, function () {});
+        return;
+      }
+    }
+
+    $(event.target).addClass('approved-comment');
+    dom_manipulating.scrollToBottomOfChatBox();
+  });
+
+  // click link into export view
+  // print troll names into textbox as JSON.stringify
+  $('#export-names-link').on('click', function (e) {
+    $('#import-export-links-wrapper').hide();
+    $('#export-names-wrapper').show();
+    dom_manipulating.exportTrollsNamesToTextbox();
+  });
+
+  // click close button in export view
+  $('#export-names-wrapper #export-close-button').on('click', function () {
+    $('#import-export-links-wrapper').show();
+    $('#export-names-wrapper').hide();
+    $('#export-textarea').val("");
+  });
+
+  // click link into import view
+  $('#import-names-link').on('click', function (e) {
+    $('#import-export-links-wrapper').hide();
+    $('#import-names-wrapper').show();
+  });
+
+  // click close button out of import view
+  $('#import-names-wrapper #import-close-button').on('click', function () {
+    $('#import-names-textarea').val('');
+    $('#import-export-links-wrapper').show();
+    $('#import-names-wrapper').hide();
+  });
+
+  // click import button in import view
+  $("#import-names-wrapper input[value='import']").on('click', function () {
+
+    var importing_names = $('#import-names-textarea').val();
+
+    // if there is
+    if (importing_names.length() > 0) {
+      var radio_val = $("#import-names-radio-wrapper :checked").val();
+
+      if (typeof json_parse_of_imported_names !== 'undefined') {
+        if (radio_val === 'overwrite') {
+          var _json_parse_of_imported_names = JSON.parse(radio_val);
+          db.asyncReplaceAllTrollInfo(_json_parse_of_imported_names);
+        } else if (radio_val === 'append') {
+          var _json_parse_of_imported_names2 = JSON.parse(radio_val);
+          db.asyncReplaceAllTrollInfo(_json_parse_of_imported_names2);
+        }
+      }
+    }
+
+    // do the actual import
+    $('#import-names-textarea').val('');
+    $('#import-export-links-wrapper').show();
+    $('#import-names-wrapper').hide();
+  });
+});
+
+
 
 
 
