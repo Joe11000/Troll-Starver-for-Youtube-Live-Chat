@@ -314,6 +314,7 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
     $('#import-names-textarea').val('');
     $('#import-export-links-wrapper').show();
     $('#import-names-wrapper').hide();
+    $('#append-label').click();
   });
 
   // In the import view, click import button.
@@ -340,5 +341,6 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
     $('#import-export-links-wrapper').show();
     $('#import-names-wrapper').hide();
     $('#import-names-textarea').val('');
+    $('#append-label').click();
   });
 });
