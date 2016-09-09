@@ -41,18 +41,27 @@ var db = {
   },
 
   asyncAppendArrayOfTrollNames: function asyncAppendArrayOfTrollNames(troll_names_array) {
+    var append_or_overwrite = arguments.length <= 1 || arguments[1] === undefined ? append : arguments[1];
+
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       // append troll name if it doesn't exist already
       for (var i = 0; i < troll_names_array.length; i++) {
+        debugger;
+        // add only new troll names to database and into troll table
         if (updating_hash[troll_names_array[i]] === undefined) {
           updating_hash[troll_names_array[i]] = 0;
+          addEntryToTrollsTable(troll_names_array[i]);
         }
       }
 
       chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function (updating_hash) {
-        dom_manipulating.makeTableReflectSavedTrollNames();
+        debugger;
+
+        // dom_manipulating.makeTableReflectSavedTrollNames();
+        dom_manipulating.updateTotalNamesBlocked();
+        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
       });
     });
   }
@@ -63,21 +72,15 @@ var dom_manipulating = {
 
   makeTableReflectSavedTrollNames: function makeTableReflectSavedTrollNames() {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      // debugger;
       // nothing to update if db doesn't exist yet.
       if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
+        // debugger;
         db.asyncReplaceAllTrollInfo({}, function () {});
         return;
       }
 
       var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-      debugger;
-
-      // db.asyncReplaceAllTrollInfo(troll_names_hash, function() {
-      // dom_manipulating.addEntryToTrollsTable(troll_name, troll_names_hash[troll_name]);
-      // dom_manipulating.updateTotalNamesBlocked();
-      // dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
-      // });
 
       if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
         var keys = Object.keys(troll_names_hash);
@@ -215,12 +218,7 @@ $('#all-comments .comment').each(function () {
   $(this).addClass('approved-comment');
 });
 
-// populate the trolls table with saved data from a previous session
-if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
-  db.asyncReplaceAllTrollInfo({}, function () {});
-} else {
-  dom_manipulating.makeTableReflectSavedTrollNames();
-}
+dom_manipulating.makeTableReflectSavedTrollNames();
 
 dom_manipulating.scrollToBottomOfChatBox();
 
