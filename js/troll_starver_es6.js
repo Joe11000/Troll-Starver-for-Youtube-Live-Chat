@@ -17,7 +17,7 @@ var db = {
     });
   },
 
-  asyncAppendArrayOfTrollNames: function(troll_names_array, append_or_overwrite=append) {
+  asyncAppendArrayOfTrollNames: function(troll_names_array) {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
 
@@ -27,7 +27,8 @@ var db = {
         // add only new troll names to database and into troll table
         if(updating_hash[troll_names_array[i]] === undefined) {
           updating_hash[troll_names_array[i]] = 0;
-          addEntryToTrollsTable(troll_names_array[i]);
+        debugger;
+          dom_manipulating.addEntryToTrollsTable(troll_names_array[i]);
         }
       }
 
