@@ -17,27 +17,29 @@ var db = {
     });
   },
 
+  // this method needs optimizing. Should do bulk like this instead of doing through multiple loops.
+    // 1) figure out all hash of trolls messages that should be removed from chat box dom_manipulating.removeExistingCommentsFromNewTrolls
+    // 2) add take results of (1) and bulk create entries in troll table dom_manipulating.addEntryToTrollsTable
+    // 3) updateTotalNamesBlocked
+    // 4) updateTotalCommentsBlocked
   asyncAppendArrayOfTrollNames: function(troll_names_array) {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
 
       // append troll name if it doesn't exist already
       for(let i = 0; i < troll_names_array.length; i++) {
-        debugger;
         // add only new troll names to database and into troll table
         if(updating_hash[troll_names_array[i]] === undefined) {
-          updating_hash[troll_names_array[i]] = 0;
-        debugger;
-          dom_manipulating.addEntryToTrollsTable(troll_names_array[i]);
+          let comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_names_array[i]])[troll_names_array[i]] || 0;
+          updating_hash[troll_names_array[i]] = comments_blocked;
+
+          dom_manipulating.addEntryToTrollsTable(troll_names_array[i], comments_blocked);
+          dom_manipulating.updateTotalCommentsBlocked(comments_blocked);
         }
       }
 
       chrome.storage.local.set({'troll_names_hash': updating_hash}, (updating_hash)=>{
-        debugger;
-
-        // dom_manipulating.makeTableReflectSavedTrollNames();
         dom_manipulating.updateTotalNamesBlocked();
-        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
       });
     });
   }
@@ -48,10 +50,8 @@ var dom_manipulating = {
 
   makeTableReflectSavedTrollNames: function() {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
-    // debugger;
       // nothing to update if db doesn't exist yet.
       if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
-        // debugger;
         db.asyncReplaceAllTrollInfo({}, function () {});
         return;
       }
@@ -117,7 +117,6 @@ var dom_manipulating = {
     $('#troll-table-wrapper #troll-names-wrapper #header-name').html(`Name(${total})`);
   },
 
-  // calculated differently than updateTotalNamesBlocked, because if someone removes a troll, then I still want to remember the total amount of comments blocked that are no longer represented in the table.
   updateTotalCommentsBlocked: function(increase_total_by=1) {
     let string = $('#troll-table-wrapper #troll-names-wrapper #header-count').html() || "";
     let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
@@ -190,7 +189,7 @@ $('.live-chat-widget').append(`
           </div>
         </div>
 
-        <textarea id='import-names-textarea' placeholder='paste exported names.'></textarea>
+        <textarea id='import-names-textarea' placeholder="'name 1' 'name 2' 'name 3'"></textarea>
         <div id='import-buttons'>
           <input id='import-close-button' type='button' value='close'>
           <input id='import-names-button' type='button' value='import'>

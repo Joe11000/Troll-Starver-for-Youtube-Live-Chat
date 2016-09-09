@@ -16,7 +16,6 @@
 
 
 
-
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -40,6 +39,11 @@ var db = {
     });
   },
 
+  // this method needs optimizing. Should do bulk like this instead of doing through multiple loops.
+  // 1) figure out all hash of trolls messages that should be removed from chat box dom_manipulating.removeExistingCommentsFromNewTrolls
+  // 2) add take results of (1) and bulk create entries in troll table dom_manipulating.addEntryToTrollsTable
+  // 3) updateTotalNamesBlocked
+  // 4) updateTotalCommentsBlocked
   asyncAppendArrayOfTrollNames: function asyncAppendArrayOfTrollNames(troll_names_array) {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
@@ -48,16 +52,17 @@ var db = {
       for (var i = 0; i < troll_names_array.length; i++) {
         // add only new troll names to database and into troll table
         if (updating_hash[troll_names_array[i]] === undefined) {
-          updating_hash[troll_names_array[i]] = 0;
-          dom_manipulating.addEntryToTrollsTable(troll_names_array[i]);
+          var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_names_array[i]])[troll_names_array[i]] || 0;
+          updating_hash[troll_names_array[i]] = comments_blocked;
+          debugger;
+
+          dom_manipulating.addEntryToTrollsTable(troll_names_array[i], comments_blocked);
+          dom_manipulating.updateTotalCommentsBlocked(comments_blocked);
         }
       }
 
       chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function (updating_hash) {
-
-        // dom_manipulating.makeTableReflectSavedTrollNames();
         dom_manipulating.updateTotalNamesBlocked();
-        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
       });
     });
   }
@@ -172,7 +177,6 @@ var dom_manipulating = {
     $('#troll-table-wrapper #troll-names-wrapper #header-name').html('Name(' + total + ')');
   },
 
-  // calculated differently than updateTotalNamesBlocked, because if someone removes a troll, then I still want to remember the total amount of comments blocked that are no longer represented in the table.
   updateTotalCommentsBlocked: function updateTotalCommentsBlocked() {
     var increase_total_by = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
 
@@ -205,7 +209,7 @@ var dom_manipulating = {
 };
 
 // put the widget on the screen
-$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n\n        <textarea id=\'import-names-textarea\' placeholder=\'paste exported names.\'></textarea>\n        <div id=\'import-buttons\'>\n          <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n          <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n        </div>\n      </form>\n\n      <div id=\'export-names-wrapper\'>\n        <label for=\'export-textarea\'>exported names</label>\n        <textarea id=\'export-textarea\'></textarea>\n        <form id=\'export-form\'>\n          <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n\n  </div>\n');
+$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n\n        <textarea id=\'import-names-textarea\' placeholder="\'name 1\' \'name 2\' \'name 3\'"></textarea>\n        <div id=\'import-buttons\'>\n          <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n          <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n        </div>\n      </form>\n\n      <div id=\'export-names-wrapper\'>\n        <label for=\'export-textarea\'>exported names</label>\n        <textarea id=\'export-textarea\'></textarea>\n        <form id=\'export-form\'>\n          <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n\n  </div>\n');
 
 // make all comments visible
 $('#all-comments .comment').each(function () {
@@ -350,7 +354,6 @@ $('#all-comments').on('DOMNodeInserted', function (event) {
     $('#append-label').click();
   });
 });
-
 
 
 
