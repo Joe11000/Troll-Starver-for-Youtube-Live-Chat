@@ -51,9 +51,9 @@ var db = {
         }
       }
 
-      chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function (trolls_chrome_extension_info) {
-        dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info);
-      }); //here
+      chrome.storage.local.set({ 'troll_names_hash': updating_hash }, function (updating_hash) {
+        dom_manipulating.makeTableReflectSavedTrollNames();
+      });
     });
   }
 };
@@ -61,44 +61,60 @@ var db = {
 // reusable dom manipulting functions
 var dom_manipulating = {
 
-  makeTableReflectSavedTrollNames: function makeTableReflectSavedTrollNames(trolls_chrome_extension_info) {
-    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-    if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
-      var keys = Object.keys(troll_names_hash);
-      var current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = keys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var key = _step.value;
-
-          troll_names_hash[key] = current_troll_comments[key] || 0;
-          dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
-          dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
+  makeTableReflectSavedTrollNames: function makeTableReflectSavedTrollNames() {
+    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      // nothing to update if db doesn't exist yet.
+      if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
+        db.asyncReplaceAllTrollInfo({}, function () {});
+        return;
       }
 
-      dom_manipulating.updateTotalNamesBlocked();
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
-      db.asyncReplaceAllTrollInfo(troll_names_hash, function () {});
-    }
+      debugger;
+
+      // db.asyncReplaceAllTrollInfo(troll_names_hash, function() {
+      // dom_manipulating.addEntryToTrollsTable(troll_name, troll_names_hash[troll_name]);
+      // dom_manipulating.updateTotalNamesBlocked();
+      // dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
+      // });
+
+      if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
+        var keys = Object.keys(troll_names_hash);
+        var current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
+
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = keys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var key = _step.value;
+
+            troll_names_hash[key] = current_troll_comments[key] || 0;
+            dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
+            dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        dom_manipulating.updateTotalNamesBlocked();
+
+        db.asyncReplaceAllTrollInfo(troll_names_hash, function () {});
+      }
+    });
   },
 
   // add new row on to troll table on the DOM
@@ -174,7 +190,6 @@ var dom_manipulating = {
     $scroll_box.scrollTop($scroll_box[0].scrollHeight);
   },
 
-  // here
   exportTrollsNamesToTextbox: function exportTrollsNamesToTextbox() {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
@@ -195,21 +210,19 @@ var dom_manipulating = {
 // put the widget on the screen
 $('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n\n        <textarea id=\'import-names-textarea\' placeholder=\'paste exported names.\'></textarea>\n        <div id=\'import-buttons\'>\n          <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n          <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n        </div>\n      </form>\n\n      <div id=\'export-names-wrapper\'>\n        <label for=\'export-textarea\'>exported names</label>\n        <textarea id=\'export-textarea\'></textarea>\n        <form id=\'export-form\'>\n          <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n\n  </div>\n');
 
-// populate the trolls table with saved data from a previous session
-chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
-
-  $('#all-comments .comment').each(function () {
-    $(this).addClass('approved-comment'); // make all comments visible
-  });
-
-  if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
-    db.asyncReplaceAllTrollInfo({}, function () {});
-  } else {
-    dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info);
-  }
-
-  dom_manipulating.scrollToBottomOfChatBox();
+// make all comments visible
+$('#all-comments .comment').each(function () {
+  $(this).addClass('approved-comment');
 });
+
+// populate the trolls table with saved data from a previous session
+if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
+  db.asyncReplaceAllTrollInfo({}, function () {});
+} else {
+  dom_manipulating.makeTableReflectSavedTrollNames();
+}
+
+dom_manipulating.scrollToBottomOfChatBox();
 
 // add new troll to list, clear his old comments, and start ignoring new comments
 $('#all-comments').on('dragstart', '.yt-thumb-img', function (event) {
@@ -326,6 +339,9 @@ $('#all-comments').on('DOMNodeInserted', function (event) {
       // delete all trolls if overwrite radio button is checked
       if ($("#import-names-radio-wrapper :checked").val() === 'overwrite') {
         db.asyncReplaceAllTrollInfo({}, function () {});
+        $('#troll-names-wrapper .troll').each(function (idex, element) {
+          element.remove();
+        });
       }
 
       // get names and remove extra quotes on beginning and end of troll name

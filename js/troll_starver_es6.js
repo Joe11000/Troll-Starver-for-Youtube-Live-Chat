@@ -28,7 +28,9 @@ var db = {
         }
       }
 
-      chrome.storage.local.set({'troll_names_hash': updating_hash}, (trolls_chrome_extension_info)=>{ dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info); }); //here
+      chrome.storage.local.set({'troll_names_hash': updating_hash}, (updating_hash)=>{
+        dom_manipulating.makeTableReflectSavedTrollNames();
+      });
     });
   }
 };
@@ -36,23 +38,41 @@ var db = {
 // reusable dom manipulting functions
 var dom_manipulating = {
 
-  makeTableReflectSavedTrollNames: function(trolls_chrome_extension_info){
-    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-    if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-      let keys = Object.keys(troll_names_hash);
-      let current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
-
-      for(let key of keys){
-        troll_names_hash[key] = current_troll_comments[key] || 0;
-        dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
-        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
+  makeTableReflectSavedTrollNames: function() {
+    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
+      // nothing to update if db doesn't exist yet.
+      if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
+        db.asyncReplaceAllTrollInfo({}, function () {});
+        return;
       }
 
-      dom_manipulating.updateTotalNamesBlocked();
+      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
-      db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
-    }
+      debugger;
+
+        // db.asyncReplaceAllTrollInfo(troll_names_hash, function() {
+          // dom_manipulating.addEntryToTrollsTable(troll_name, troll_names_hash[troll_name]);
+          // dom_manipulating.updateTotalNamesBlocked();
+          // dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
+        // });
+
+
+
+      if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
+        let keys = Object.keys(troll_names_hash);
+        let current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
+
+        for(let key of keys){
+          troll_names_hash[key] = current_troll_comments[key] || 0;
+          dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
+          dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
+        }
+
+        dom_manipulating.updateTotalNamesBlocked();
+
+        db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
+      }
+    });
   },
 
   // add new row on to troll table on the DOM
@@ -110,7 +130,6 @@ var dom_manipulating = {
     $scroll_box.scrollTop($scroll_box[0].scrollHeight);
   },
 
-  // here
   exportTrollsNamesToTextbox: function(){
     chrome.storage.local.get('troll_names_hash', (trolls_chrome_extension_info)=>{
       var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
@@ -124,7 +143,7 @@ var dom_manipulating = {
        $('#export-textarea').val("");
       }
       else if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-        let result = "'" + Object.keys(troll_names_hash).map((b) => { return(b + 'a') } ).join("' '") + "'"
+        let result = "'" + Object.keys(troll_names_hash).map((b) => { return(b + 'a') } ).join("' '") + "'";
         $('#export-textarea').val(result);
       }
     });
@@ -190,22 +209,22 @@ $('.live-chat-widget').append(`
   </div>
 `);
 
-// populate the trolls table with saved data from a previous session
-chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-
-  $('#all-comments .comment').each(function() {
-     $(this).addClass('approved-comment'); // make all comments visible
-  });
-
-  if(trolls_chrome_extension_info['troll_names_hash'] === undefined) {
-    db.asyncReplaceAllTrollInfo({}, ()=>{});
-  }
-  else {
-    dom_manipulating.makeTableReflectSavedTrollNames(trolls_chrome_extension_info);
-  }
-
-  dom_manipulating.scrollToBottomOfChatBox();
+// make all comments visible
+$('#all-comments .comment').each(function() {
+   $(this).addClass('approved-comment');
 });
+
+
+// populate the trolls table with saved data from a previous session
+if(trolls_chrome_extension_info['troll_names_hash'] === undefined) {
+  db.asyncReplaceAllTrollInfo({}, ()=>{});
+}
+else {
+  dom_manipulating.makeTableReflectSavedTrollNames();
+}
+
+dom_manipulating.scrollToBottomOfChatBox();
+
 
 // add new troll to list, clear his old comments, and start ignoring new comments
 $('#all-comments').on('dragstart', '.yt-thumb-img', function(event) {
@@ -251,7 +270,6 @@ $('#troll-names-wrapper').on('click', '.remove-name', function(event) {
   dom_manipulating.updateTotalNamesBlocked();
   db.asyncDeleteTrollNames([name]);
 });
-
 
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
 $('#all-comments').on('DOMNodeInserted', function(event) {
@@ -327,6 +345,9 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
       // delete all trolls if overwrite radio button is checked
       if( $("#import-names-radio-wrapper :checked").val() === 'overwrite') {
         db.asyncReplaceAllTrollInfo({}, ()=>{});
+        $('#troll-names-wrapper .troll').each(function(idex, element){
+          element.remove();
+        });
       }
 
       // get names and remove extra quotes on beginning and end of troll name
