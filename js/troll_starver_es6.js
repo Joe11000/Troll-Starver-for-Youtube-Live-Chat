@@ -32,7 +32,6 @@ var db = {
         if(updating_hash[troll_names_array[i]] === undefined) {
           let comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_names_array[i]])[troll_names_array[i]] || 0;
           updating_hash[troll_names_array[i]] = comments_blocked;
-
           dom_manipulating.addEntryToTrollsTable(troll_names_array[i], comments_blocked);
           dom_manipulating.updateTotalCommentsBlocked(comments_blocked);
         }
@@ -142,7 +141,7 @@ var dom_manipulating = {
        $('#export-names-textarea').val("");
       }
       else if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-        let result = "'" + Object.keys(troll_names_hash).map((troll_name) => { return(troll_name) } ).join("' '") + "'";
+        let result = Object.keys(troll_names_hash).map((troll_name) => { return(troll_name) } ).join("\n");
         $('#export-names-textarea').val(result);
       }
     });
@@ -189,7 +188,7 @@ $('.live-chat-widget').append(`
           </div>
         </div>
         <div id='import-names-textarea-wrapper'>
-          <textarea id='import-names-textarea' placeholder="'name 1' 'name 2' 'name 3'"></textarea>
+          <textarea id='import-names-textarea' placeholder="name 1\nname 2\nname 3"></textarea>
         </div>
         <div id='import-buttons'>
           <input id='import-close-button' type='button' value='close'>
@@ -335,10 +334,11 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
   // In the import view, click import button.
   $("#import-names-wrapper input[value='import']").on('click', function () {
 
-    let importing_names_string_with_quotes = $('#import-names-textarea').val();
+    let importing_names_array = $('#import-names-textarea').val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
-    if(importing_names_string_with_quotes.length > 0) {
+    if(importing_names_array !== null) {
+      let importing_names_array_length = importing_names_array.length;
 
       // delete all trolls if overwrite radio button is checked
       if( $("#import-names-radio-wrapper :checked").val() === 'overwrite') {
@@ -348,10 +348,11 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
         });
       }
 
-      // get names and remove extra quotes on beginning and end of troll name
-      let importing_names_array = $('#import-names-textarea').val().match(/'([^']*)'/g).map(function(troll_name){
-        return( troll_name.substr(1, troll_name.length - 2) );
-      });
+      // remove the weird '↵' at the end of each line that isn't the final line.
+      for(let i = 0; i < importing_names_array_length - 1; i++)
+      {
+        importing_names_array[i] = importing_names_array[i].substr(0, importing_names_array[i].length - 1);
+      }
 
       db.asyncAppendArrayOfTrollNames(importing_names_array);
     }

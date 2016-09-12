@@ -15,6 +15,9 @@
     // troll_starver_es6.js starts here after being translated through Babel.
 
 
+
+
+
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -53,7 +56,6 @@ var db = {
         if (updating_hash[troll_names_array[i]] === undefined) {
           var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_names_array[i]])[troll_names_array[i]] || 0;
           updating_hash[troll_names_array[i]] = comments_blocked;
-
           dom_manipulating.addEntryToTrollsTable(troll_names_array[i], comments_blocked);
           dom_manipulating.updateTotalCommentsBlocked(comments_blocked);
         }
@@ -197,9 +199,9 @@ var dom_manipulating = {
       if (trolls_chrome_extension_info['troll_names_hash'] === undefined || (typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length === 0) {
         $('#export-names-textarea').val("");
       } else if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
-        var result = "'" + Object.keys(troll_names_hash).map(function (troll_name) {
+        var result = Object.keys(troll_names_hash).map(function (troll_name) {
           return troll_name;
-        }).join("' '") + "'";
+        }).join("\n");
         $('#export-names-textarea').val(result);
       }
     });
@@ -207,7 +209,7 @@ var dom_manipulating = {
 };
 
 // put the widget on the screen
-$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n        <div id=\'import-names-textarea-wrapper\'>\n          <textarea id=\'import-names-textarea\' placeholder="\'name 1\' \'name 2\' \'name 3\'"></textarea>\n        </div>\n        <div id=\'import-buttons\'>\n          <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n          <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n        </div>\n      </form>\n\n      <div id=\'export-names-wrapper\'>\n        <label for=\'export-names-textarea\'>exported names</label>\n\n        <div id=\'export-names-textarea-wrapper\'>\n          <textarea id=\'export-names-textarea\'></textarea>\n        </div>\n\n        <div id=\'export-form-wrapper\'>\n          <form id=\'export-form\'>\n            <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n          </form>\n        </div>\n      </div>\n    </div>\n\n  </div>\n');
+$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n        <div id=\'import-names-textarea-wrapper\'>\n          <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n        </div>\n        <div id=\'import-buttons\'>\n          <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n          <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n        </div>\n      </form>\n\n      <div id=\'export-names-wrapper\'>\n        <label for=\'export-names-textarea\'>exported names</label>\n\n        <div id=\'export-names-textarea-wrapper\'>\n          <textarea id=\'export-names-textarea\'></textarea>\n        </div>\n\n        <div id=\'export-form-wrapper\'>\n          <form id=\'export-form\'>\n            <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n          </form>\n        </div>\n      </div>\n    </div>\n\n  </div>\n');
 
 // make all comments visible
 $('#all-comments .comment').each(function () {
@@ -325,10 +327,11 @@ $('#all-comments').on('DOMNodeInserted', function (event) {
   // In the import view, click import button.
   $("#import-names-wrapper input[value='import']").on('click', function () {
 
-    var importing_names_string_with_quotes = $('#import-names-textarea').val();
+    var importing_names_array = $('#import-names-textarea').val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
-    if (importing_names_string_with_quotes.length > 0) {
+    if (importing_names_array !== null) {
+      var importing_names_array_length = importing_names_array.length;
 
       // delete all trolls if overwrite radio button is checked
       if ($("#import-names-radio-wrapper :checked").val() === 'overwrite') {
@@ -338,10 +341,10 @@ $('#all-comments').on('DOMNodeInserted', function (event) {
         });
       }
 
-      // get names and remove extra quotes on beginning and end of troll name
-      var importing_names_array = $('#import-names-textarea').val().match(/'([^']*)'/g).map(function (troll_name) {
-        return troll_name.substr(1, troll_name.length - 2);
-      });
+      // remove the weird '↵' at the end of each line that isn't the final line.
+      for (var i = 0; i < importing_names_array_length - 1; i++) {
+        importing_names_array[i] = importing_names_array[i].substr(0, importing_names_array[i].length - 1);
+      }
 
       db.asyncAppendArrayOfTrollNames(importing_names_array);
     }
