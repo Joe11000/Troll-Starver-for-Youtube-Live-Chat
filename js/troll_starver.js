@@ -17,7 +17,6 @@
 
 
 
-
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -209,7 +208,15 @@ var dom_manipulating = {
 };
 
 // put the widget on the screen
-$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'troll-table-wrapper\'>\n      <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n      </div>\n\n      <div id=\'troll-names-wrapper\'>\n        <table>\n          <caption>Blocking Comments</caption>\n          <tr id=\'table-header\'>\n            <th>x</th>\n            <th id=\'header-name\'>Name(0)</th>\n            <th id=\'header-count\'>#(0)</th>\n          </th>\n        </table>\n      </div>\n\n      <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n    </div>\n\n    <div id=\'troll-import-export-wrapper\'>\n      <div id=\'import-export-links-wrapper\'>\n        <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n        <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n      </div>\n\n      <form id=\'import-names-wrapper\'>\n        <div id=\'import-names-radio-wrapper\'>\n          <div class=\'import-names-radio-row\'>\n            <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n            <label for=\'append-label\'>append</label>\n          </div>\n\n          <div class=\'import-names-radio-row\'>\n            <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n            <label for=\'overwrite-label\'>overwrite</label>\n          </div>\n        </div>\n        <div id=\'import-names-textarea-wrapper\'>\n          <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n        </div>\n        <div id=\'import-buttons\'>\n          <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n          <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n        </div>\n      </form>\n\n      <div id=\'export-names-wrapper\'>\n        <label for=\'export-names-textarea\'>exported names</label>\n\n        <div id=\'export-names-textarea-wrapper\'>\n          <textarea id=\'export-names-textarea\'></textarea>\n        </div>\n\n        <div id=\'export-form-wrapper\'>\n          <form id=\'export-form\'>\n            <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n          </form>\n        </div>\n      </div>\n    </div>\n\n  </div>\n');
+$('.live-chat-widget').append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <img class=\'expand-arrow\'>\n        <p>Expand Troll Starver</p>\n        <img class=\'expand-arrow\'>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <img class=\'minimize-arrow\'>\n        <p>Minimize Troll Starver</p>\n        <img class=\'minimize-arrow\'>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'troll-table-wrapper\'>\n        <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\'>\n          <table>\n            <caption>Blocking Comments</caption>\n            <tr id=\'table-header\'>\n              <th>x</th>\n              <th id=\'header-name\'>Name(0)</th>\n              <th id=\'header-count\'>#(0)</th>\n            </th>\n          </table>\n        </div>\n\n        <div><form><input type=\'button\' id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n\n\n  </div>\n');
+
+$('#troll-extension-wrapper #arrow-wrapper').click(function () {
+  if ($('#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:visible').length == 0) {
+    $('#troll-extension-wrapper').addClass('minimize');
+  } else {
+    $('#troll-extension-wrapper').removeClass('minimize');
+  }
+});
 
 // make all comments visible
 $('#all-comments .comment').each(function () {
@@ -220,8 +227,17 @@ dom_manipulating.makeTableReflectSavedTrollNames();
 
 dom_manipulating.scrollToBottomOfChatBox();
 
+var expanded_for_drag = false;
+//here
 // add new troll to list, clear his old comments, and start ignoring new comments
 $('#all-comments').on('dragstart', '.yt-thumb-img', function (event) {
+
+  // expand extension if it is currently minimized
+  if ($("#troll-extension-wrapper [data-id='shrinkable-area']").length > 0) {
+    $('#troll-extension-wrapper').removeClass('minimize');
+    expanded_for_drag = true;
+  }
+
   event.dataTransfer = event.originalEvent.dataTransfer;
   var troll_name = this.alt || $(this).closest('.comment').find('.author [data-name]').html();
   event.dataTransfer.setData('troll-name', troll_name);
@@ -246,6 +262,12 @@ $('#troll-image-wrapper').on('drop', function (event) {
       });
     }
   });
+
+  // reminimize the extension if it was only opened for drag process
+  if (expanded_for_drag) {
+    $('#troll-extension-wrapper').addClass('minimize');
+    expanded_for_drag = false;
+  }
 });
 
 // clear chat room

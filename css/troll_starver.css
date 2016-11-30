@@ -1,3 +1,60 @@
+/* begin -- when extension expanded */
+#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover,
+#troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
+  cursor: pointer;
+}
+#shrinkable-area{
+  overflow: hidden;
+}
+
+#troll-extension-wrapper #arrow-wrapper {
+  border: 1px solid black;
+  border-radius: 5px;
+  background: lightgray;
+}
+#troll-extension-wrapper #arrow-wrapper img {
+  display: inline;
+  margin: auto;
+  height: 25px;
+  width: 25px;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/arrow.png') no-repeat center center;
+  vertical-align: middle;
+}
+#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
+  margin: 0 30px;
+  display: inline;
+}
+#troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper  p {
+  margin: 0 25px;
+  display: inline;
+}
+#troll-extension-wrapper #arrow-wrapper {
+  text-align: center;
+}
+
+#troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
+  transform: rotate(180deg);
+}
+#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {
+  display: none;
+}
+/* end -- when extension expanded */
+
+/* begin -- animate minimizing the extension*/
+#troll-extension-wrapper.minimize #shrinkable-area {
+  height: 0px;
+}
+#troll-extension-wrapper.minimize #arrow-wrapper #minimize-arrow-wrapper {
+  display: none;
+}
+#troll-extension-wrapper.minimize #arrow-wrapper #expand-arrow-wrapper {
+  display: block;
+}
+/* end -- animate minimizing the extension*/
+
+
+
+
 #all-comments .comment a.avatar { position: absolute; }
 #all-comments .comment .content { margin-left: 45px; margin-right: 15px; }
 #all-comments .comment .actions-menu {
@@ -19,7 +76,7 @@
   border: 1px solid black !important;
   border-radius: 5px;
   position: relative;
-  margin-top: 10px;
+  margin-top: 5px;
   width: 100%;
   border: 1px solid #E2E2E2;
   height: 110px;
