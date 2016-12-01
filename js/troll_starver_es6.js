@@ -254,9 +254,8 @@ var expanded_for_drag = false
 //here
 // add new troll to list, clear his old comments, and start ignoring new comments
 $('#all-comments').on('dragstart', '.yt-thumb-img', function(event) {
-
   // expand extension if it is currently minimized
-  if($("#troll-extension-wrapper [data-id='shrinkable-area']").length > 0)
+  if($("#troll-extension-wrapper [data-id='expand-arrow-wrapper']:visible").length > 0)
   {
     $('#troll-extension-wrapper').removeClass('minimize');
     expanded_for_drag = true

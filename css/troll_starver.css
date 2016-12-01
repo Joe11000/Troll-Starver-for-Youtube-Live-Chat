@@ -3,9 +3,6 @@
 #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
   cursor: pointer;
 }
-#shrinkable-area{
-  overflow: hidden;
-}
 
 #troll-extension-wrapper #arrow-wrapper {
   border: 1px solid black;
@@ -42,7 +39,7 @@
 
 /* begin -- animate minimizing the extension*/
 #troll-extension-wrapper.minimize #shrinkable-area {
-  height: 0px;
+  display: none;
 }
 #troll-extension-wrapper.minimize #arrow-wrapper #minimize-arrow-wrapper {
   display: none;
