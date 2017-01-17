@@ -1,3 +1,13 @@
+const YOUTUBE_SELECTORS = new function(){
+  // APPEND_EXTENTION_TO: '#panel-pages',
+  this.APPEND_EXTENTION_TO = 'yt-live-chat-message-input-renderer';
+  // this.COMMENTS_WRAPPER = '#items.yt-live-chat-ticker-renderer'; style-scope yt-live-chat-item-list-renderer
+  this.COMMENTS_WRAPPER = '#items.style-scope.yt-live-chat-item-list-renderer'; // inside this.COMMENTS_WRAPPER
+  this.COMMENT = 'yt-live-chat-text-message-renderer';  // inside this.COMMENTS_WRAPPER
+  this.TROLL_IMG = "[is='yt-img']";                     // inside this.COMMENT
+  this.TROLL_NAME = '#author-name';                     // inside this.COMMENT
+}
+
 // reusable db manipulting functions
 var db = {
   asyncReplaceAllTrollInfo: function(entire_hash, callback) {
@@ -77,10 +87,10 @@ var dom_manipulating = {
   // add new row on to troll table on the DOM
   addEntryToTrollsTable: function (name, existing_comments_counter=0) {
    $(`
-      <tr class='troll'>
-        <td><img class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
-        <td class='troll-name'>${name}</td>
-        <td class='comment-counter'>${existing_comments_counter}</td>
+      <tr class='troll' data-class='troll'>
+        <td><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
+        <td class='troll-name' data-class='troll-name'>${name}</td>
+        <td class='comment-counter' data-class='comment-counter'>${existing_comments_counter}</td>
       </tr>
     `).insertAfter($('#troll-names-wrapper #table-header'));
    $('#troll-names-wrapper').scrollTop(0);
@@ -89,7 +99,7 @@ var dom_manipulating = {
   // input: ie [name_1, name_2, name_3]               array of troll names to remove from chat
   // return int : {name_1: 2, name_2: 15, name_3: 0}  num of comments of his were deleted in chatroom
   removeExistingCommentsFromNewTrolls: function(troll_name_array) {
-    let $all_comments = $('#all-comments .comment') // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
+    let $all_comments = $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} ${YOUTUBE_SELECTORS.COMMENT}`) // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
 
     let result = {};
     for(let t of troll_name_array) {
@@ -97,7 +107,7 @@ var dom_manipulating = {
     }
 
     $all_comments.each(function() {
-      let commenter_name = $(this).find('.author [data-name]').html();
+      let commenter_name = $(this).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
 
       let commenter_index_in_troll_array = troll_name_array.indexOf(commenter_name);
       if( commenter_index_in_troll_array != -1)
@@ -111,20 +121,20 @@ var dom_manipulating = {
   },
 
   updateTotalNamesBlocked: function() {
-    var total = $('#troll-table-wrapper #troll-names-wrapper table img.remove-name').length || 0;
+    var total = $("[data-id='troll-table-wrapper'] #troll-names-wrapper table img.remove-name").length || 0;
 
-    $('#troll-table-wrapper #troll-names-wrapper #header-name').html(`Name(${total})`);
+    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-name").html(`Name(${total})`);
   },
 
   updateTotalCommentsBlocked: function(increase_total_by=1) {
-    let string = $('#troll-table-wrapper #troll-names-wrapper #header-count').html() || "";
+    let string = $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html() || "";
     let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
     let new_total = current_total + increase_total_by;
-    $('#troll-table-wrapper #troll-names-wrapper #header-count').html(`#(${new_total})`);
+    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html(`#(${new_total})`);
   },
 
   scrollToBottomOfChatBox: function(){
-    var $scroll_box = $('#all-comments').parent();
+    let $scroll_box = $('#items.style-scope.yt-live-chat-item-list-renderer')
     $scroll_box.scrollTop($scroll_box[0].scrollHeight);
   },
 
@@ -149,28 +159,28 @@ var dom_manipulating = {
 }
 
 // put the widget on the screen
-$('.live-chat-widget').append(`
+$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
   <div id='troll-extension-wrapper'>
     <div id='arrow-wrapper'>
       <div id='expand-arrow-wrapper' data-id='expand-arrow-wrapper'>
-        <img class='expand-arrow'>
+        &#11014;
         <p>Expand Troll Starver</p>
-        <img class='expand-arrow'>
+        &#11014;
       </div>
 
       <div id='minimize-arrow-wrapper' data-id='minimize-arrow-wrapper'>
-        <img class='minimize-arrow'>
+        &#11015;
         <p>Minimize Troll Starver</p>
-        <img class='minimize-arrow'>
+        &#11015;
       </div>
     </div>
 
     <div id='shrinkable-area' data-id='shrinkable-area'>
-      <div id='troll-table-wrapper'>
+      <div id='troll-table-wrapper' data-id='troll-table-wrapper'>
         <div id='troll-image-wrapper' droppable='true' ondragover="event.preventDefault();">
         </div>
 
-        <div id='troll-names-wrapper'>
+        <div id='troll-names-wrapper' data-id='troll-names-wrapper'>
           <table>
             <caption>Blocking Comments</caption>
             <tr id='table-header'>
@@ -181,7 +191,7 @@ $('.live-chat-widget').append(`
           </table>
         </div>
 
-        <div><form><input type='button' id='clear-all-comments' value='Clear Chat'</input></form></div>
+        <div><form><input type='button' id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'</input></form></div>
       </div>
 
       <div id='troll-import-export-wrapper'>
@@ -242,7 +252,7 @@ $('#troll-extension-wrapper #arrow-wrapper').click( ()=> {
 });
 
 // make all comments visible
-$('#all-comments .comment').each(function() {
+$(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} ${YOUTUBE_SELECTORS.COMMENT}`).each(function() {
    $(this).addClass('approved-comment');
 });
 
@@ -251,9 +261,9 @@ dom_manipulating.makeTableReflectSavedTrollNames();
 dom_manipulating.scrollToBottomOfChatBox();
 
 var expanded_for_drag = false
-//here
+
 // add new troll to list, clear his old comments, and start ignoring new comments
-$('#all-comments').on('dragstart', '.yt-thumb-img', function(event) {
+$(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function(event) {
   // expand extension if it is currently minimized
   if($("#troll-extension-wrapper [data-id='expand-arrow-wrapper']:visible").length > 0)
   {
@@ -262,7 +272,7 @@ $('#all-comments').on('dragstart', '.yt-thumb-img', function(event) {
   }
 
   event.dataTransfer = event.originalEvent.dataTransfer;
-  let troll_name = this.alt || $(this).closest('.comment').find('.author [data-name]').html();
+  let troll_name = $(this).closest(YOUTUBE_SELECTORS.COMMENT).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
   event.dataTransfer.setData('troll-name', troll_name);
 });
 
@@ -274,6 +284,7 @@ $('#troll-image-wrapper').on('drop', function(event) {
   let troll_name = event.dataTransfer.getData('troll-name');
 
   chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
+    debugger;
     var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
     if(troll_names_hash[troll_name] === undefined) {
@@ -290,20 +301,20 @@ $('#troll-image-wrapper').on('drop', function(event) {
   // reminimize the extension if it was only opened for drag process
   if(expanded_for_drag){
     $('#troll-extension-wrapper').addClass('minimize');
-    expanded_for_drag = false
+    expanded_for_drag = false;
   }
 });
 
 // clear chat room
-$('#clear-all-comments').on('click', function() {
+$("[data-id='clear-all-comments']").on('click', function() {
   dom_manipulating.scrollToBottomOfChatBox();
-  $('#all-comments').html('');
+  $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).html('');
 });
 
 
 // remove single troll from list
-$('#troll-names-wrapper').on('click', '.remove-name', function(event) {
-  var $element_to_delete = $(this).closest('.troll');
+$("[data-id='troll-names-wrapper']").on('click', '.remove-name', function(event) {
+  var $element_to_delete = $(this).closest("[data-class='troll']");
   let name = $element_to_delete.find('.troll-name').html();
   $element_to_delete.remove();
   dom_manipulating.updateTotalNamesBlocked();
@@ -311,12 +322,12 @@ $('#troll-names-wrapper').on('click', '.remove-name', function(event) {
 });
 
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
-$('#all-comments').on('DOMNodeInserted', function(event) {
-
+$(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
   // the chat room doubles up on this comment for when you start sending a comment and when it is done. So ignore the first one
-  if(event.target.className.indexOf('sending-in-progress') != -1) {
-    return;
-  }
+  // Youtube fixed this
+  // if(event.target && event.target.className && event.target.className.indexOf('sending-in-progress') != -1) {
+  //   return;
+  // }
 
   chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
     var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
@@ -324,7 +335,7 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
     if( troll_names_hash !== {} && troll_names_hash !== undefined )
     {
       var $comment_element = $(event.target);
-      let commenters_name = $comment_element.find(".author [data-name]").html();
+      let commenters_name = $comment_element.find(YOUTUBE_SELECTORS.TROLL_NAME).html();
 
       if(commenters_name === undefined) {
         return false;
@@ -332,7 +343,7 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
 
       if(troll_names_hash[commenters_name] != undefined) {
         troll_names_hash[commenters_name]++;
-        $(`.troll:contains(${commenters_name}) > .comment-counter`).html(troll_names_hash[commenters_name]);
+        $(`[data-class='troll']:contains(${commenters_name}) > [data-class='comment-counter']`).html(troll_names_hash[commenters_name]);
         $comment_element.remove();
         dom_manipulating.updateTotalCommentsBlocked(1);
         db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
@@ -340,13 +351,14 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
       }
     }
 
-    $(event.target).addClass('approved-comment');
+  $(event.target).addClass('approved-comment');
     dom_manipulating.scrollToBottomOfChatBox();
   });
 
 
   // in normal view, click on export link.
   $('#export-names-link').on('click', function (e) {
+    e.preventDefault();
     $('#import-export-links-wrapper').hide();
     $('#export-names-wrapper').show();
     dom_manipulating.exportTrollsNamesToTextbox();
@@ -354,6 +366,7 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
 
   // In normal view, click inport button view
   $('#import-names-link').on('click', function (e) {
+    e.preventDefault();
     $('#import-export-links-wrapper').hide();
     $('#import-names-wrapper').show();
   });
@@ -385,7 +398,7 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
       // delete all trolls if overwrite radio button is checked
       if( $("#import-names-radio-wrapper :checked").val() === 'overwrite') {
         db.asyncReplaceAllTrollInfo({}, ()=>{});
-        $('#troll-names-wrapper .troll').each(function(idex, element){
+        $("[data-id='troll-names-wrapper']" + ' .troll').each(function(idex, element){
           element.remove();
         });
       }
@@ -404,7 +417,4 @@ $('#all-comments').on('DOMNodeInserted', function(event) {
     $('#import-names-textarea').val('');
     $('#append-label').click();
   });
-
-
-
 });

@@ -1,3 +1,6 @@
+#troll-extension-wrapper {
+  margin-top: 10px;
+}
 /* begin -- when extension expanded */
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover,
 #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
@@ -181,6 +184,7 @@
   display: none;
 }
 
+
 #troll-extension-wrapper #troll-import-export-wrapper {
   margin: 5px 0;
 
@@ -193,6 +197,18 @@
   display: inline;
   float: left;
   margin-left: 50px;
+}
+
+#troll-extension-wrapper #import-export-links-wrapper #import-names-link:link,
+#troll-extension-wrapper #import-export-links-wrapper #import-names-link:visited,
+#troll-extension-wrapper #import-export-links-wrapper #import-names-link:hover,
+#troll-extension-wrapper #import-export-links-wrapper #import-names-link:active,
+#troll-extension-wrapper #import-export-links-wrapper #export-names-link:link,
+#troll-extension-wrapper #import-export-links-wrapper #export-names-link:visited,
+#troll-extension-wrapper #import-export-links-wrapper #export-names-link:hover,
+#troll-extension-wrapper #import-export-links-wrapper #export-names-link:active
+{
+  color: rgba(22, 122, 198, 0.901961) !important;
 }
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link {
   display: inline;
