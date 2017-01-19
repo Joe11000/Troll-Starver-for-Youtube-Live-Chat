@@ -1,13 +1,11 @@
 // var targetWindow = null;
 var CONSTANTS = {
-  TROLL_STARVER_CSS: "css/troll_starver.css",
-  TROLL_STARVER_JS: "js/troll_starver.js",
+  TROLL_STARVER_CSS: "css/troll_starver_min.css",
+  TROLL_STARVER_JS: "js/troll_starver_min.js",
   REGEX_FOR_YOUTUBE_VIDEO_W_LIVE_CHAT: /youtube.com\/watch\?.*v=([a-zA-Z0-9]*)/, // ie 'https://www.youtube.com/watch?v=fDNAHZo_pAU'
   
   REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT: /youtube.com\/live_chat\?.*v=([a-zA-Z0-9]*)/ // ie 'https://www.youtube.com/live_chat?v=fDNAHZo_pAU&is_popout=1'
 }
-
-
 
 var getAllWindows = function() {
   return new Promise((res, rej)=>{
@@ -25,12 +23,9 @@ var getAllWindows = function() {
 var findTabContainingChatRoom = function(windows, tab_opened_extension_from) {
 
   var  url_of_tab_opened_extension_from = tab_opened_extension_from.url;
-
-
   var numWindows = windows.length;
   var targetTab = tab_opened_extension_from;
   var current_tab_chatroom_id = tab_opened_extension_from.url.match(CONSTANTS.REGEX_FOR_YOUTUBE_VIDEO_W_LIVE_CHAT)[1];
-  var tabs_to_add_extention_to = [];
 
   // look through each tab in each window and see if there is a popout that takes presidence over the current the current page's chatroom. Done this way because currently the default chatroom by youtube is displayed through a iframe, so popped out tabs are prefereble.
   for (var i = 0; i < numWindows; i++) {
@@ -39,7 +34,6 @@ var findTabContainingChatRoom = function(windows, tab_opened_extension_from) {
     for (var j = 0; j < numTabs; j++) {
       var tab = win.tabs[j];
 
-      // if there is an popout version of the target chatbox
       if(
           tab.url.match(CONSTANTS.REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT) && 
           tab.url.match(CONSTANTS.REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT)[1] == current_tab_chatroom_id 
@@ -51,11 +45,9 @@ var findTabContainingChatRoom = function(windows, tab_opened_extension_from) {
   return targetTab;
 }
 
-
 function start(tab_opened_extension_from) {
 
   if ( !tab_opened_extension_from.url.match(/youtube.com\//) ) { 
-
     return;
   }
 
@@ -65,8 +57,7 @@ function start(tab_opened_extension_from) {
     chrome.tabs.insertCSS(tab_containing_chatroom.id, { "file": CONSTANTS.TROLL_STARVER_CSS });
     chrome.tabs.executeScript(tab_containing_chatroom.id, { "file": CONSTANTS.TROLL_STARVER_JS });
   });
-
-  // chrome.windows.getCurrent(getWindows);
 }
-// Set up a click handler so that we can merge all the windows.
+
+
 chrome.browserAction.onClicked.addListener(start);
