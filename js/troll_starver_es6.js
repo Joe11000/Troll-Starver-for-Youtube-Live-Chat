@@ -282,7 +282,6 @@ $('#troll-image-wrapper').on('drop', function(event) {
   let troll_name = event.dataTransfer.getData('troll-name');
 
   chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-    debugger;
     var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
 
     if(troll_names_hash[troll_name] === undefined) {
@@ -416,3 +415,20 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
     $('#append-label').click();
   });
 });
+
+
+
+
+
+
+// iframe warning html
+
+// document.querySelector('iframe#live-chat-iframe').parentNode.insertAdjacentHTML('beforeend', `
+//   <div id='troll-extension-wrapper'>
+//     <div id='iframe-loads-chatroom-warning'>
+//       <p class='warning-header'>TROLL BLOCKER</p>
+//       <p class='warning-orange'>Warning : The chatroom above is loaded through an iframe.</p>
+//       <p>You must either 1) Pop out the chatbox or 2) Enter "Youtube Gaming Mode" in order to use this extension.</p>
+//   </div>
+//   </div>
+// `);

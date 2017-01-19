@@ -1,6 +1,17 @@
 #troll-extension-wrapper {
   margin-top: 10px; }
 
+.live-chat-expander #iframe-loads-chatroom-warning {
+  box-sizing: border-box;
+  border: 5px solid rgba(22, 122, 198, 0.90196);
+  padding: 5px; }
+  .live-chat-expander #iframe-loads-chatroom-warning p {
+    text-align: center; }
+  .live-chat-expander #iframe-loads-chatroom-warning .warning-header {
+    font-weight: bold; }
+  .live-chat-expander #iframe-loads-chatroom-warning .warning-orange {
+    color: orangered; }
+
 /* begin -- when extension expanded */
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover,
 #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
@@ -213,6 +224,9 @@
   width: 23%;
   display: inline-block; }
 
+#troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper * {
+  vertical-align: top; }
+
 #troll-extension-wrapper #import-names-wrapper #import-names-button {
   float: right;
   position: relative;
@@ -235,13 +249,13 @@
   width: 95%;
   margin: auto; }
 
-#export-names-wrapper #export-names-textarea-wrapper {
+#troll-extension-wrapper #export-names-wrapper #export-names-textarea-wrapper {
   max-width: 200px;
   width: 50%;
   display: inline-block;
   vertical-align: middle; }
 
-#export-names-wrapper #export-form-wrapper {
+#troll-extension-wrapper #export-names-wrapper #export-form-wrapper {
   position: relative;
   width: 20%;
   float: right;

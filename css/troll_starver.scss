@@ -1,15 +1,32 @@
 // const YOUTUBE_SELECTORS = new function(){
+  $PARENT_OF_IFRAME_LOADING_CHATBOX: '.live-chat-expander';
   $APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer';
   $COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer'; // inside this.COMMENTS_WRAPPER
   $COMMENT: 'yt-live-chat-text-message-renderer';  // inside this.COMMENTS_WRAPPER
   $TROLL_IMG: "[is='yt-img']";                     // inside this.COMMENT
   $TROLL_NAME: '#author-name';                     // inside this.COMMENT
-
-
+ 
 
 #troll-extension-wrapper {
   margin-top: 10px;
 }
+
+#{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
+  box-sizing: border-box;
+  border: 5px solid  rgba(22, 122, 198, 0.901961);
+  padding: 5px;
+  p {
+    text-align: center;
+  }
+
+  .warning-header{
+    font-weight: bold;
+  }
+  .warning-orange{
+    color: orangered;
+  }
+}
+
 /* begin -- when extension expanded */
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover,
 #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
@@ -257,6 +274,9 @@
   width: 23%;
   display: inline-block;
 }
+#troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper *{
+  vertical-align: top;
+}
 
 #troll-extension-wrapper #import-names-wrapper #import-names-button {
   float: right;
@@ -282,13 +302,13 @@
   margin: auto;
 }
 
-#export-names-wrapper #export-names-textarea-wrapper{
+#troll-extension-wrapper #export-names-wrapper #export-names-textarea-wrapper{
   max-width: 200px;
   width: 50%;
   display: inline-block;
   vertical-align: middle;
 }
-#export-names-wrapper #export-form-wrapper {
+#troll-extension-wrapper #export-names-wrapper #export-form-wrapper {
   position: relative;
     width: 20%;
     float: right;
