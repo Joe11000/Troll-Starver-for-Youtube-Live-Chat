@@ -26,7 +26,9 @@
     "tabs",
     "storage",
     "http://www.youtube.com/*",
-    "https://www.youtube.com/*"
+    "https://www.youtube.com/*",
+    "http://gaming.youtube.com/*",
+    "https://gaming.youtube.com/*"
   ],
 
   "web_accessible_resources": [
