@@ -1,7 +1,5 @@
 const YOUTUBE_SELECTORS = new function(){
-  // APPEND_EXTENTION_TO: '#panel-pages',
   this.APPEND_EXTENTION_TO = 'yt-live-chat-message-input-renderer';
-  // this.COMMENTS_WRAPPER = '#items.yt-live-chat-ticker-renderer'; style-scope yt-live-chat-item-list-renderer
   this.COMMENTS_WRAPPER = '#items.style-scope.yt-live-chat-item-list-renderer'; // inside this.COMMENTS_WRAPPER
   this.COMMENT = 'yt-live-chat-text-message-renderer';  // inside this.COMMENTS_WRAPPER
   this.TROLL_IMG = "[is='yt-img']";                     // inside this.COMMENT

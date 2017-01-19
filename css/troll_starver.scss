@@ -1,21 +1,31 @@
-#troll-extension-wrapper {
-  margin-top: 10px; }
+// const YOUTUBE_SELECTORS = new function(){
+  $APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer';
+  $COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer'; // inside this.COMMENTS_WRAPPER
+  $COMMENT: 'yt-live-chat-text-message-renderer';  // inside this.COMMENTS_WRAPPER
+  $TROLL_IMG: "[is='yt-img']";                     // inside this.COMMENT
+  $TROLL_NAME: '#author-name';                     // inside this.COMMENT
 
+
+
+#troll-extension-wrapper {
+  margin-top: 10px;
+}
 /* begin -- when extension expanded */
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover,
 #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 #troll-extension-wrapper #arrow-wrapper {
   border: 1px solid black;
   border-radius: 5px;
-  background: lightgray; }
-
+  background: lightgray;
+}
 #troll-extension-wrapper #arrow-wrapper * {
-  color: rgba(22, 122, 198, 0.90196);
+  color: rgba(22, 122, 198, 0.901961);
   font-weight: bold;
-  font-size: 15px; }
-
+  font-size: 15px;
+}
 /*#troll-extension-wrapper #arrow-wrapper img {
   display: inline;
   margin: auto;
@@ -24,53 +34,58 @@
   background: url('chrome-extension://__MSG_@@extension_id__/images/arrow.png') no-repeat center center;
   vertical-align: middle;
 }*/
+
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
   margin: 0 30px;
-  display: inline; }
-
-#troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p {
+  display: inline;
+}
+#troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper  p {
   margin: 0 25px;
-  display: inline; }
-
+  display: inline;
+}
 #troll-extension-wrapper #arrow-wrapper {
-  text-align: center; }
+  text-align: center;
+}
 
 #troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
-  transform: rotate(180deg); }
-
+  transform: rotate(180deg);
+}
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {
-  display: none; }
-
+  display: none;
+}
 /* end -- when extension expanded */
+
 /* begin -- animate minimizing the extension*/
 #troll-extension-wrapper.minimize #shrinkable-area {
-  display: none; }
-
+  display: none;
+}
 #troll-extension-wrapper.minimize #arrow-wrapper #minimize-arrow-wrapper {
-  display: none; }
-
+  display: none;
+}
 #troll-extension-wrapper.minimize #arrow-wrapper #expand-arrow-wrapper {
-  display: block; }
-
+  display: block;
+}
 /* end -- animate minimizing the extension*/
-#items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer a.avatar {
-  position: absolute; }
 
-#items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer .content {
-  margin-left: 45px;
-  margin-right: 15px; }
 
-#items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer .actions-menu {
-  position: absolute !important;
-  right: 15px;
-  top: 10px; }
+
+
+#{$COMMENTS_WRAPPER} #{$COMMENT} a.avatar { position: absolute; }
+#{$COMMENTS_WRAPPER} #{$COMMENT} .content { margin-left: 45px; margin-right: 15px; }
+#{$COMMENTS_WRAPPER} #{$COMMENT} .actions-menu {
+    position: absolute !important;
+    right: 15px;
+    top: 10px;
+}
 
 #troll-extension-wrapper input[type='button'] {
-  background-color: rgba(22, 122, 198, 0.9);
+  background-color: rgba(22,122,198,0.9);
   color: white;
   font-weight: 500;
   border-radius: 5px;
-  cursor: pointer; }
+  cursor: pointer;
+}
+
 
 #troll-table-wrapper {
   border: 1px solid black !important;
@@ -79,7 +94,8 @@
   margin-top: 5px;
   width: 100%;
   border: 1px solid #E2E2E2;
-  height: 110px; }
+  height: 110px;
+}
 
 /* contains the troll image */
 #troll-table-wrapper #troll-image-wrapper,
@@ -87,16 +103,18 @@
   height: 100%;
   display: inline-block;
   min-width: 60px;
-  width: 24%; }
+  width: 24%;
+}
 
 #troll-table-wrapper #troll-image-wrapper {
-  background: url("chrome-extension://__MSG_@@extension_id__/images/trollx60.png") no-repeat center center;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
   border-right: 1px solid black !important;
   background-color: lightgray;
-  border-radius: 5px 0 0 5px; }
+  border-radius: 5px 0 0 5px;
+}
 
 #troll-table-wrapper #clear-all-comments {
-  background-color: rgba(22, 122, 198, 0.9);
+  background-color: rgba(22,122,198,0.9);
   cursor: pointer;
   color: white;
   font-weight: bold;
@@ -104,7 +122,9 @@
   border-radius: 0 5px 5px 0;
   position: absolute;
   top: 0;
-  right: 0; }
+  right: 0;
+}
+
 
 /* contains list of troll  */
 #troll-table-wrapper #troll-names-wrapper {
@@ -112,68 +132,86 @@
   min-width: 180px;
   height: 100%;
   display: inline-block;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+}
 
 #troll-table-wrapper #troll-names-wrapper table {
   margin: auto;
-  width: 100%; }
-
-#troll-table-wrapper #troll-names-wrapper table #table-header {
-  border-bottom: 2px solid black; }
+  width: 100%;
+}
+#troll-table-wrapper #troll-names-wrapper table #table-header{
+  border-bottom: 2px solid black;
+}
 
 #troll-table-wrapper #troll-names-wrapper table th,
 #troll-table-wrapper #troll-names-wrapper table td {
   border-bottom: 1px solid #ddd;
   padding: 5px 5px 5px 0;
-  text-align: left; }
+  text-align: left;
 
-#troll-table-wrapper #troll-names-wrapper table th {
-  color: rgba(22, 122, 198, 0.90196); }
-
-#troll-table-wrapper #troll-names-wrapper table caption {
-  font-weight: bold; }
+}
+#troll-table-wrapper #troll-names-wrapper table th{
+  color: rgba(22, 122, 198, 0.901961);
+}
+#troll-table-wrapper #troll-names-wrapper table caption
+{
+  font-weight: bold;
+}
 
 #troll-table-wrapper #troll-names-wrapper .troll {
   margin-bottom: 10px;
   height: 18px;
-  overflow: ellipsis; }
+  overflow: ellipsis;
+}
 
 #troll-table-wrapper #troll-names-wrapper .troll .remove-name {
   display: inline;
   position: relative;
   cursor: pointer;
-  min-width: 15px; }
+  min-width: 15px;
+}
 
-#troll-table-wrapper #troll-names-wrapper .troll .troll-name {
-  max-width: 100px; }
+#troll-table-wrapper #troll-names-wrapper .troll .troll-name{
+  max-width: 100px;
+}
 
-#troll-table-wrapper #troll-names-wrapper .troll .comment-counter {
+#troll-table-wrapper #troll-names-wrapper .troll .comment-counter{
   color: red;
-  font-weight: bold; }
+  font-weight: bold;
+}
+
 
 /* Below css prevents all and selects shows approved comments */
-#items.style-scope.yt-live-chat-item-list-renderer > yt-live-chat-text-message-renderer {
-  display: none; }
+#{$COMMENTS_WRAPPER} > #{$COMMENT} {
+  display: none;
+}
 
-#items.style-scope.yt-live-chat-item-list-renderer > yt-live-chat-text-message-renderer.approved-comment {
-  display: inline-flex; }
+#{$COMMENTS_WRAPPER} > #{$COMMENT}.approved-comment{
+  display: inline-flex;
+}
+
+
+
 
 #troll-extension-wrapper #import-names-wrapper,
 #troll-extension-wrapper #export-names-wrapper {
   margin-bottom: 5px;
-  display: none; }
+  display: none;
+}
 
 #troll-extension-wrapper #troll-import-export-wrapper {
-  margin: 5px 0; }
+  margin: 5px 0;
 
+}
 #troll-extension-wrapper #import-export-links-wrapper {
   width: 100%;
-  height: 15px; }
-
+  height: 15px;
+}
 #troll-extension-wrapper #import-export-links-wrapper #import-names-link {
   display: inline;
   float: left;
-  margin-left: 50px; }
+  margin-left: 50px;
+}
 
 #troll-extension-wrapper #import-export-links-wrapper #import-names-link:link,
 #troll-extension-wrapper #import-export-links-wrapper #import-names-link:visited,
@@ -182,69 +220,77 @@
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link:link,
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link:visited,
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link:hover,
-#troll-extension-wrapper #import-export-links-wrapper #export-names-link:active {
-  color: rgba(22, 122, 198, 0.90196); }
+#troll-extension-wrapper #import-export-links-wrapper #export-names-link:active
+{
+  color: rgba(22, 122, 198, 0.901961);
+}
 
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link {
   display: inline;
   float: right;
-  margin-right: 50px; }
+  margin-right: 50px;
+}
 
 #troll-extension-wrapper #import-names-wrapper #import-buttons {
   display: inline;
   float: right;
   width: 34%;
-  min-width: 107px; }
+  min-width: 107px;
+}
 
 #troll-extension-wrapper #import-names-wrapper textarea#import-names-textarea {
   width: 95%;
   margin: auto;
   position: relative;
-  top: 4px; }
+  top: 4px;
+}
 
 #troll-extension-wrapper #import-names-wrapper #import-names-textarea-wrapper {
   max-width: 200px;
   width: 40%;
-  display: inline-block; }
+  display: inline-block;
+}
 
 #troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper {
   max-width: 100px;
   min-width: 80px;
   width: 23%;
-  display: inline-block; }
+  display: inline-block;
+}
 
 #troll-extension-wrapper #import-names-wrapper #import-names-button {
   float: right;
   position: relative;
-  top: 5px; }
-
+  top: 5px;
+}
 #troll-extension-wrapper #import-names-wrapper #import-close-button {
   float: right;
   position: relative;
   top: 5px;
   background-color: gray;
-  margin-left: 5px; }
+  margin-left: 5px;
+}
 
 #troll-extension-wrapper #export-names-wrapper #export-close-button {
   float: right;
   position: relative;
   margin: 0 23% 0 0;
-  background-color: gray; }
-
+  background-color: gray;
+}
 #troll-extension-wrapper textarea#export-names-textarea {
   width: 95%;
-  margin: auto; }
+  margin: auto;
+}
 
-#export-names-wrapper #export-names-textarea-wrapper {
+#export-names-wrapper #export-names-textarea-wrapper{
   max-width: 200px;
   width: 50%;
   display: inline-block;
-  vertical-align: middle; }
-
+  vertical-align: middle;
+}
 #export-names-wrapper #export-form-wrapper {
   position: relative;
-  width: 20%;
-  float: right;
-  top: 7px; }
-
-/*# sourceMappingURL=troll_starver.css.map */
+    width: 20%;
+    float: right;
+    top: 7px;
+}
