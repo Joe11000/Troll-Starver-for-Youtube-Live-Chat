@@ -132,14 +132,13 @@ var dom_manipulating = {
   },
 
   scrollToBottomOfChatBox: function(){
-    let $scroll_box = $('#items.style-scope.yt-live-chat-item-list-renderer')
+    let $scroll_box = $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER)
     $scroll_box.scrollTop($scroll_box[0].scrollHeight);
   },
 
   exportTrollsNamesToTextbox: function(){
     chrome.storage.local.get('troll_names_hash', (trolls_chrome_extension_info)=>{
       var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-      // console.log($('#export-names-textarea').val(""));
 
       if(
           trolls_chrome_extension_info['troll_names_hash'] === undefined ||
@@ -348,8 +347,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
       }
     }
 
-  $(event.target).addClass('approved-comment');
-    dom_manipulating.scrollToBottomOfChatBox();
+    $(event.target).addClass('approved-comment');
   });
 
 

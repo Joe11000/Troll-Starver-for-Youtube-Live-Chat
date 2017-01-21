@@ -31,9 +31,6 @@
 
 
 
-
-
-
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -211,14 +208,13 @@ var dom_manipulating = {
   },
 
   scrollToBottomOfChatBox: function scrollToBottomOfChatBox() {
-    var $scroll_box = $('#items.style-scope.yt-live-chat-item-list-renderer');
+    var $scroll_box = $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER);
     $scroll_box.scrollTop($scroll_box[0].scrollHeight);
   },
 
   exportTrollsNamesToTextbox: function exportTrollsNamesToTextbox() {
     chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
       var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-      // console.log($('#export-names-textarea').val(""));
 
       if (trolls_chrome_extension_info['troll_names_hash'] === undefined || (typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length === 0) {
         $('#export-names-textarea').val("");
@@ -339,7 +335,6 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
     }
 
     $(event.target).addClass('approved-comment');
-    dom_manipulating.scrollToBottomOfChatBox();
   });
 
   // in normal view, click on export link.
@@ -403,6 +398,18 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
     $('#append-label').click();
   });
 });
+
+// iframe warning html
+
+// document.querySelector('iframe#live-chat-iframe').parentNode.insertAdjacentHTML('beforeend', `
+//   <div id='troll-extension-wrapper'>
+//     <div id='iframe-loads-chatroom-warning'>
+//       <p class='warning-header'>TROLL BLOCKER</p>
+//       <p class='warning-orange'>Warning : The chatroom above is loaded through an iframe.</p>
+//       <p>You must either 1) Pop out the chatbox or 2) Enter "Youtube Gaming Mode" in order to use this extension.</p>
+//   </div>
+//   </div>
+// `);
 
 
 

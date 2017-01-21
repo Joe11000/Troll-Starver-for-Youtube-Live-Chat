@@ -167,7 +167,7 @@
   display: none; }
 
 #items.style-scope.yt-live-chat-item-list-renderer > yt-live-chat-text-message-renderer.approved-comment {
-  display: flex; }
+  display: flex !important; }
 
 #troll-extension-wrapper #import-names-wrapper,
 #troll-extension-wrapper #export-names-wrapper {
