@@ -1,158 +1,11 @@
-const YOUTUBE_SELECTORS = new function(){
-  this.APPEND_EXTENTION_TO = 'yt-live-chat-message-input-renderer';
-  this.COMMENTS_WRAPPER = '#items.style-scope.yt-live-chat-item-list-renderer'; // inside this.COMMENTS_WRAPPER
-  this.COMMENT = 'yt-live-chat-text-message-renderer';  // inside this.COMMENTS_WRAPPER
-  this.TROLL_IMG = "[is='yt-img']";                     // inside this.COMMENT
-  this.TROLL_NAME = '#author-name';                     // inside this.COMMENT
-}
-
-// reusable db manipulting functions
-var db = {
-  asyncReplaceAllTrollInfo: function(entire_hash, callback) {
-    chrome.storage.local.set({ 'troll_names_hash': entire_hash }, callback);
-  },
-
-  asyncDeleteTrollNames: function(troll_names_array) {
-    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
-
-      var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-      for(let i = 0; i < troll_names_array.length; i++) {
-        delete updating_hash[troll_names_array[i]];
-      }
-
-      chrome.storage.local.set({'troll_names_hash': updating_hash}, ()=>{}); //here
-    });
-  },
-
-  // this method needs optimizing. Should do bulk like this instead of doing through multiple loops.
-    // 1) figure out all hash of trolls messages that should be removed from chat box dom_manipulating.removeExistingCommentsFromNewTrolls
-    // 2) add take results of (1) and bulk create entries in troll table dom_manipulating.addEntryToTrollsTable
-    // 3) updateTotalNamesBlocked
-    // 4) updateTotalCommentsBlocked
-  asyncAppendArrayOfTrollNames: function(troll_names_array) {
-    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
-      var updating_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-      // append troll name if it doesn't exist already
-      for(let i = 0; i < troll_names_array.length; i++) {
-        // add only new troll names to database and into troll table
-        if(updating_hash[troll_names_array[i]] === undefined) {
-          let comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_names_array[i]])[troll_names_array[i]] || 0;
-          updating_hash[troll_names_array[i]] = comments_blocked;
-          dom_manipulating.addEntryToTrollsTable(troll_names_array[i], comments_blocked);
-          dom_manipulating.updateTotalCommentsBlocked(comments_blocked);
-        }
-      }
-
-      chrome.storage.local.set({'troll_names_hash': updating_hash}, (updating_hash)=>{
-        dom_manipulating.updateTotalNamesBlocked();
-      });
-    });
-  }
-};
-
-// reusable dom manipulting functions
-var dom_manipulating = {
-
-  makeTableReflectSavedTrollNames: function() {
-    chrome.storage.local.get('troll_names_hash', function (trolls_chrome_extension_info) {
-      // nothing to update if db doesn't exist yet.
-      if (trolls_chrome_extension_info['troll_names_hash'] === undefined) {
-        db.asyncReplaceAllTrollInfo({}, function () {});
-        return;
-      }
-
-      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-      if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-        let keys = Object.keys(troll_names_hash);
-        let current_troll_comments = dom_manipulating.removeExistingCommentsFromNewTrolls(keys);
-
-        for(let key of keys){
-          troll_names_hash[key] = current_troll_comments[key] || 0;
-          dom_manipulating.addEntryToTrollsTable(key, troll_names_hash[key]);
-          dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[key]);
-        }
-
-        dom_manipulating.updateTotalNamesBlocked();
-
-        db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
-      }
-    });
-  },
-
-  // add new row on to troll table on the DOM
-  addEntryToTrollsTable: function (name, existing_comments_counter=0) {
-   $(`
-      <tr class='troll' data-class='troll'>
-        <td><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
-        <td class='troll-name' data-class='troll-name'>${name}</td>
-        <td class='comment-counter' data-class='comment-counter'>${existing_comments_counter}</td>
-      </tr>
-    `).insertAfter($('#troll-names-wrapper #table-header'));
-   $('#troll-names-wrapper').scrollTop(0);
-  },
-
-  // input: ie [name_1, name_2, name_3]               array of troll names to remove from chat
-  // return int : {name_1: 2, name_2: 15, name_3: 0}  num of comments of his were deleted in chatroom
-  removeExistingCommentsFromNewTrolls: function(troll_name_array) {
-    let $all_comments = $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} ${YOUTUBE_SELECTORS.COMMENT}`) // Look through all  ".comment" but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
-
-    let result = {};
-    for(let t of troll_name_array) {
-      result[t] = 0;
-    }
-
-    $all_comments.each(function() {
-      let commenter_name = $(this).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
-
-      let commenter_index_in_troll_array = troll_name_array.indexOf(commenter_name);
-      if( commenter_index_in_troll_array != -1)
-      {
-        result[commenter_name]++;
-        $(this).remove();
-      }
-    });
-
-    return result;
-  },
-
-  updateTotalNamesBlocked: function() {
-    var total = $("[data-id='troll-table-wrapper'] #troll-names-wrapper table img.remove-name").length || 0;
-
-    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-name").html(`Name(${total})`);
-  },
-
-  updateTotalCommentsBlocked: function(increase_total_by=1) {
-    let string = $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html() || "";
-    let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
-    let new_total = current_total + increase_total_by;
-    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html(`#(${new_total})`);
-  },
-
-  scrollToBottomOfChatBox: function(){
-    let $scroll_box = $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER)
-    $scroll_box.scrollTop($scroll_box[0].scrollHeight);
-  },
-
-  exportTrollsNamesToTextbox: function(){
-    chrome.storage.local.get('troll_names_hash', (trolls_chrome_extension_info)=>{
-      var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-      if(
-          trolls_chrome_extension_info['troll_names_hash'] === undefined ||
-          ((typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length === 0 )
-        )
-      {
-       $('#export-names-textarea').val("");
-      }
-      else if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
-        let result = Object.keys(troll_names_hash).map((troll_name) => { return(troll_name) } ).join("\n");
-        $('#export-names-textarea').val(result);
-      }
-    });
-  }
+// 3rd party(youtube) selectors
+const YOUTUBE_SELECTORS = {
+  APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer',
+  COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer', // inside this.COMMENTS_WRAPPER
+  COMMENT: 'yt-live-chat-text-message-renderer',  // inside this.COMMENTS_WRAPPER
+  TROLL_IMG: "[is='yt-img']",                     // inside this.COMMENT
+  TROLL_NAME: '#author-name',                     // inside this.COMMENT
+  TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint" // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
 }
 
 // put the widget on the screen
@@ -184,7 +37,7 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
               <th>x</th>
               <th id='header-name'>Name(0)</th>
               <th id='header-count'>#(0)</th>
-            </th>
+            </tr>
           </table>
         </div>
 
@@ -213,8 +66,8 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
             <textarea id='import-names-textarea' placeholder="name 1\nname 2\nname 3"></textarea>
           </div>
           <div id='import-buttons'>
-            <input id='import-close-button' type='button' value='close'>
-            <input id='import-names-button' type='button' value='import'>
+            <input id='import-close-button' data-id='import-close-button' type='button' value='close'>
+            <input id='import-names-button' data-id='import-names-button' type='button' value='import'>
           </div>
         </form>
 
@@ -233,35 +86,242 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
         </div>
       </div>
     </div>
-
-
   </div>
 `);
 
-$('#troll-extension-wrapper #arrow-wrapper').click( ()=> {
-  if ($('#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:visible').length == 0) {
-    $('#troll-extension-wrapper').addClass('minimize');
+
+// reusable db manipulting functions
+var db = {
+  get: function() {
+    return new Promise((res, rej) => {
+      chrome.storage.local.get('troll_names_hash', (troll_names_hash_wrapper)=>{res(troll_names_hash_wrapper['troll_names_hash'])})
+    })
+  },
+
+  // replace whole db troll_names_hash with a new hash
+  replaceWith: function(hash) {
+    return new Promise((res, rej) => {
+      chrome.storage.local.set( {'troll_names_hash': hash }, (hash)=>{res(hash)} );
+    })
+  },
+
+  // delete any db entries that match array names 
+  deleteNames: function(troll_names_array) {
+    return db.get().then((troll_names_hash)=>{
+
+      var updating_hash = troll_names_hash;
+      for(let i = 0; i < troll_names_array.length; i++) {
+        delete updating_hash[troll_names_array[i]];
+      }
+
+      return db.replaceWith(updating_hash)
+    });
+  }, 
+
+  // display db on console
+  dump: function(){
+    db.get().then(hash=>{
+      console.log(hash)
+    });
+  }, 
+
+  // max number of trolls that can be uploaded, saved, and added to td table columns on the screen.
+  importBulkSize: function(){
+    return 100
+  }, 
+
+  // delay is 1.25 seconds after uploading, saving, and adding table entries in bulk.
+  importBulkDelay: function(){
+    return 1250;
   }
-  else
-  {
-    $('#troll-extension-wrapper').removeClass('minimize');
+}
+
+
+// reusable dom manipulting functions
+var dom_manipulating = {
+
+  // given a saved or unsaved hash, (probably a subset of troll_names_hash), remove troll comments from chatroom in bulk and save new entries in db
+  // return : a promise with the updated hash
+  onExtensionLoadAddTableEntriesForDBEntries: function() {
+   db.get().then((troll_names_hash)=>{
+      dom_manipulating._onExtensionLoadAddTableEntriesForDBEntries(Object.keys(troll_names_hash), troll_names_hash);
+    })
+  },
+  _onExtensionLoadAddTableEntriesForDBEntries: function _onExtensionLoadAddTableEntriesForDBEntries(troll_names_array_remaining, troll_names_hash){
+
+    // splice is a mutator method is cuts a subset out of an array and returns it. Here is giving (bulk) sized array sized array from keys_in_next_bulk for this iteration through the function and and assigns the remaining names to keys_in_current_bulk for the next iteration through the loop
+      let keys_in_next_bulk = troll_names_array_remaining;
+      let keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize())
+
+    // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
+    // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
+    
+    let comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
+    let total_comments_blocked_in_batch = 0;
+
+    // append troll name if it doesn't exist already
+    for(let i = 0; i < keys_in_current_bulk.length; i++) {
+      // add only new troll names to database and into troll table
+        let comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
+        total_comments_blocked_in_batch += comments_by_troll;
+        troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
+        // console.log(`${keys_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
+
+        dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
+    }
+    
+    // console.log(`total:${total_comments_blocked_in_batch}`)
+
+    dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
+    dom_manipulating.updateTotalNamesBlocked();
+
+    if(keys_in_next_bulk.length > 0) {
+      setTimeout(_onExtensionLoadAddTableEntriesForDBEntries, db.importBulkDelay(), keys_in_next_bulk, troll_names_hash);
+    }
+  },
+
+  // add new row on to troll table on the DOM
+  addATableRowHTMLNewTroll: function (name, existing_comments_counter=0) {
+   $(`
+      <tr class='troll' data-class='troll'>
+        <td><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
+        <td class='troll-name' data-class='troll-name'>${name}</td>
+        <td class='comment-counter' data-class='comment-counter'>${existing_comments_counter}</td>
+      </tr>
+    `).insertAfter($('#troll-names-wrapper #table-header'));
+   $('#troll-names-wrapper').scrollTop(0);
+  },
+
+  // input: ie [name_1, name_2, name_3]               array of troll names to remove from chat
+  // return int : {name_1: 2, name_2: 15, name_3: 0}  num of comments of his were deleted in chatroom
+  removeExistingCommentsFromNewTrolls: function(troll_name_array) {
+    let $all_comments = $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} ${YOUTUBE_SELECTORS.COMMENT}`) // Look through all  comments but ignoring the last one, because that user text box to chat with. There are no other differentiating tags on it. If I add any they could be removed without me knowing.
+
+    let result = {};
+    for(let t of troll_name_array) {
+      result[t] = 0;
+    }
+
+    $all_comments.each(function() {
+      let commenter_name = $(this).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
+
+      let commenter_index_in_troll_array = troll_name_array.indexOf(commenter_name);
+      if( commenter_index_in_troll_array != -1)
+      {
+        this.remove();
+        result[commenter_name]++;
+      }
+    });
+
+    return result;
+  },
+
+
+
+  updateTotalNamesBlocked: function() {
+    var total = $("[data-id='troll-table-wrapper'] #troll-names-wrapper table img.remove-name").length || 0;
+
+    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-name").html(`Name(${total})`);
+  },
+
+  updateTotalCommentsBlocked: function(increase_total_by=1) {
+    let string = $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html() || "";
+    let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
+    let new_total = current_total + increase_total_by;
+    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html(`#(${new_total})`);
+  },
+
+  scrollToBottomOfChatBox: function(){
+    let $scroll_box = $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER)
+    $scroll_box.scrollTop($scroll_box[0].scrollHeight);
+  },
+
+  exportTrollsNamesToTextbox: function(){
+    db.get().then((troll_names_hash)=>{
+
+      if(
+          troll_names_hash === undefined ||
+          ((typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length === 0 )
+        )
+      {
+       $('#export-names-textarea').val("");
+      }
+      else if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
+        let result = Object.keys(troll_names_hash).map((troll_name) => { return(troll_name) } ).join("\n");
+        $('#export-names-textarea').val(result);
+      }
+    });
   }
-});
+}
+
+
+
+
+
+// start a single promise
+  // params troll names array from all ways to create a new troll 1) Single import by drag and drop 2) Mass import by appending 3) Mass import by overwriting(assumes db has been cleared already on mass overwrite)
+  // fetch current database
+  // run recursive method to 
+
+function appendArrayOfTrollNames(troll_names_array) {
+  db.get().then((troll_names_hash)=>{
+    _appendArrayOfTrollNamesByBulk(troll_names_array, troll_names_hash);
+  })
+}
+var _appendArrayOfTrollNamesByBulk = function _appendArrayOfTrollNamesByBulk(troll_names_array_remaining, troll_names_hash){
+
+  // splice is a mutator method is cuts a subset out of an array and returns it. Here is giving (bulk) sized array sized array from keys_in_next_bulk for this iteration through the function and and assigns the remaining names to keys_in_current_bulk for the next iteration through the loop
+    let keys_in_next_bulk = troll_names_array_remaining;
+    let keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize())
+
+  // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
+  // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
+  
+  let comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
+  let total_comments_blocked_in_batch = 0;
+
+  // append troll name if it doesn't exist already
+  for(let i = 0; i < keys_in_current_bulk.length; i++) {
+    // add only new troll names to database and into troll table
+    if(troll_names_hash[keys_in_current_bulk[i]] === undefined) {
+      let comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
+      total_comments_blocked_in_batch += comments_by_troll;
+      troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
+      // console.log(`${keys_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
+
+      dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
+    }
+  }
+  
+  // console.log(`total:${total_comments_blocked_in_batch}`)
+
+  dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
+
+
+  // promises are suppose to be async, but just in case set 1.5 second js release
+  db.replaceWith(troll_names_hash)
+  dom_manipulating.updateTotalNamesBlocked();
+
+  if(keys_in_next_bulk.length > 0) {
+    setTimeout(_appendArrayOfTrollNamesByBulk, db.importBulkDelay(), keys_in_next_bulk, troll_names_hash);
+  }
+}
+
+
+var expanded_for_drag = false
+
 
 // make all comments visible
 $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} ${YOUTUBE_SELECTORS.COMMENT}`).each(function() {
    $(this).addClass('approved-comment');
 });
 
-dom_manipulating.makeTableReflectSavedTrollNames();
+dom_manipulating.onExtensionLoadAddTableEntriesForDBEntries();
 
-dom_manipulating.scrollToBottomOfChatBox();
 
-var expanded_for_drag = false
-
-// add new troll to list, clear his old comments, and start ignoring new comments
+// store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon 
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function(event) {
-  // expand extension if it is currently minimized
+  // expand extension temporarialy if it is currently minimized
   if($("#troll-extension-wrapper [data-id='expand-arrow-wrapper']:visible").length > 0)
   {
     $('#troll-extension-wrapper').removeClass('minimize');
@@ -274,25 +334,14 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IM
 });
 
 
-// when a user's image is dragged and dropped onto the troll, save troll to saved chrome.storage and
+
+// when a user's image is dragged and dropped onto the troll image, save the name in db
 $('#troll-image-wrapper').on('drop', function(event) {
   event.preventDefault();
   event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
   let troll_name = event.dataTransfer.getData('troll-name');
 
-  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
-
-    if(troll_names_hash[troll_name] === undefined) {
-      troll_names_hash[troll_name] = dom_manipulating.removeExistingCommentsFromNewTrolls([troll_name])[troll_name] || 0;
-
-      db.asyncReplaceAllTrollInfo(troll_names_hash, function() {
-        dom_manipulating.addEntryToTrollsTable(troll_name, troll_names_hash[troll_name]);
-        dom_manipulating.updateTotalNamesBlocked();
-        dom_manipulating.updateTotalCommentsBlocked(troll_names_hash[troll_name]);
-      });
-    }
-  });
+  appendArrayOfTrollNames([troll_name])
 
   // reminimize the extension if it was only opened for drag process
   if(expanded_for_drag){
@@ -301,32 +350,27 @@ $('#troll-image-wrapper').on('drop', function(event) {
   }
 });
 
-// clear chat room
-$("[data-id='clear-all-comments']").on('click', function() {
-  dom_manipulating.scrollToBottomOfChatBox();
-  $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).html('');
-});
-
-
 // remove single troll from list
 $("[data-id='troll-names-wrapper']").on('click', '.remove-name', function(event) {
   var $element_to_delete = $(this).closest("[data-class='troll']");
   let name = $element_to_delete.find('.troll-name').html();
   $element_to_delete.remove();
   dom_manipulating.updateTotalNamesBlocked();
-  db.asyncDeleteTrollNames([name]);
+
+  db.deleteNames([name]);
+});
+
+
+// clear chat room
+$("[data-id='clear-all-comments']").on('click', function() {
+  dom_manipulating.scrollToBottomOfChatBox();
+  $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).html('');
 });
 
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
-  // the chat room doubles up on this comment for when you start sending a comment and when it is done. So ignore the first one
-  // Youtube fixed this
-  // if(event.target && event.target.className && event.target.className.indexOf('sending-in-progress') != -1) {
-  //   return;
-  // }
 
-  chrome.storage.local.get('troll_names_hash', function(trolls_chrome_extension_info) {
-    var troll_names_hash = trolls_chrome_extension_info['troll_names_hash'];
+  db.get().then((troll_names_hash)=>{
 
     if( troll_names_hash !== {} && troll_names_hash !== undefined )
     {
@@ -342,7 +386,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
         $(`[data-class='troll']:contains(${commenters_name}) > [data-class='comment-counter']`).html(troll_names_hash[commenters_name]);
         $comment_element.remove();
         dom_manipulating.updateTotalCommentsBlocked(1);
-        db.asyncReplaceAllTrollInfo(troll_names_hash, ()=>{});
+        db.replaceWith(troll_names_hash);
         return;
       }
     }
@@ -359,7 +403,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
     dom_manipulating.exportTrollsNamesToTextbox();
   });
 
-  // In normal view, click inport button view
+  // In normal view, click import button view
   $('#import-names-link').on('click', function (e) {
     e.preventDefault();
     $('#import-export-links-wrapper').hide();
@@ -382,21 +426,13 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
   });
 
   // In the import view, click import button.
-  $("#import-names-wrapper input[value='import']").on('click', function () {
-
+  $("#import-names-wrapper [data-id='import-names-button']").on('click', function () {
+    // console.log('import button clicked')
     let importing_names_array = $('#import-names-textarea').val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
     if(importing_names_array !== null) {
       let importing_names_array_length = importing_names_array.length;
-
-      // delete all trolls if overwrite radio button is checked
-      if( $("#import-names-radio-wrapper :checked").val() === 'overwrite') {
-        db.asyncReplaceAllTrollInfo({}, ()=>{});
-        $("[data-id='troll-names-wrapper']" + ' .troll').each(function(idex, element){
-          element.remove();
-        });
-      }
 
       // remove the weird '↵' at the end of each line that isn't the final line.
       for(let i = 0; i < importing_names_array_length - 1; i++)
@@ -404,19 +440,47 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
         importing_names_array[i] = importing_names_array[i].substr(0, importing_names_array[i].length - 1);
       }
 
-      db.asyncAppendArrayOfTrollNames(importing_names_array);
+      let overwrite_checked = $("#import-names-radio-wrapper :checked").val() === 'overwrite' // need this inside variable set for promise
+      new Promise((res, rej)=>{ // overwrite the db and then kick off appending names in bulk to db
+        res(1) 
+      }).then(()=>{
+        // delete all trolls if overwrite radio button is checked
+        if(!!overwrite_checked) {
+          $("[data-id='troll-names-wrapper']" + ' .troll').each(function(idex, element){
+            element.remove();
+          });
+          return new Promise((res, rej)=>{ // step is async...return promise to empty db and then append new people
+            db.replaceWith({});
+            res(true);
+          })
+        }
+      }).then(()=>{
+        appendArrayOfTrollNames(importing_names_array);
+      })
     }
 
-    $('#import-export-links-wrapper').show();
-    $('#import-names-wrapper').hide();
-    $('#import-names-textarea').val('');
-    $('#append-label').click();
+    // if the import panel is visible then hide it and show the import or export links
+    if($('#import-names-wrapper:visible').length != 0){
+      $('#import-export-links-wrapper').show();
+      $('#import-names-wrapper').hide();
+      $('#import-names-textarea').val('');
+      $('#append-label').click();
+    }
   });
 });
 
+// When the user clicks on the minimize/maximize div, then either open or minimize the extension
+$('#troll-extension-wrapper #arrow-wrapper').click( ()=> {
+  if ($('#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:visible').length == 0) {
+    $('#troll-extension-wrapper').addClass('minimize');
+  }
+  else
+  {
+    $('#troll-extension-wrapper').removeClass('minimize');
+  }
+});
 
-
-
+dom_manipulating.scrollToBottomOfChatBox();
 
 
 // iframe warning html
