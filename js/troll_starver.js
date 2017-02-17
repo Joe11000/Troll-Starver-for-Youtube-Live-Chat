@@ -36,14 +36,11 @@
 
 
 
-
-
-
-
-
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 // 3rd party(youtube) selectors
 var YOUTUBE_SELECTORS = {
@@ -56,22 +53,22 @@ var YOUTUBE_SELECTORS = {
 };
 
 // put the widget on the screen
-$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        &#11014;\n        <p>Expand Troll Starver</p>\n        &#11014;\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        &#11015;\n        <p>Minimize Troll Starver</p>\n        &#11015;\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'troll-table-wrapper\' data-id=\'troll-table-wrapper\'>\n        <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <table>\n            <caption>Blocking Comments</caption>\n            <tr id=\'table-header\'>\n              <th>x</th>\n              <th id=\'header-name\'>Name(0)</th>\n              <th id=\'header-count\'>#(0)</th>\n            </tr>\n          </table>\n        </div>\n\n        <div><form><input type=\'button\' id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' data-id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' data-id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n');
+$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\' data-id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        &#11014;\n        <p>Expand Troll Starver</p>\n        &#11014;\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        &#11015;\n        <p>Minimize Troll Starver</p>\n        &#11015;\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'troll-table-wrapper\' data-id=\'troll-table-wrapper\'>\n        <div id=\'troll-image-wrapper\' data-id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <table>\n            <caption>Blocking Comments</caption>\n            <tr id=\'table-header\'>\n              <th>x</th>\n              <th id=\'header-name\'>Name(0)</th>\n              <th id=\'header-count\'>#(0)</th>\n            </tr>\n          </table>\n        </div>\n\n        <div><form><input type=\'button\' id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' data-id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' data-id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n');
 
 // reusable db manipulting functions
 var db = {
   get: function get() {
     return new Promise(function (res, rej) {
-      chrome.storage.local.get('troll_names_hash', function (troll_names_hash_wrapper) {
-        res(troll_names_hash_wrapper['troll_names_hash']);
+      chrome.storage.local.get('troll_names_db', function (troll_names_db_wrapper) {
+        res(troll_names_db_wrapper['troll_names_db']);
       });
     });
   },
 
-  // replace whole db troll_names_hash with a new hash
+  // replace whole db troll_names_db with a new hash
   replaceWith: function replaceWith(hash) {
     return new Promise(function (res, rej) {
-      chrome.storage.local.set({ 'troll_names_hash': hash }, function (hash) {
+      chrome.storage.local.set({ 'troll_names_db': hash }, function (hash) {
         res(hash);
       });
     });
@@ -79,9 +76,9 @@ var db = {
 
   // delete any db entries that match array names
   deleteNames: function deleteNames(troll_names_array) {
-    return db.get().then(function (troll_names_hash) {
+    return db.get().then(function (troll_names_db) {
 
-      var updating_hash = troll_names_hash;
+      var updating_hash = troll_names_db;
       for (var i = 0; i < troll_names_array.length; i++) {
         delete updating_hash[troll_names_array[i]];
       }
@@ -111,19 +108,21 @@ var db = {
 // reusable dom manipulting functions
 var dom_manipulating = {
 
-  // given a saved or unsaved hash, (probably a subset of troll_names_hash), remove troll comments from chatroom in bulk and save new entries in db
+  // given a saved or unsaved hash, (probably a subset of troll_names_db), remove troll comments from chatroom in bulk and save new entries in db
   // return : a promise with the updated hash
   onExtensionLoadAddTableEntriesForDBEntries: function onExtensionLoadAddTableEntriesForDBEntries() {
-    db.get().then(function (troll_names_hash) {
-      dom_manipulating._onExtensionLoadAddTableEntriesForDBEntries(Object.keys(troll_names_hash), troll_names_hash);
+    db.get().then(function (troll_names_db) {
+      dom_manipulating._onExtensionLoadAddTableEntriesForDBEntries(Object.keys(troll_names_db), troll_names_db);
     });
   },
-  _onExtensionLoadAddTableEntriesForDBEntries: function _onExtensionLoadAddTableEntriesForDBEntries(troll_names_array_remaining, troll_names_hash) {
+  _onExtensionLoadAddTableEntriesForDBEntries: function _onExtensionLoadAddTableEntriesForDBEntries(troll_names_array_remaining, troll_names_db) {
 
     // splice is a mutator method is cuts a subset out of an array and returns it. Here is giving (bulk) sized array sized array from keys_in_next_bulk for this iteration through the function and and assigns the remaining names to keys_in_current_bulk for the next iteration through the loop
     var keys_in_next_bulk = troll_names_array_remaining;
     var keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize());
 
+    // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
+    // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
 
     var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
     var total_comments_blocked_in_batch = 0;
@@ -133,26 +132,29 @@ var dom_manipulating = {
       // add only new troll names to database and into troll table
       var comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
       total_comments_blocked_in_batch += comments_by_troll;
-      troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
+      troll_names_db[keys_in_current_bulk[i]] = comments_by_troll;
+      // console.log(`${keys_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
 
       dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
     }
 
+    // console.log(`total:${total_comments_blocked_in_batch}`)
 
     dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
     dom_manipulating.updateTotalNamesBlocked();
 
     if (keys_in_next_bulk.length > 0) {
-      setTimeout(_onExtensionLoadAddTableEntriesForDBEntries, db.importBulkDelay(), keys_in_next_bulk, troll_names_hash);
+      setTimeout(_onExtensionLoadAddTableEntriesForDBEntries, db.importBulkDelay(), keys_in_next_bulk, troll_names_db);
     }
   },
 
+  // !FIX: pass in the channel id so you can put a title=${channel}
   // add new row on to troll table on the DOM
   addATableRowHTMLNewTroll: function addATableRowHTMLNewTroll(name) {
     var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-    $('\n      <tr class=\'troll\' data-class=\'troll\'>\n        <td><img class=\'remove-name\' data-class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></td>\n        <td class=\'troll-name\' data-class=\'troll-name\'>' + name + '</td>\n        <td class=\'comment-counter\' data-class=\'comment-counter\'>' + existing_comments_counter + '</td>\n      </tr>\n    ').insertAfter($('#troll-names-wrapper #table-header'));
-    $('#troll-names-wrapper').scrollTop(0);
+    $('\n      <tr class=\'troll\' data-class=\'troll\'>\n        <td><img class=\'remove-name\' data-class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></td>\n        <td class=\'troll-name\' data-class=\'troll-name\'>' + name + '</td>\n        <td class=\'comment-counter\' data-class=\'comment-counter\'>' + existing_comments_counter + '</td>\n      </tr>\n    ').insertAfter($("[data-id='troll-names-wrapper'] #table-header"));
+    $("[data-id='troll-names-wrapper']").scrollTop(0);
   },
 
   // input: ie [name_1, name_2, name_3]               array of troll names to remove from chat
@@ -200,18 +202,18 @@ var dom_manipulating = {
   },
 
   updateTotalNamesBlocked: function updateTotalNamesBlocked() {
-    var total = $("[data-id='troll-table-wrapper'] #troll-names-wrapper table img.remove-name").length || 0;
+    var total = $("[data-id='troll-table-wrapper'] [data-id='troll-names-wrapper'] table img.remove-name").length || 0;
 
-    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-name").html('Name(' + total + ')');
+    $("[data-id='troll-table-wrapper'] [data-id='troll-names-wrapper'] #header-name").html('Name(' + total + ')');
   },
 
   updateTotalCommentsBlocked: function updateTotalCommentsBlocked() {
     var increase_total_by = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
 
-    var string = $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html() || "";
+    var string = $("[data-id='troll-table-wrapper'] [data-id='troll-names-wrapper'] #header-count").html() || "";
     var current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
     var new_total = current_total + increase_total_by;
-    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html('#(' + new_total + ')');
+    $("[data-id='troll-table-wrapper'] [data-id='troll-names-wrapper'] #header-count").html('#(' + new_total + ')');
   },
 
   scrollToBottomOfChatBox: function scrollToBottomOfChatBox() {
@@ -220,17 +222,29 @@ var dom_manipulating = {
   },
 
   exportTrollsNamesToTextbox: function exportTrollsNamesToTextbox() {
-    db.get().then(function (troll_names_hash) {
+    db.get().then(function (troll_names_db) {
 
-      if (troll_names_hash === undefined || (typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length === 0) {
+      if (troll_names_db === undefined || (typeof troll_names_db === 'undefined' ? 'undefined' : _typeof(troll_names_db)) == "object" && Object.keys(troll_names_db).length === 0) {
         $('#export-names-textarea').val("");
-      } else if ((typeof troll_names_hash === 'undefined' ? 'undefined' : _typeof(troll_names_hash)) == "object" && Object.keys(troll_names_hash).length > 0) {
-        var result = Object.keys(troll_names_hash).map(function (troll_name) {
+      } else if ((typeof troll_names_db === 'undefined' ? 'undefined' : _typeof(troll_names_db)) == "object" && Object.keys(troll_names_db).length > 0) {
+        var result = Object.keys(troll_names_db).map(function (troll_name) {
           return troll_name;
         }).join("\n");
         $('#export-names-textarea').val(result);
       }
     });
+  },
+
+  getCommentersYoutubeChannel: function getCommentersYoutubeChannel(comment_id) {
+    debugger;
+    var $el = $('[id="' + comment_id + '"]');
+    $el.find('#menu').css('opacity', 0).show().find('#menu-button').click().hide().css('opacity', 1);
+
+    try {
+      return $('#items > div > ytg-menu-navigation-item-renderer > ytg-nav-endpoint > a').attr('href').match(/channel\/(.+)$/)[1];
+    } catch (e) {
+      return '';
+    }
   }
 };
 
@@ -238,43 +252,46 @@ var dom_manipulating = {
 // params troll names array from all ways to create a new troll 1) Single import by drag and drop 2) Mass import by appending 3) Mass import by overwriting(assumes db has been cleared already on mass overwrite)
 // fetch current database
 // run recursive method to
-
-function appendArrayOfTrollNames(troll_names_array) {
-  db.get().then(function (troll_names_hash) {
-    _appendArrayOfTrollNamesByBulk(troll_names_array, troll_names_hash);
+function appendArrayOfTrollNames(troll_names_arr_of_hashes) {
+  db.get().then(function (troll_names_db) {
+    _appendArrayOfTrollNamesByBulk(troll_names_arr_of_hashes, troll_names_db);
   });
 }
-var _appendArrayOfTrollNamesByBulk = function _appendArrayOfTrollNamesByBulk(troll_names_array_remaining, troll_names_hash) {
+var _appendArrayOfTrollNamesByBulk = function _appendArrayOfTrollNamesByBulk(troll_names_arr_of_hashes_remaining, troll_names_db) {
+  debugger; // HERE
+  // splice is a mutator method is cuts a subset out of an array and returns it. Here is giving (bulk) sized array sized array from trolls_in_next_bulk for this iteration through the function and and assigns the remaining names to keys_in_current_bulk for the next iteration through the loop
+  var trolls_in_next_bulk = troll_names_arr_of_hashes_remaining;
+  var trolls_in_current_bulk = trolls_in_next_bulk.splice(0, db.importBulkSize());
 
-  // splice is a mutator method is cuts a subset out of an array and returns it. Here is giving (bulk) sized array sized array from keys_in_next_bulk for this iteration through the function and and assigns the remaining names to keys_in_current_bulk for the next iteration through the loop
-  var keys_in_next_bulk = troll_names_array_remaining;
-  var keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize());
+  // console.log('trolls_in_next_bulk = ', trolls_in_next_bulk)
+  // console.log('trolls_in_current_bulk = ', trolls_in_current_bulk)
 
-
-  var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
+  var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(trolls_in_current_bulk);
   var total_comments_blocked_in_batch = 0;
 
   // append troll name if it doesn't exist already
-  for (var i = 0; i < keys_in_current_bulk.length; i++) {
+  for (var i = 0; i < trolls_in_current_bulk.length; i++) {
     // add only new troll names to database and into troll table
-    if (troll_names_hash[keys_in_current_bulk[i]] === undefined) {
-      var comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
+    if (troll_names_db[trolls_in_current_bulk[i]] === undefined) {
+      var comments_by_troll = comments_blocked[trolls_in_current_bulk[i]];
       total_comments_blocked_in_batch += comments_by_troll;
-      troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
+      troll_names_db[trolls_in_current_bulk[i]] = comments_by_troll;
+      // console.log(`${trolls_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
 
-      dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
+      dom_manipulating.addATableRowHTMLNewTroll(trolls_in_current_bulk[i], comments_by_troll);
     }
   }
 
+  // console.log(`total:${total_comments_blocked_in_batch}`)
 
   dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
 
   // promises are suppose to be async, but just in case set 1.5 second js release
-  db.replaceWith(troll_names_hash);
+  db.replaceWith(troll_names_db);
   dom_manipulating.updateTotalNamesBlocked();
 
-  if (keys_in_next_bulk.length > 0) {
-    setTimeout(_appendArrayOfTrollNamesByBulk, db.importBulkDelay(), keys_in_next_bulk, troll_names_hash);
+  if (trolls_in_next_bulk.length > 0) {
+    setTimeout(_appendArrayOfTrollNamesByBulk, db.importBulkDelay(), trolls_in_next_bulk, troll_names_db);
   }
 };
 
@@ -290,31 +307,42 @@ dom_manipulating.onExtensionLoadAddTableEntriesForDBEntries();
 // store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function (event) {
   // expand extension temporarialy if it is currently minimized
-  if ($("#troll-extension-wrapper [data-id='expand-arrow-wrapper']:visible").length > 0) {
-    $('#troll-extension-wrapper').removeClass('minimize');
+  if ($("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']:visible").length > 0) {
+    $("[data-id='troll-extension-wrapper']").removeClass('minimize');
     expanded_for_drag = true;
   }
 
+  var comment_id = $(this).parent(YOUTUBE_SELECTORS.COMMENT).attr('id');
+
   event.dataTransfer = event.originalEvent.dataTransfer;
-  var troll_name = $(this).closest(YOUTUBE_SELECTORS.COMMENT).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
-  event.dataTransfer.setData('troll-name', troll_name);
+  event.dataTransfer.setData('comment_id', comment_id);
 });
 
+// correct
 // when a user's image is dragged and dropped onto the troll image, save the name in db
 $('#troll-image-wrapper').on('drop', function (event) {
   event.preventDefault();
   event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
-  var troll_name = event.dataTransfer.getData('troll-name');
+  debugger;
 
-  appendArrayOfTrollNames([troll_name]);
+  var comment_id = event.dataTransfer.setData('comment_id');
+
+  var new_troll_hash = _defineProperty({}, dom_manipulating.getCommentersYoutubeChannel(comment_id), {
+    name: $(this).closest(YOUTUBE_SELECTORS.COMMENT).find(YOUTUBE_SELECTORS.TROLL_NAME).html(),
+    comment_counter: 0
+  });
+  console.log(new_troll_hash);
+
+  appendArrayOfTrollNames([new_troll_hash]);
 
   // reminimize the extension if it was only opened for drag process
   if (expanded_for_drag) {
-    $('#troll-extension-wrapper').addClass('minimize');
+    $("[data-id='troll-extension-wrapper']").addClass('minimize');
     expanded_for_drag = false;
   }
 });
 
+// ! FIX: needs to return hidden field of users channel nameon field for easier deletion
 // remove single troll from list
 $("[data-id='troll-names-wrapper']").on('click', '.remove-name', function (event) {
   var $element_to_delete = $(this).closest("[data-class='troll']");
@@ -325,36 +353,54 @@ $("[data-id='troll-names-wrapper']").on('click', '.remove-name', function (event
   db.deleteNames([name]);
 });
 
+// correct
 // clear chat room
 $("[data-id='clear-all-comments']").on('click', function () {
   dom_manipulating.scrollToBottomOfChatBox();
   $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).html('');
 });
 
+// !FIX: this now ignores the other redunded cases of NodeInsertion <- good. Now it needs to grab the channel id and
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
 
-  db.get().then(function (troll_names_hash) {
+  var $target = $(event.target);
+  if (!$(event.target).is(YOUTUBE_SELECTORS.COMMENT)) {
+    // return if node inserted DOES NOT match the youtube comment selector
+    return;
+  }
 
-    if (troll_names_hash !== {} && troll_names_hash !== undefined) {
-      var $comment_element = $(event.target);
+  var e = event;
+
+  db.get().then(function (troll_names_db) {
+
+    var comment_id = dom_manipulating.getCommentersYoutubeChannel($target.attr('id'));
+
+    var new_troll_hash = _defineProperty({}, comment_id, {
+      name: $(e.target).find(YOUTUBE_SELECTORS.TROLL_NAME).html(),
+      comment_counter: 0
+    });
+    console.log(new_troll_hash);
+    debugger;
+    if (troll_names_db !== {} && troll_names_db !== undefined) {
+      var $comment_element = $target;
       var commenters_name = $comment_element.find(YOUTUBE_SELECTORS.TROLL_NAME).html();
 
       if (commenters_name === undefined) {
         return false;
       }
 
-      if (troll_names_hash[commenters_name] != undefined) {
-        troll_names_hash[commenters_name]++;
-        $('[data-class=\'troll\']:contains(' + commenters_name + ') > [data-class=\'comment-counter\']').html(troll_names_hash[commenters_name]);
+      if (troll_names_db[commenters_name] != undefined) {
+        troll_names_db[commenters_name]++;
+        $('[data-class=\'troll\']:contains(' + commenters_name + ') > [data-class=\'comment-counter\']').html(troll_names_db[commenters_name]);
         $comment_element.remove();
         dom_manipulating.updateTotalCommentsBlocked(1);
-        db.replaceWith(troll_names_hash);
+        db.replaceWith(troll_names_db);
         return;
       }
     }
 
-    $(event.target).addClass('approved-comment');
+    $target.addClass('approved-comment');
   });
 
   // in normal view, click on export link.
@@ -389,6 +435,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
 
   // In the import view, click import button.
   $("#import-names-wrapper [data-id='import-names-button']").on('click', function () {
+    // console.log('import button clicked')
     var importing_names_array = $('#import-names-textarea').val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
@@ -434,11 +481,11 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
 });
 
 // When the user clicks on the minimize/maximize div, then either open or minimize the extension
-$('#troll-extension-wrapper #arrow-wrapper').click(function () {
-  if ($('#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:visible').length == 0) {
-    $('#troll-extension-wrapper').addClass('minimize');
+$("[data-id='troll-extension-wrapper'] #arrow-wrapper").click(function () {
+  if ($("[data-id='troll-extension-wrapper'] #arrow-wrapper #expand-arrow-wrapper:visible").length == 0) {
+    $("[data-id='troll-extension-wrapper']").addClass('minimize');
   } else {
-    $('#troll-extension-wrapper').removeClass('minimize');
+    $("[data-id='troll-extension-wrapper']").removeClass('minimize');
   }
 });
 
@@ -455,6 +502,13 @@ dom_manipulating.scrollToBottomOfChatBox();
 //   </div>
 //   </div>
 // `);
+
+
+
+
+
+
+
 
 
 
