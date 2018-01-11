@@ -8,7 +8,7 @@
 
 #troll-extension-wrapper {
   margin-top: 10px;
-  ${$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
+  #{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
     box-sizing: border-box;
     border: 5px solid rgba(22, 122, 198, 0.90196);
     padding: 5px;
@@ -63,7 +63,7 @@
       }
     }
   }
-  $COMMENTS_WRAPPER ${$COMMENT} {
+  #{$COMMENTS_WRAPPER} #{$COMMENT} {
     a.avatar {
       position: absolute;
     }
@@ -159,7 +159,7 @@
       }
     }
   }
-  $COMMENTS_WRAPPER > ${$COMMENT} {
+  #{$COMMENTS_WRAPPER} > #{$COMMENT} {
     display: none;
     &.approved-comment {
       display: flex !important;
