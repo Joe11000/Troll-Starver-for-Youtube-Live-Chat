@@ -1,40 +1,26 @@
 #troll-extension-wrapper {
   margin-top: 10px; }
+  #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning {
+    box-sizing: border-box;
+    border: 5px solid rgba(22, 122, 198, 0.901961);
+    padding: 5px; }
+    #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning p {
+      text-align: center; }
+    #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning .warning-header {
+      font-weight: bold; }
+    #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning .warning-orange {
+      color: orangered; }
+  #troll-extension-wrapper #arrow-wrapper {
+    border: 1px solid black;
+    border-radius: 5px;
+    background: lightgray; }
+    #troll-extension-wrapper #arrow-wrapper * {
+      color: rgba(22, 122, 198, 0.901961);
+      font-weight: bold;
+      font-size: 15px; }
+    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover, #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
+      cursor: pointer; }
 
-.live-chat-expander #iframe-loads-chatroom-warning {
-  box-sizing: border-box;
-  border: 5px solid rgba(22, 122, 198, 0.90196);
-  padding: 5px; }
-  .live-chat-expander #iframe-loads-chatroom-warning p {
-    text-align: center; }
-  .live-chat-expander #iframe-loads-chatroom-warning .warning-header {
-    font-weight: bold; }
-  .live-chat-expander #iframe-loads-chatroom-warning .warning-orange {
-    color: orangered; }
-
-/* begin -- when extension expanded */
-#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover,
-#troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
-  cursor: pointer; }
-
-#troll-extension-wrapper #arrow-wrapper {
-  border: 1px solid black;
-  border-radius: 5px;
-  background: lightgray; }
-
-#troll-extension-wrapper #arrow-wrapper * {
-  color: rgba(22, 122, 198, 0.90196);
-  font-weight: bold;
-  font-size: 15px; }
-
-/*#troll-extension-wrapper #arrow-wrapper img {
-  display: inline;
-  margin: auto;
-  height: 25px;
-  width: 25px;
-  background: url('chrome-extension://__MSG_@@extension_id__/images/arrow.png') no-repeat center center;
-  vertical-align: middle;
-}*/
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
   margin: 0 30px;
   display: inline; }
@@ -139,7 +125,7 @@
   text-align: left; }
 
 #troll-table-wrapper #troll-names-wrapper table th {
-  color: rgba(22, 122, 198, 0.90196); }
+  color: rgba(22, 122, 198, 0.901961); }
 
 #troll-table-wrapper #troll-names-wrapper table caption {
   font-weight: bold; }
@@ -194,7 +180,7 @@
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link:visited,
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link:hover,
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link:active {
-  color: rgba(22, 122, 198, 0.90196); }
+  color: rgba(22, 122, 198, 0.901961); }
 
 #troll-extension-wrapper #import-export-links-wrapper #export-names-link {
   display: inline;
