@@ -39,16 +39,20 @@
       font-size: 15px;
     }
 
+    #expand-arrow-wrapper {
+      display: none;
+
+      p {
+        margin: 0 30px;
+        display: inline;
+      }
+    }
+
     #expand-arrow-wrapper:hover, #minimize-arrow-wrapper:hover {
       cursor: pointer;
     }
 
-    #expand-arrow-wrapper p {
-      margin: 0 30px;
-      display: inline;
-    }
-
-    #minimize-arrow-wrapper  p {
+    #minimize-arrow-wrapper p {
       margin: 0 25px;
       display: inline;
     }
@@ -63,9 +67,6 @@
 }
 
 
-#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {
-  display: none;
-}
 /* end -- when extension expanded */
 
 /* begin -- animate minimizing the extension*/
