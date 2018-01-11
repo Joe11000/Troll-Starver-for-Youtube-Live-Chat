@@ -1,5 +1,7 @@
 #troll-extension-wrapper {
-  margin-top: 10px; }
+  margin-top: 10px;
+  /* begin -- animate minimizing the extension*/
+  /* end -- animate minimizing the extension*/ }
   #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning {
     box-sizing: border-box;
     border: 5px solid rgba(22, 122, 198, 0.901961);
@@ -31,30 +33,21 @@
       display: inline; }
     #troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
       transform: rotate(180deg); }
-
-/* end -- when extension expanded */
-/* begin -- animate minimizing the extension*/
-#troll-extension-wrapper.minimize #shrinkable-area {
-  display: none; }
-
-#troll-extension-wrapper.minimize #arrow-wrapper #minimize-arrow-wrapper {
-  display: none; }
-
-#troll-extension-wrapper.minimize #arrow-wrapper #expand-arrow-wrapper {
-  display: block; }
-
-/* end -- animate minimizing the extension*/
-#items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer a.avatar {
-  position: absolute; }
-
-#items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer .content {
-  margin-left: 45px;
-  margin-right: 15px; }
-
-#items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer .actions-menu {
-  position: absolute !important;
-  right: 15px;
-  top: 10px; }
+  #troll-extension-wrapper.minimize #shrinkable-area {
+    display: none; }
+  #troll-extension-wrapper.minimize #arrow-wrapper #minimize-arrow-wrapper {
+    display: none; }
+  #troll-extension-wrapper.minimize #arrow-wrapper #expand-arrow-wrapper {
+    display: block; }
+  #troll-extension-wrapper #items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer a.avatar {
+    position: absolute; }
+  #troll-extension-wrapper #items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer .content {
+    margin-left: 45px;
+    margin-right: 15px; }
+  #troll-extension-wrapper #items.style-scope.yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer .actions-menu {
+    position: absolute !important;
+    right: 15px;
+    top: 10px; }
 
 #troll-extension-wrapper input[type='button'] {
   background-color: rgba(22, 122, 198, 0.9);

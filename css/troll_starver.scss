@@ -63,34 +63,40 @@
   }
 
 
+  /* begin -- animate minimizing the extension*/
+  &.minimize {
+    #shrinkable-area {
+      display: none;
+    }
+
+    #arrow-wrapper {
+      #minimize-arrow-wrapper {
+        display: none;
+      }
+
+      #expand-arrow-wrapper {
+        display: block;
+      }
+    }
+  }
+  /* end -- animate minimizing the extension*/
+
+
+  #{$COMMENTS_WRAPPER} #{$COMMENT} {
+    a.avatar { position: absolute; }
+    .content { margin-left: 45px; margin-right: 15px; }
+    .actions-menu {
+        position: absolute !important;
+        right: 15px;
+        top: 10px;
+    }
+  }
 
 }
 
 
-/* end -- when extension expanded */
-
-/* begin -- animate minimizing the extension*/
-#troll-extension-wrapper.minimize #shrinkable-area {
-  display: none;
-}
-#troll-extension-wrapper.minimize #arrow-wrapper #minimize-arrow-wrapper {
-  display: none;
-}
-#troll-extension-wrapper.minimize #arrow-wrapper #expand-arrow-wrapper {
-  display: block;
-}
-/* end -- animate minimizing the extension*/
 
 
-
-
-#{$COMMENTS_WRAPPER} #{$COMMENT} a.avatar { position: absolute; }
-#{$COMMENTS_WRAPPER} #{$COMMENT} .content { margin-left: 45px; margin-right: 15px; }
-#{$COMMENTS_WRAPPER} #{$COMMENT} .actions-menu {
-    position: absolute !important;
-    right: 15px;
-    top: 10px;
-}
 
 #troll-extension-wrapper input[type='button'] {
   background-color: rgba(22,122,198,0.9);
