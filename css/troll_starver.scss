@@ -92,68 +92,67 @@
     }
   }
 
+  input[type='button'] {
+    background-color: rgba(22,122,198,0.9);
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #troll-table-wrapper {
+    border: 1px solid black !important;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 5px;
+    width: 100%;
+    border: 1px solid #E2E2E2;
+    height: 110px;
+
+    /* contains the troll image */
+    #troll-image-wrapper,
+    #clear-all-comments {
+      height: 100%;
+      display: inline-block;
+      min-width: 60px;
+      width: 24%;
+    }
+
+    #troll-image-wrapper {
+      background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
+      border-right: 1px solid black !important;
+      background-color: lightgray;
+      border-radius: 5px 0 0 5px;
+    }
+
+    #clear-all-comments {
+      background-color: rgba(22,122,198,0.9);
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      border-left: 1px solid black !important;
+      border-radius: 0 5px 5px 0;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    /* contains list of troll  */
+    #troll-names-wrapper {
+      width: 50%;
+      min-width: 180px;
+      height: 100%;
+      display: inline-block;
+      overflow-y: scroll;
+    }
+  }
+
+
+
+
 }
 
 
-
-
-
-#troll-extension-wrapper input[type='button'] {
-  background-color: rgba(22,122,198,0.9);
-  color: white;
-  font-weight: 500;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-
-#troll-table-wrapper {
-  border: 1px solid black !important;
-  border-radius: 5px;
-  position: relative;
-  margin-top: 5px;
-  width: 100%;
-  border: 1px solid #E2E2E2;
-  height: 110px;
-}
-
-/* contains the troll image */
-#troll-table-wrapper #troll-image-wrapper,
-#troll-table-wrapper #clear-all-comments {
-  height: 100%;
-  display: inline-block;
-  min-width: 60px;
-  width: 24%;
-}
-
-#troll-table-wrapper #troll-image-wrapper {
-  background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
-  border-right: 1px solid black !important;
-  background-color: lightgray;
-  border-radius: 5px 0 0 5px;
-}
-
-#troll-table-wrapper #clear-all-comments {
-  background-color: rgba(22,122,198,0.9);
-  cursor: pointer;
-  color: white;
-  font-weight: bold;
-  border-left: 1px solid black !important;
-  border-radius: 0 5px 5px 0;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-
-/* contains list of troll  */
-#troll-table-wrapper #troll-names-wrapper {
-  width: 50%;
-  min-width: 180px;
-  height: 100%;
-  display: inline-block;
-  overflow-y: scroll;
-}
 
 #troll-table-wrapper #troll-names-wrapper table {
   margin: auto;
