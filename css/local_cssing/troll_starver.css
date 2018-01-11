@@ -20,13 +20,23 @@
     #troll-extension-wrapper #arrow-wrapper * {
       color: rgba(22, 122, 198, 0.90196);
       font-weight: bold;
-      font-size: 15px; }
-    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
-      margin: 0 30px;
+      font-size: 16px; }
+    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p, #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p {
       display: inline; }
-    #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p {
-      margin: 0 25px;
-      display: inline; }
+      #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:before, #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:before {
+        position: absolute;
+        margin-left: -41px; }
+      #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:after, #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:after {
+        position: absolute;
+        margin-left: 25px; }
+    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:before {
+      content: "&#11015;"; }
+    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:after {
+      content: "&#11015;"; }
+    #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:before {
+      content: url("smaller_arrow.png"); }
+    #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:after {
+      content: url("smaller_arrow.png"); }
     #troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
       transform: rotate(180deg); }
     #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {

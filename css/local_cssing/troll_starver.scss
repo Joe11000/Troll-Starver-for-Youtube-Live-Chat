@@ -32,16 +32,32 @@
     * {
       color: rgba(22, 122, 198, 0.90196);
       font-weight: bold;
-      font-size: 15px;
+      font-size: 16px;
     }
+    #expand-arrow-wrapper p, #minimize-arrow-wrapper p {
+      display: inline;
+
+      &:before {
+        position: absolute;
+        margin-left: -41px;
+      }
+      &:after {
+        position: absolute;
+        margin-left: 25px;
+      }
+    }
+
     #expand-arrow-wrapper p {
-      margin: 0 30px;
-      display: inline;
+      &:before { content: '&#11015;' }
+      &:after { content: '&#11015;' }
     }
-    #minimize-arrow-wrapper p {
-      margin: 0 25px;
-      display: inline;
+    #minimize-arrow-wrapper p{
+      &:before { content: url('smaller_arrow.png'); }
+      &:after { content: url('smaller_arrow.png'); }
     }
+
+
+
     text-align: center;
     img.minimize-arrow {
       transform: rotate(180deg);
