@@ -6,6 +6,8 @@
   $TROLL_IMG: "[is='yt-img']";                     // inside this.COMMENT
   $TROLL_NAME: '#author-name';                     // inside this.COMMENT
 
+* { box-sizing: border-box; }
+
 #troll-extension-wrapper {
   margin-top: 10px;
   #{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
