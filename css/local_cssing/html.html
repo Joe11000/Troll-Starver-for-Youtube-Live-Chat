@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="troll_starver.css">
+  <script type="text/javascript" src='troll_starver.js'></script>
+</head>
+<body>
+  <div id='troll-extension-wrapper'>
+    <div id='arrow-wrapper'>
+      <div id='expand-arrow-wrapper' data-id='expand-arrow-wrapper'>
+        &#11014;
+        <p>Expand Troll Starver</p>
+        &#11014;
+      </div>
+
+      <div id='minimize-arrow-wrapper' data-id='minimize-arrow-wrapper'>
+        &#11015;
+        <p>Minimize Troll Starver</p>
+        &#11015;
+      </div>
+    </div>
+
+    <div id='shrinkable-area' data-id='shrinkable-area'>
+      <div id='troll-table-wrapper' data-id='troll-table-wrapper'>
+        <div id='troll-image-wrapper' droppable='true' ondragover="event.preventDefault();">
+        </div>
+
+        <div id='troll-names-wrapper' data-id='troll-names-wrapper'>
+          <table>
+            <caption>Blocking Comments</caption>
+            <tr id='table-header'>
+              <th>x</th>
+              <th id='header-name'>Name(0)</th>
+              <th id='header-count'>#(0)</th>
+            </tr>
+          </table>
+        </div>
+
+        <div><form><input type='button' id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'</input></form></div>
+      </div>
+
+      <div id='troll-import-export-wrapper'>
+        <div id='import-export-links-wrapper'>
+          <a id='import-names-link' href='#'><span>import names</span></a>
+          <a id='export-names-link' href='#'><span>export names</span></a>
+        </div>
+
+        <form id='import-names-wrapper'>
+          <div id='import-names-radio-wrapper'>
+            <div class='import-names-radio-row'>
+              <input id='append-label' type='radio' name='import' value='append' checked>
+              <label for='append-label'>append</label>
+            </div>
+
+            <div class='import-names-radio-row'>
+              <input id='overwrite-label' type='radio' name='import' value='overwrite'>
+              <label for='overwrite-label'>overwrite</label>
+            </div>
+          </div>
+          <div id='import-names-textarea-wrapper'>
+            <textarea id='import-names-textarea' placeholder="name 1\nname 2\nname 3"></textarea>
+          </div>
+          <div id='import-buttons'>
+            <input id='import-close-button' data-id='import-close-button' type='button' value='close'>
+            <input id='import-names-button' data-id='import-names-button' type='button' value='import'>
+          </div>
+        </form>
+
+        <div id='export-names-wrapper'>
+          <label for='export-names-textarea'>exported names</label>
+
+          <div id='export-names-textarea-wrapper'>
+            <textarea id='export-names-textarea'></textarea>
+          </div>
+
+          <div id='export-form-wrapper'>
+            <form id='export-form'>
+              <input id='export-close-button' type='button' value='close'>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
