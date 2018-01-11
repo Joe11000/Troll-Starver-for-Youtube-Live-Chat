@@ -13,27 +13,22 @@
   #troll-extension-wrapper #arrow-wrapper {
     border: 1px solid black;
     border-radius: 5px;
-    background: lightgray; }
+    background: lightgray;
+    text-align: center; }
     #troll-extension-wrapper #arrow-wrapper * {
       color: rgba(22, 122, 198, 0.901961);
       font-weight: bold;
       font-size: 15px; }
     #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:hover, #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper:hover {
       cursor: pointer; }
-
-#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
-  margin: 0 30px;
-  display: inline; }
-
-#troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p {
-  margin: 0 25px;
-  display: inline; }
-
-#troll-extension-wrapper #arrow-wrapper {
-  text-align: center; }
-
-#troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
-  transform: rotate(180deg); }
+    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
+      margin: 0 30px;
+      display: inline; }
+    #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p {
+      margin: 0 25px;
+      display: inline; }
+    #troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
+      transform: rotate(180deg); }
 
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {
   display: none; }

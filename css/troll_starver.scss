@@ -31,6 +31,7 @@
     border: 1px solid black;
     border-radius: 5px;
     background: lightgray;
+    text-align: center;
 
     * {
       color: rgba(22, 122, 198, 0.901961);
@@ -41,6 +42,20 @@
     #expand-arrow-wrapper:hover, #minimize-arrow-wrapper:hover {
       cursor: pointer;
     }
+
+    #expand-arrow-wrapper p {
+      margin: 0 30px;
+      display: inline;
+    }
+
+    #minimize-arrow-wrapper  p {
+      margin: 0 25px;
+      display: inline;
+    }
+
+    img.minimize-arrow {
+      transform: rotate(180deg);
+    }
   }
 
 
@@ -48,23 +63,6 @@
 }
 
 
-
-
-#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
-  margin: 0 30px;
-  display: inline;
-}
-#troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper  p {
-  margin: 0 25px;
-  display: inline;
-}
-#troll-extension-wrapper #arrow-wrapper {
-  text-align: center;
-}
-
-#troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
-  transform: rotate(180deg);
-}
 #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {
   display: none;
 }
