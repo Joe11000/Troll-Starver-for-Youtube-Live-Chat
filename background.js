@@ -1,9 +1,9 @@
 // var targetWindow = null;
 var CONSTANTS = {
-  TROLL_STARVER_CSS: "css/troll_starver_min.css",
+  TROLL_STARVER_CSS: "css/troll_starver.css",
   TROLL_STARVER_JS: "js/troll_starver_min.js",
   REGEX_FOR_YOUTUBE_VIDEO_W_LIVE_CHAT: /youtube.com\/watch\?.*v=([a-zA-Z0-9]*)/, // ie 'https://www.youtube.com/watch?v=fDNAHZo_pAU'
-  
+
   REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT: /youtube.com\/live_chat\?.*v=([a-zA-Z0-9]*)/ // ie 'https://www.youtube.com/live_chat?v=fDNAHZo_pAU&is_popout=1'
 }
 
@@ -35,8 +35,8 @@ var findTabContainingChatRoom = function(windows, tab_opened_extension_from) {
       var tab = win.tabs[j];
 
       if(
-          tab.url.match(CONSTANTS.REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT) && 
-          tab.url.match(CONSTANTS.REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT)[1] == current_tab_chatroom_id 
+          tab.url.match(CONSTANTS.REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT) &&
+          tab.url.match(CONSTANTS.REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT)[1] == current_tab_chatroom_id
         ) {
         return tab
       }
@@ -47,7 +47,7 @@ var findTabContainingChatRoom = function(windows, tab_opened_extension_from) {
 
 function start(tab_opened_extension_from) {
 
-  if ( !tab_opened_extension_from.url.match(/youtube.com\//) ) { 
+  if ( !tab_opened_extension_from.url.match(/youtube.com\//) ) {
     return;
   }
 

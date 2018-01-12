@@ -2,7 +2,8 @@
   box-sizing: border-box; }
 
 #troll-extension-wrapper {
-  margin-top: 10px; }
+  display: grid;
+  grid-row-gap: 5px; }
   #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning {
     box-sizing: border-box;
     border: 5px solid rgba(22, 122, 198, 0.90196);

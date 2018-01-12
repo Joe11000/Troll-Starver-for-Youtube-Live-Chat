@@ -9,7 +9,8 @@
 * { box-sizing: border-box; }
 
 #troll-extension-wrapper {
-  margin-top: 10px;
+  display: grid;
+  grid-row-gap: 5px;
 
   #{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
     box-sizing: border-box;
@@ -51,12 +52,14 @@
     }
 
     #expand-arrow-wrapper p {
-      &:before { content: '&#11015;' }
-      &:after { content: '&#11015;' }
+      &:before { content: '>\011015' }
+      &:after { content: '>\011015' }
+
+
     }
     #minimize-arrow-wrapper p{
-      &:before { content: url('smaller_arrow.png'); }
-      &:after { content: url('smaller_arrow.png'); }
+      &:before { content: '>\011014'; }
+      &:after { content: '>\011014'; }
     }
 
 

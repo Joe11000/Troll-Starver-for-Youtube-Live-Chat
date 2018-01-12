@@ -6,8 +6,12 @@
   $TROLL_IMG: "[is='yt-img']";                     // inside this.COMMENT
   $TROLL_NAME: '#author-name';                     // inside this.COMMENT
 
+* { box-sizing: border-box; }
+
 #troll-extension-wrapper {
-  margin-top: 10px;
+  display: grid;
+  grid-row-gap: 5px;
+
   #{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
     box-sizing: border-box;
     border: 5px solid rgba(22, 122, 198, 0.90196);
@@ -32,16 +36,32 @@
     * {
       color: rgba(22, 122, 198, 0.90196);
       font-weight: bold;
-      font-size: 15px;
+      font-size: 16px;
     }
+    #expand-arrow-wrapper p, #minimize-arrow-wrapper p {
+      display: inline;
+
+      &:before {
+        position: absolute;
+        margin-left: -41px;
+      }
+      &:after {
+        position: absolute;
+        margin-left: 25px;
+      }
+    }
+
     #expand-arrow-wrapper p {
-      margin: 0 30px;
-      display: inline;
+      &:before { content: '>\011015' }
+      &:after  { content: '>\011015' }
     }
-    #minimize-arrow-wrapper p {
-      margin: 0 25px;
-      display: inline;
+    #minimize-arrow-wrapper p{
+      &:before { content: '>\011014'; }
+      &:after  { content: '>\011014'; }
     }
+
+
+
     text-align: center;
     img.minimize-arrow {
       transform: rotate(180deg);
@@ -85,6 +105,10 @@
     cursor: pointer;
   }
   #troll-table-wrapper {
+    display: grid;
+    grid-template-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-rows: 108px;
     border: 1px solid black !important;
     border-radius: 5px;
     position: relative;
@@ -99,7 +123,7 @@
       width: 24%;
     }
     #troll-image-wrapper {
-      background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
+      background: url('trollx60.png') no-repeat center center;
       border-right: 1px solid black !important;
       background-color: lightgray;
       border-radius: 5px 0 0 5px;
@@ -116,7 +140,7 @@
       right: 0;
     }
     #troll-names-wrapper {
-      width: 50%;
+      // width: 50%;
       min-width: 180px;
       height: 100%;
       display: inline-block;
