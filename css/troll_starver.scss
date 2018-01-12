@@ -1,3 +1,15 @@
+// CSS Grid 1 (Outer components)
+//#troll-extension-wrapper
+  // #arrow-wrapper
+  // #shrinkable-area
+
+// CSS Grid 2 (Blocking Components Grid)
+// #troll-table-wrapper
+  // #troll-image-wrapper
+  // #troll-names-wrapper
+  // #clear-button-container
+
+
 // const YOUTUBE_SELECTORS = new function(){
   $PARENT_OF_IFRAME_LOADING_CHATBOX: '.live-chat-expander';
   $APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer';
@@ -11,6 +23,7 @@
 #troll-extension-wrapper {
   display: grid;
   grid-row-gap: 5px;
+  grid-auto-columns: auto;
 
   #{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
     box-sizing: border-box;
@@ -43,24 +56,25 @@
 
       &:before {
         position: absolute;
-        margin-left: -41px;
+        margin: -2px 0 2px -41px;
       }
       &:after {
         position: absolute;
-        margin-left: 25px;
+        margin: -2px 0 2px 25px;
       }
     }
 
+    #minimize-arrow-wrapper p {
+      margin: 4px 0;
+      &:before { content: '⬇' }
+      &:after  { content: '⬇' }
+    }
+
     #expand-arrow-wrapper p {
-      &:before { content: '>\011015' }
-      &:after  { content: '>\011015' }
+      margin: 4px 0;
+      &:before { content: '⬆'; }
+      &:after  { content: '⬆'; }
     }
-    #minimize-arrow-wrapper p{
-      &:before { content: '>\011014'; }
-      &:after  { content: '>\011014'; }
-    }
-
-
 
     text-align: center;
     img.minimize-arrow {
@@ -107,7 +121,7 @@
   #troll-table-wrapper {
     display: grid;
     grid-template-columns: minmax(62px, 2fr) auto 2fr;
-    grid-auto-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-columns: minmax(68px, 2fr) auto 2fr;
     grid-auto-rows: 108px;
     border: 1px solid black !important;
     border-radius: 5px;
@@ -123,7 +137,7 @@
       width: 24%;
     }
     #troll-image-wrapper {
-      background: url('trollx60.png') no-repeat center center;
+      background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
       border-right: 1px solid black !important;
       background-color: lightgray;
       border-radius: 5px 0 0 5px;

@@ -4,7 +4,8 @@
 
 #troll-extension-wrapper {
   display: grid;
-  grid-row-gap: 5px; }
+  grid-row-gap: 5px;
+  grid-auto-columns: auto; }
   #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning {
     box-sizing: border-box;
     border: 5px solid rgba(22, 122, 198, 0.90196);
@@ -30,18 +31,22 @@
       display: inline; }
       #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:before, #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:before {
         position: absolute;
-        margin-left: -41px; }
+        margin: -2px 0 2px -41px; }
       #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:after, #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:after {
         position: absolute;
-        margin-left: 25px; }
-    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:before {
-      content: ">𑀕"; }
-    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:after {
-      content: ">𑀕"; }
-    #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:before {
-      content: '>\011014'; }
-    #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:after {
-      content: '>\011014'; }
+        margin: -2px 0 2px 25px; }
+    #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p {
+      margin: 4px 0; }
+      #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:before {
+        content: "⬇"; }
+      #troll-extension-wrapper #arrow-wrapper #minimize-arrow-wrapper p:after {
+        content: "⬇"; }
+    #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p {
+      margin: 4px 0; }
+      #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:before {
+        content: '⬆'; }
+      #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper p:after {
+        content: '⬆'; }
     #troll-extension-wrapper #arrow-wrapper img.minimize-arrow {
       transform: rotate(180deg); }
     #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {
@@ -70,7 +75,7 @@
   #troll-extension-wrapper #troll-table-wrapper {
     display: grid;
     grid-template-columns: minmax(62px, 2fr) auto 2fr;
-    grid-auto-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-columns: minmax(68px, 2fr) auto 2fr;
     grid-auto-rows: 108px;
     border: 1px solid black !important;
     border-radius: 5px;
@@ -85,7 +90,7 @@
       min-width: 60px;
       width: 24%; }
     #troll-extension-wrapper #troll-table-wrapper #troll-image-wrapper {
-      background: url("trollx60.png") no-repeat center center;
+      background: url("chrome-extension://__MSG_@@extension_id__/images/trollx60.png") no-repeat center center;
       border-right: 1px solid black !important;
       background-color: lightgray;
       border-radius: 5px 0 0 5px; }

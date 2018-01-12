@@ -13,15 +13,11 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
   <div id='troll-extension-wrapper'>
     <div id='arrow-wrapper'>
       <div id='expand-arrow-wrapper' data-id='expand-arrow-wrapper'>
-        &#11014;
         <p>Expand Troll Starver</p>
-        &#11014;
       </div>
 
       <div id='minimize-arrow-wrapper' data-id='minimize-arrow-wrapper'>
-        &#11015;
         <p>Minimize Troll Starver</p>
-        &#11015;
       </div>
     </div>
 
@@ -41,7 +37,7 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
           </table>
         </div>
 
-        <div><form><input type='button' id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'</input></form></div>
+        <div id='clear-button-container'><form><input type='button' id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'</input></form></div>
       </div>
 
       <div id='troll-import-export-wrapper'>
@@ -105,7 +101,7 @@ var db = {
     })
   },
 
-  // delete any db entries that match array names 
+  // delete any db entries that match array names
   deleteNames: function(troll_names_array) {
     return db.get().then((troll_names_hash)=>{
 
@@ -116,19 +112,19 @@ var db = {
 
       return db.replaceWith(updating_hash)
     });
-  }, 
+  },
 
   // display db on console
   dump: function(){
     db.get().then(hash=>{
       console.log(hash)
     });
-  }, 
+  },
 
   // max number of trolls that can be uploaded, saved, and added to td table columns on the screen.
   importBulkSize: function(){
     return 100
-  }, 
+  },
 
   // delay is 1.25 seconds after uploading, saving, and adding table entries in bulk.
   importBulkDelay: function(){
@@ -155,7 +151,7 @@ var dom_manipulating = {
 
     // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
     // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
-    
+
     let comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
     let total_comments_blocked_in_batch = 0;
 
@@ -169,7 +165,7 @@ var dom_manipulating = {
 
         dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
     }
-    
+
     // console.log(`total:${total_comments_blocked_in_batch}`)
 
     dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
@@ -261,7 +257,7 @@ var dom_manipulating = {
 // start a single promise
   // params troll names array from all ways to create a new troll 1) Single import by drag and drop 2) Mass import by appending 3) Mass import by overwriting(assumes db has been cleared already on mass overwrite)
   // fetch current database
-  // run recursive method to 
+  // run recursive method to
 
 function appendArrayOfTrollNames(troll_names_array) {
   db.get().then((troll_names_hash)=>{
@@ -276,7 +272,7 @@ var _appendArrayOfTrollNamesByBulk = function _appendArrayOfTrollNamesByBulk(tro
 
   // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
   // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
-  
+
   let comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
   let total_comments_blocked_in_batch = 0;
 
@@ -292,7 +288,7 @@ var _appendArrayOfTrollNamesByBulk = function _appendArrayOfTrollNamesByBulk(tro
       dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
     }
   }
-  
+
   // console.log(`total:${total_comments_blocked_in_batch}`)
 
   dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
@@ -319,7 +315,7 @@ $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} ${YOUTUBE_SELECTORS.COMMENT}`).each(fun
 dom_manipulating.onExtensionLoadAddTableEntriesForDBEntries();
 
 
-// store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon 
+// store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function(event) {
   // expand extension temporarialy if it is currently minimized
   if($("#troll-extension-wrapper [data-id='expand-arrow-wrapper']:visible").length > 0)
@@ -442,7 +438,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
 
       let overwrite_checked = $("#import-names-radio-wrapper :checked").val() === 'overwrite' // need this inside variable set for promise
       new Promise((res, rej)=>{ // overwrite the db and then kick off appending names in bulk to db
-        res(1) 
+        res(1)
       }).then(()=>{
         // delete all trolls if overwrite radio button is checked
         if(!!overwrite_checked) {

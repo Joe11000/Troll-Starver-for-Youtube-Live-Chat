@@ -40,7 +40,6 @@
 
 
 
-
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -56,7 +55,7 @@ var YOUTUBE_SELECTORS = {
 };
 
 // put the widget on the screen
-$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        &#11014;\n        <p>Expand Troll Starver</p>\n        &#11014;\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        &#11015;\n        <p>Minimize Troll Starver</p>\n        &#11015;\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'troll-table-wrapper\' data-id=\'troll-table-wrapper\'>\n        <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <table>\n            <caption>Blocking Comments</caption>\n            <tr id=\'table-header\'>\n              <th>x</th>\n              <th id=\'header-name\'>Name(0)</th>\n              <th id=\'header-count\'>#(0)</th>\n            </tr>\n          </table>\n        </div>\n\n        <div><form><input type=\'button\' id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' data-id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' data-id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n');
+$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'troll-table-wrapper\' data-id=\'troll-table-wrapper\'>\n        <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <table>\n            <caption>Blocking Comments</caption>\n            <tr id=\'table-header\'>\n              <th>x</th>\n              <th id=\'header-name\'>Name(0)</th>\n              <th id=\'header-count\'>#(0)</th>\n            </tr>\n          </table>\n        </div>\n\n        <div id=\'clear-button-container\'><form><input type=\'button\' id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'</input></form></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' data-id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' data-id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n');
 
 // reusable db manipulting functions
 var db = {
@@ -124,6 +123,8 @@ var dom_manipulating = {
     var keys_in_next_bulk = troll_names_array_remaining;
     var keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize());
 
+    // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
+    // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
 
     var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
     var total_comments_blocked_in_batch = 0;
@@ -134,10 +135,12 @@ var dom_manipulating = {
       var comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
       total_comments_blocked_in_batch += comments_by_troll;
       troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
+      // console.log(`${keys_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
 
       dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
     }
 
+    // console.log(`total:${total_comments_blocked_in_batch}`)
 
     dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
     dom_manipulating.updateTotalNamesBlocked();
@@ -250,6 +253,8 @@ var _appendArrayOfTrollNamesByBulk = function _appendArrayOfTrollNamesByBulk(tro
   var keys_in_next_bulk = troll_names_array_remaining;
   var keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize());
 
+  // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
+  // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
 
   var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
   var total_comments_blocked_in_batch = 0;
@@ -261,11 +266,13 @@ var _appendArrayOfTrollNamesByBulk = function _appendArrayOfTrollNamesByBulk(tro
       var comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
       total_comments_blocked_in_batch += comments_by_troll;
       troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
+      // console.log(`${keys_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
 
       dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
     }
   }
 
+  // console.log(`total:${total_comments_blocked_in_batch}`)
 
   dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
 
@@ -389,6 +396,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
 
   // In the import view, click import button.
   $("#import-names-wrapper [data-id='import-names-button']").on('click', function () {
+    // console.log('import button clicked')
     var importing_names_array = $('#import-names-textarea').val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
@@ -455,7 +463,6 @@ dom_manipulating.scrollToBottomOfChatBox();
 //   </div>
 //   </div>
 // `);
-
 
 
 
