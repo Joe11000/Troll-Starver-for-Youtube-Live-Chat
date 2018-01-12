@@ -10,6 +10,7 @@
 
 #troll-extension-wrapper {
   margin-top: 10px;
+
   #{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
     box-sizing: border-box;
     border: 5px solid rgba(22, 122, 198, 0.90196);
@@ -103,6 +104,10 @@
     cursor: pointer;
   }
   #troll-table-wrapper {
+    display: grid;
+    grid-template-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-rows: 108px;
     border: 1px solid black !important;
     border-radius: 5px;
     position: relative;
@@ -134,7 +139,7 @@
       right: 0;
     }
     #troll-names-wrapper {
-      width: 50%;
+      // width: 50%;
       min-width: 180px;
       height: 100%;
       display: inline-block;

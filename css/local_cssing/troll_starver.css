@@ -66,6 +66,10 @@
     border-radius: 5px;
     cursor: pointer; }
   #troll-extension-wrapper #troll-table-wrapper {
+    display: grid;
+    grid-template-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-columns: minmax(62px, 2fr) auto 2fr;
+    grid-auto-rows: 108px;
     border: 1px solid black !important;
     border-radius: 5px;
     position: relative;
@@ -94,7 +98,6 @@
       top: 0;
       right: 0; }
     #troll-extension-wrapper #troll-table-wrapper #troll-names-wrapper {
-      width: 50%;
       min-width: 180px;
       height: 100%;
       display: inline-block;
