@@ -160,28 +160,28 @@
         }
       }
       #troll-names-wrapper {
-        min-width: 180px;
-        height: 100%;
+        display: grid;
+        // min-width: 180px;
+        // height: 100%;
         display: inline-block;
         overflow-y: scroll;
-        table {
-          margin: auto;
-          width: 100%;
-          #table-header {
-            border-bottom: 2px solid black;
-          }
-          th, td {
-            border-bottom: 1px solid #ddd;
-            padding: 5px 5px 5px 0;
-            text-align: left;
-          }
-          th {
-            color: rgba(22, 122, 198, 0.90196);
-          }
-          caption {
-            font-weight: bold;
-          }
+
+        // margin: auto;
+        // width: 100%;
+        #table-header {
+          border-bottom: 2px solid black;
         }
+
+        .th {
+          color: rgba(22, 122, 198, 0.90196);
+        }
+        .caption {
+          font-weight: bold;
+          display: inline;
+          align-self: center;
+          justify-self: center;
+        }
+
         .troll {
           margin-bottom: 10px;
           height: 18px;

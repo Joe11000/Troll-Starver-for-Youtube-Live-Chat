@@ -27,14 +27,14 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
         </div>
 
         <div id='troll-names-wrapper' data-id='troll-names-wrapper'>
-          <table>
-            <caption>Blocking Comments</caption>
-            <tr id='table-header'>
-              <th>x</th>
-              <th id='header-name'>Name(0)</th>
-              <th id='header-count'>#(0)</th>
-            </tr>
-          </table>
+          <p class='caption'>Blocking Comments</p>
+          <div class='table'>
+            <div id='table-header'>
+              <div class='th'>x</div>
+              <div id='header-name' class='th'>Name(0)</div>
+              <div id='header-count' class='th'>#(0)</div>
+            </div>
+          </div>
         </div>
 
         <div id='clear-button-container'><button id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'>Clear Chat</button></div>
@@ -179,11 +179,11 @@ var dom_manipulating = {
   // add new row on to troll table on the DOM
   addATableRowHTMLNewTroll: function (name, existing_comments_counter=0) {
    $(`
-      <tr class='troll' data-class='troll'>
-        <td><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></td>
-        <td class='troll-name' data-class='troll-name'>${name}</td>
-        <td class='comment-counter' data-class='comment-counter'>${existing_comments_counter}</td>
-      </tr>
+      <div class='troll' data-class='troll'>
+        <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
+        <div class='td troll-name' data-class='troll-name'>${name}</div>
+        <div class='td comment-counter' data-class='comment-counter'>${existing_comments_counter}</div>
+      </div>
     `).insertAfter($('#troll-names-wrapper #table-header'));
    $('#troll-names-wrapper').scrollTop(0);
   },
@@ -215,7 +215,7 @@ var dom_manipulating = {
 
 
   updateTotalNamesBlocked: function() {
-    var total = $("[data-id='outer-grid-wrapper'] #troll-names-wrapper table img.remove-name").length || 0;
+    var total = $("[data-id='outer-grid-wrapper'] #troll-names-wrapper img.remove-name").length || 0;
 
     $("[data-id='outer-grid-wrapper'] #troll-names-wrapper #header-name").html(`Name(${total})`);
   },

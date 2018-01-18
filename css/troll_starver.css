@@ -89,23 +89,18 @@
         #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #clear-all-comments:active {
           color: #dedede; }
       #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper {
-        min-width: 180px;
-        height: 100%;
+        display: grid;
         display: inline-block;
         overflow-y: scroll; }
-        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper table {
-          margin: auto;
-          width: 100%; }
-          #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper table #table-header {
-            border-bottom: 2px solid black; }
-          #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper table th, #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper table td {
-            border-bottom: 1px solid #ddd;
-            padding: 5px 5px 5px 0;
-            text-align: left; }
-          #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper table th {
-            color: rgba(22, 122, 198, 0.90196); }
-          #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper table caption {
-            font-weight: bold; }
+        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper #table-header {
+          border-bottom: 2px solid black; }
+        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .th {
+          color: rgba(22, 122, 198, 0.90196); }
+        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .caption {
+          font-weight: bold;
+          display: inline;
+          align-self: center;
+          justify-self: center; }
         #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll {
           margin-bottom: 10px;
           height: 18px;
