@@ -22,7 +22,7 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
     </div>
 
     <div id='shrinkable-area' data-id='shrinkable-area'>
-      <div id='troll-table-wrapper' data-id='troll-table-wrapper'>
+      <div id='outer-grid-wrapper' data-id='outer-grid-wrapper'>
         <div id='troll-image-wrapper' droppable='true' ondragover="event.preventDefault();">
         </div>
 
@@ -37,7 +37,7 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
           </table>
         </div>
 
-        <div id='clear-button-container'><form><input type='button' id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'</input></form></div>
+        <div id='clear-button-container'><button id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'>Clear Chat</button></div>
       </div>
 
       <div id='troll-import-export-wrapper'>
@@ -215,16 +215,16 @@ var dom_manipulating = {
 
 
   updateTotalNamesBlocked: function() {
-    var total = $("[data-id='troll-table-wrapper'] #troll-names-wrapper table img.remove-name").length || 0;
+    var total = $("[data-id='outer-grid-wrapper'] #troll-names-wrapper table img.remove-name").length || 0;
 
-    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-name").html(`Name(${total})`);
+    $("[data-id='outer-grid-wrapper'] #troll-names-wrapper #header-name").html(`Name(${total})`);
   },
 
   updateTotalCommentsBlocked: function(increase_total_by=1) {
-    let string = $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html() || "";
+    let string = $("[data-id='outer-grid-wrapper'] #troll-names-wrapper #header-count").html() || "";
     let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
     let new_total = current_total + increase_total_by;
-    $("[data-id='troll-table-wrapper'] #troll-names-wrapper #header-count").html(`#(${new_total})`);
+    $("[data-id='outer-grid-wrapper'] #troll-names-wrapper #header-count").html(`#(${new_total})`);
   },
 
   scrollToBottomOfChatBox: function(){

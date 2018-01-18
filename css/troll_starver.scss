@@ -4,7 +4,7 @@
   // #shrinkable-area
 
 // CSS Grid 2 (Blocking Components Grid)
-// #troll-table-wrapper
+// #outer-grid-wrapper
   // #troll-image-wrapper
   // #troll-names-wrapper
   // #clear-button-container
@@ -18,13 +18,35 @@
   $TROLL_IMG: "[is='yt-img']";                     // inside this.COMMENT
   $TROLL_NAME: '#author-name';                     // inside this.COMMENT
 
+
+// youtube live chat style override - START
+  #{$COMMENTS_WRAPPER} #{$COMMENT} {
+    // a.avatar {
+    //   position: absolute;
+    // }
+    // .content {
+    //   margin-left: 45px;
+    //   margin-right: 15px;
+    // }
+    // .actions-menu {
+    //   position: absolute !important;
+    //   right: 15px;
+    //   top: 10px;
+    // }
+  }
+  #{$COMMENTS_WRAPPER} > #{$COMMENT} {
+    display: none;
+    &.approved-comment {
+      display: flex !important;
+    }
+  }
+// youtube live chat style override - END
+
+
 * { box-sizing: border-box; }
 
 #troll-extension-wrapper {
   margin-top: 10px;
-  display: grid;
-  grid-row-gap: 5px;
-  grid-auto-columns: auto;
 
   #{$PARENT_OF_IFRAME_LOADING_CHATBOX} #iframe-loads-chatroom-warning {
     box-sizing: border-box;
@@ -85,6 +107,7 @@
       display: none;
     }
   }
+
   &.minimize {
     #shrinkable-area {
       display: none;
@@ -98,18 +121,88 @@
       }
     }
   }
-  #{$COMMENTS_WRAPPER} #{$COMMENT} {
-    a.avatar {
-      position: absolute;
-    }
-    .content {
-      margin-left: 45px;
-      margin-right: 15px;
-    }
-    .actions-menu {
-      position: absolute !important;
-      right: 15px;
-      top: 10px;
+
+  #shrinkable-area {
+    margin-top: 5px;
+
+    #outer-grid-wrapper {
+      display: grid;
+
+      grid-template-columns: minmax(70px, 1fr) 3fr minmax(70px, 1fr);
+      grid-auto-rows: minmax(110px, auto);
+
+      border: 1px solid black !important;
+      border-radius: 5px;
+      border: 1px solid #E2E2E2;
+
+      #troll-image-wrapper, #clear-all-comments {
+        height: 100%;
+        display: block;
+        min-width: 60px;
+        width: 100%;
+      }
+      #troll-image-wrapper {
+        background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
+        border-right: 1px solid black !important;
+        background-color: lightgray;
+        border-radius: 5px 0 0 5px;
+      }
+      #clear-all-comments {
+        background-color: rgba(22, 122, 198, 0.9);
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+        border-left: 1px solid black !important;
+        border-radius: 0 5px 5px 0;
+
+        &:active {
+          color: rgb(222,222,222);
+        }
+      }
+      #troll-names-wrapper {
+        min-width: 180px;
+        height: 100%;
+        display: inline-block;
+        overflow-y: scroll;
+        table {
+          margin: auto;
+          width: 100%;
+          #table-header {
+            border-bottom: 2px solid black;
+          }
+          th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 5px 5px 0;
+            text-align: left;
+          }
+          th {
+            color: rgba(22, 122, 198, 0.90196);
+          }
+          caption {
+            font-weight: bold;
+          }
+        }
+        .troll {
+          margin-bottom: 10px;
+          height: 18px;
+          overflow: ellipsis;
+          .remove-name {
+            display: inline;
+            position: relative;
+            cursor: pointer;
+
+            min-width: 15px;
+          }
+          .troll-name {
+            max-width: 100px;
+          }
+          .comment-counter {
+            color: red;
+
+            font-weight: bold;
+          }
+        }
+      }
     }
   }
   input[type='button'] {
@@ -118,91 +211,6 @@
     font-weight: 500;
     border-radius: 5px;
     cursor: pointer;
-  }
-  #troll-table-wrapper {
-    display: grid;
-    grid-template-columns: minmax(62px, 2fr) auto 2fr;
-    grid-auto-columns: minmax(68px, 2fr) auto 2fr;
-    grid-auto-rows: 108px;
-    border: 1px solid black !important;
-    border-radius: 5px;
-    position: relative;
-    margin-top: 5px;
-    width: 100%;
-    border: 1px solid #E2E2E2;
-    height: 110px;
-    #troll-image-wrapper, #clear-all-comments {
-      height: 100%;
-      display: inline-block;
-      min-width: 60px;
-      width: 24%;
-    }
-    #troll-image-wrapper {
-      background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
-      border-right: 1px solid black !important;
-      background-color: lightgray;
-      border-radius: 5px 0 0 5px;
-    }
-    #clear-all-comments {
-      background-color: rgba(22, 122, 198, 0.9);
-      cursor: pointer;
-      color: white;
-      font-weight: bold;
-      border-left: 1px solid black !important;
-      border-radius: 0 5px 5px 0;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-    #troll-names-wrapper {
-      // width: 50%;
-      min-width: 180px;
-      height: 100%;
-      display: inline-block;
-      overflow-y: scroll;
-      table {
-        margin: auto;
-        width: 100%;
-        #table-header {
-          border-bottom: 2px solid black;
-        }
-        th, td {
-          border-bottom: 1px solid #ddd;
-          padding: 5px 5px 5px 0;
-          text-align: left;
-        }
-        th {
-          color: rgba(22, 122, 198, 0.90196);
-        }
-        caption {
-          font-weight: bold;
-        }
-      }
-      .troll {
-        margin-bottom: 10px;
-        height: 18px;
-        overflow: ellipsis;
-        .remove-name {
-          display: inline;
-          position: relative;
-          cursor: pointer;
-          min-width: 15px;
-        }
-        .troll-name {
-          max-width: 100px;
-        }
-        .comment-counter {
-          color: red;
-          font-weight: bold;
-        }
-      }
-    }
-  }
-  #{$COMMENTS_WRAPPER} > #{$COMMENT} {
-    display: none;
-    &.approved-comment {
-      display: flex !important;
-    }
   }
   #import-names-wrapper, #export-names-wrapper {
     margin-bottom: 5px;
