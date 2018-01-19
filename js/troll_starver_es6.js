@@ -200,7 +200,7 @@ var dom_manipulating = {
         <div class='td troll-name' data-class='troll-name'>${name}</div>
         <div class='td comment-counter' data-class='comment-counter'>${existing_comments_counter}</div>
       </div>
-    `).insertAfter($('#troll-names-wrapper .table-headers'));
+    `).insertAfter($('#troll-names-wrapper .grid-header:last'));
    $('#troll-names-wrapper').scrollTop(0);
   },
 
