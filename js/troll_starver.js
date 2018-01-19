@@ -9,7 +9,7 @@
   	}
   }
 
-  // same as document.getElementById('outer-grid-wrapper') === null && YOUTUBE_SELECTORS.APPEND_EXTENTION_TO !== null
+  // same as document.getElementById('troll-table-wrapper') === null && YOUTUBE_SELECTORS.APPEND_EXTENTION_TO !== null
   else if (document.getElementById('troll-extension-wrapper') === null && document.querySelector('.yt-live-chat-message-input-renderer') !== null ) {
     // add in some needed jQuery
     /*! jQuery v1.11.1 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
@@ -20,13 +20,6 @@
 
     //
     // troll_starver_es6.js starts here after being translated through Babel.
-
-
-
-
-
-
-
 
 
 
@@ -54,7 +47,7 @@ var YOUTUBE_SELECTORS = {
 };
 
 // put the widget on the screen
-$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'outer-grid-wrapper\' data-id=\'outer-grid-wrapper\'>\n        <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <p class=\'caption\'>Blocking Comments</p>\n          <div class=\'table\'>\n            <div id=\'table-header\'>\n              <div class=\'th\'>x</div>\n              <div id=\'header-name\' class=\'th\'>Name(0)</div>\n              <div id=\'header-count\' class=\'th\'>#(0)</div>\n            </div>\n          </div>\n        </div>\n\n        <div id=\'clear-button-container\'><button id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'>Clear Chat</button></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' data-id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' data-id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n');
+$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'outer-grid-wrapper\' data-id=\'outer-grid-wrapper\'>\n        <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <div class=\'caption\'>Blocking Comments</div>\n\n          <div class=\'grid-header\'>x</div>\n          <div class=\'grid-header\' id=\'header-name\'>Name<strong>(0)</strong></div>\n          <div class=\'grid-header\' id=\'header-count\'><strong>#(0)</strong></div>\n\n\n          <div class=\'troll\' data-class=\'troll\'>\n            <div class=\'td\'><img class=\'remove-name\' data-class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></div>\n            <div class=\'td troll-name\' data-class=\'troll-name\'><p>Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1Troll Name 1</p></div>\n            <div class=\'td comment-counter\' data-class=\'comment-counter\'>34</div>\n          </div>\n\n          <div class=\'troll\' data-class=\'troll\'>\n            <div class=\'td\'><img class=\'remove-name\' data-class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></div>\n            <div class=\'td troll-name\' data-class=\'troll-name\'>Troll Name 1</div>\n            <div class=\'td comment-counter\' data-class=\'comment-counter\'>34</div>\n          </div>\n\n          <div class=\'troll\' data-class=\'troll\'>\n            <div class=\'td\'><img class=\'remove-name\' data-class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></div>\n            <div class=\'td troll-name\' data-class=\'troll-name\'>Troll Name 1</div>\n            <div class=\'td comment-counter\' data-class=\'comment-counter\'>34</div>\n           </div>\n        </div>\n\n        <div id=\'clear-button-container\'><button id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'>Clear Chat</button></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' data-id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' data-id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n');
 
 // reusable db manipulting functions
 var db = {
@@ -153,7 +146,7 @@ var dom_manipulating = {
   addATableRowHTMLNewTroll: function addATableRowHTMLNewTroll(name) {
     var existing_comments_counter = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-    $('\n      <div class=\'troll\' data-class=\'troll\'>\n        <div class=\'td\'><img class=\'remove-name\' data-class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></div>\n        <div class=\'td troll-name\' data-class=\'troll-name\'>' + name + '</div>\n        <div class=\'td comment-counter\' data-class=\'comment-counter\'>' + existing_comments_counter + '</div>\n      </div>\n    ').insertAfter($('#troll-names-wrapper #table-header'));
+    $('\n      <div class=\'troll\' data-class=\'troll\'>\n        <div class=\'td\'><img class=\'remove-name\' data-class=\'remove-name\' src=' + chrome.extension.getURL("images/remove-name.png") + '></img></div>\n        <div class=\'td troll-name\' data-class=\'troll-name\'>' + name + '</div>\n        <div class=\'td comment-counter\' data-class=\'comment-counter\'>' + existing_comments_counter + '</div>\n      </div>\n    ').insertAfter($('#troll-names-wrapper .table-headers'));
     $('#troll-names-wrapper').scrollTop(0);
   },
 
@@ -462,6 +455,17 @@ dom_manipulating.scrollToBottomOfChatBox();
 //   </div>
 //   </div>
 // `);
+
+
+
+
+
+
+
+
+
+
+
 
 
 

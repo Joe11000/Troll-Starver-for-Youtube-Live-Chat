@@ -27,14 +27,30 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
         </div>
 
         <div id='troll-names-wrapper' data-id='troll-names-wrapper'>
-          <p class='caption'>Blocking Comments</p>
-          <div class='table'>
-            <div id='table-header'>
-              <div class='th'>x</div>
-              <div id='header-name' class='th'>Name(0)</div>
-              <div id='header-count' class='th'>#(0)</div>
-            </div>
+          <div class='caption'>Blocking Comments</div>
+
+          <div class='grid-header'>x</div>
+          <div class='grid-header' id='header-name'>Name<strong>(0)</strong></div>
+          <div class='grid-header' id='header-count'><strong>#(0)</strong></div>
+
+
+          <div class='troll' data-class='troll'>
+            <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
+            <div class='td troll-name' data-class='troll-name'><p>Troll Name 1</p></div>
+            <div class='td comment-counter' data-class='comment-counter'>34</div>
           </div>
+
+          <div class='troll' data-class='troll'>
+            <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
+            <div class='td troll-name' data-class='troll-name'>Troll Name 1</div>
+            <div class='td comment-counter' data-class='comment-counter'>34</div>
+          </div>
+
+          <div class='troll' data-class='troll'>
+            <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
+            <div class='td troll-name' data-class='troll-name'>Troll Name 1</div>
+            <div class='td comment-counter' data-class='comment-counter'>34</div>
+           </div>
         </div>
 
         <div id='clear-button-container'><button id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'>Clear Chat</button></div>
@@ -184,7 +200,7 @@ var dom_manipulating = {
         <div class='td troll-name' data-class='troll-name'>${name}</div>
         <div class='td comment-counter' data-class='comment-counter'>${existing_comments_counter}</div>
       </div>
-    `).insertAfter($('#troll-names-wrapper #table-header'));
+    `).insertAfter($('#troll-names-wrapper .table-headers'));
    $('#troll-names-wrapper').scrollTop(0);
   },
 
