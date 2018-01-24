@@ -5,7 +5,7 @@
     display: flex !important; }
 
 * {
-  box-sizing: border-box; }
+  box-sizing: border-box;  }
 
 #troll-extension-wrapper {
   margin-top: 10px; }
