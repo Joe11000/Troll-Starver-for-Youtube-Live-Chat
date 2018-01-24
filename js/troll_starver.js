@@ -25,6 +25,8 @@
 
 
 
+
+
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -41,19 +43,19 @@ var YOUTUBE_SELECTORS = {
 };
 
 // put the widget on the screen
-$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'outer-grid-wrapper\' data-id=\'outer-grid-wrapper\'>\n        <div id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <div class=\'caption\'>Blocking Comments</div>\n\n          <div class=\'grid-header\'>x</div>\n          <div class=\'grid-header\' id=\'header-name\'>Name<strong>(0)</strong></div>\n          <div class=\'grid-header\' id=\'header-count\'><strong>#(0)</strong></div>\n        </div>\n\n        <div id=\'clear-button-container\'><button id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'>Clear Chat</button></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <div id=\'import-export-links-wrapper\'>\n          <a id=\'import-names-link\' href=\'#\'><span>import names</span></a>\n          <a id=\'export-names-link\' href=\'#\'><span>export names</span></a>\n        </div>\n\n        <form id=\'import-names-wrapper\'>\n          <div id=\'import-names-radio-wrapper\'>\n            <div class=\'import-names-radio-row\'>\n              <input id=\'append-label\' type=\'radio\' name=\'import\' value=\'append\' checked>\n              <label for=\'append-label\'>append</label>\n            </div>\n\n            <div class=\'import-names-radio-row\'>\n              <input id=\'overwrite-label\' type=\'radio\' name=\'import\' value=\'overwrite\'>\n              <label for=\'overwrite-label\'>overwrite</label>\n            </div>\n          </div>\n          <div id=\'import-names-textarea-wrapper\'>\n            <textarea id=\'import-names-textarea\' placeholder="name 1\nname 2\nname 3"></textarea>\n          </div>\n          <div id=\'import-buttons\'>\n            <input id=\'import-close-button\' data-id=\'import-close-button\' type=\'button\' value=\'close\'>\n            <input id=\'import-names-button\' data-id=\'import-names-button\' type=\'button\' value=\'import\'>\n          </div>\n        </form>\n\n        <div id=\'export-names-wrapper\'>\n          <label for=\'export-names-textarea\'>exported names</label>\n\n          <div id=\'export-names-textarea-wrapper\'>\n            <textarea id=\'export-names-textarea\'></textarea>\n          </div>\n\n          <div id=\'export-form-wrapper\'>\n            <form id=\'export-form\'>\n              <input id=\'export-close-button\' type=\'button\' value=\'close\'>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n');
+$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\' data-id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\' data-id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'outer-grid-wrapper\' data-id=\'outer-grid-wrapper\'>\n        <div id=\'troll-image-wrapper\' data-id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <div class=\'caption\'>Blocking Comments</div>\n\n          <div class=\'grid-header\'>x</div>\n          <div class=\'grid-header\' id=\'header-name\'>Name<strong>(0)</strong></div>\n          <div class=\'grid-header\' id=\'header-count\'><strong>#(0)</strong></div>\n        </div>\n\n        <div id=\'clear-button-container\'><button id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'>Clear Chat</button></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <a id=\'import-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'import-names-link\' href=\'#\'>import names</a>\n        <a id=\'export-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'export-names-link\' href=\'#\'>export names</a>\n\n        <form id=\'import-form\' class=\'append-radio-button-wrapper row-2\' data-class=\'append-radio-button-wrapper row-2\' data-id=\'append-radio-button-wrapper\'>\n          <input id=\'append-radio-button\' type=\'radio\' name=\'import\' value=\'append\' checked>\n          <label for=\'append-radio-button\'>append</label>\n        </form>\n\n        <div id=\'overwrite-radio-button-wrapper\' class=\'overwrite-radio-button-wrapper row-2 row-3\' data-class=\'row-2 row-3\'>\n          <input id=\'overwrite-radio-button\' type=\'radio\' name=\'import\' value=\'overwrite\' form=\'import-form\'>\n          <label for=\'overwrite-radio-button\' form=\'import-form\'>overwrite</label>\n        </div>\n\n        <input id=\'import-submit-button\' data-id=\'import-submit-button\' class=\'row-2\' data-class=\'row-2\' type=\'button\' value=\'import\' form=\'import-form\'>\n        <input id=\'import-close-button\' data-id=\'import-close-button\' class=\'row-3\' data-class=\'row-3\' type=\'button\' value=\'close\' form=\'import-form\'>\n\n        <textarea id=\'import-names-textarea\' data-id=\'import-names-textarea\' class=\'row-2 row-3\' data-class=\'row-2 row-3\' placeholder="name 1\nname 2\nname 3" form=\'import-form\'></textarea>\n\n        <p id=\'export-text\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>exported names</p>\n\n        <textarea id=\'export-names-textarea\' class=\'row-4 row-5\' data-class=\'row-4 row-5\' data-id=\'export-names-textarea\'></textarea>\n\n        <form id=\'export-form\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>\n          <input id=\'export-close-button\' data-id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n  </div>\n');
 
 // reusable db manipulting functions
 var db = {
   get: function get() {
     var p = new Promise(function (res, rej) {
       chrome.storage.local.get('troll_names_hash', function (troll_names_hash_wrapper) {
-        debugger;
+        // debugger;
         res(troll_names_hash_wrapper['troll_names_hash']);
         // rej("The Trolls Name 'DB' hash does not exist. So create a new one");
       });
     }).catch(function (args) {
-      debugger;
+      // debugger;
       return db.replaceWith({});
     });
 
@@ -294,8 +296,8 @@ dom_manipulating.onExtensionLoadAddTableEntriesForDBEntries();
 // store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function (event) {
   // expand extension temporarialy if it is currently minimized
-  if ($("#troll-extension-wrapper [data-id='expand-arrow-wrapper']:visible").length > 0) {
-    $('#troll-extension-wrapper').removeClass('minimize');
+  if ($("[data-id='troll-image-wrapper'] [data-id='expand-arrow-wrapper']:visible").length > 0) {
+    $("[data-id='troll-image-wrapper']").removeClass('minimize');
     dom_manipulating.expanded_for_drag = true;
   }
 
@@ -306,7 +308,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IM
 });
 
 // when a user's image is dragged and dropped onto the troll image, save the name in db
-$('#troll-image-wrapper').on('drop', function (event) {
+$("[data-id='troll-image-wrapper']").on('drop', function (event) {
   event.preventDefault();
   event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
   var troll_name = event.dataTransfer.getData('troll-name');
@@ -316,7 +318,7 @@ $('#troll-image-wrapper').on('drop', function (event) {
 
   // reminimize the extension if it was only opened for drag process
   if (dom_manipulating.expanded_for_drag) {
-    $('#troll-extension-wrapper').addClass('minimize');
+    $("[data-id='troll-image-wrapper']").addClass('minimize');
     dom_manipulating.expanded_for_drag = false;
   }
 });
@@ -366,39 +368,39 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
   });
 
   // in normal view, click on export link.
-  $('#export-names-link').on('click', function (e) {
+  $("[data-id='export-names-link']").on('click', function (e) {
     e.preventDefault();
-    $('#import-export-links-wrapper').hide();
-    $('#export-names-wrapper').show();
+    $("[data-class*='row-1']").hide();
+    $("[data-class*='row-4'], [data-class*='row-5']").show();
     dom_manipulating.exportTrollsNamesToTextbox();
   });
 
   // In normal view, click import button view
-  $('#import-names-link').on('click', function (e) {
+  $("[data-id='import-names-link']").on('click', function (e) {
     e.preventDefault();
-    $('#import-export-links-wrapper').hide();
-    $('#import-names-wrapper').show();
+    $("[data-class*='row-1']").hide();
+    $("[data-class*='row-2'], [data-class*='row-3']").show();
   });
 
   // In export view, click close button to exit.
-  $('#export-names-wrapper #export-close-button').on('click', function () {
-    $('#import-export-links-wrapper').show();
-    $('#export-names-wrapper').hide();
+  $("[data-id='export-close-button']").on('click', function () {
+    $("[data-class*='row-1']").show();
+    $("[data-class*='row-4'], [data-class*='row-5']").hide();
     $('#export-names-textarea').val("");
   });
 
   // In the import view, click the close button to exit.
-  $('#import-names-wrapper #import-close-button').on('click', function () {
-    $('#import-names-textarea').val('');
-    $('#import-export-links-wrapper').show();
-    $('#import-names-wrapper').hide();
-    $('#append-label').click();
+  $("[data-id='import-close-button']").on('click', function () {
+    $("[data-id='import-names-textarea']").val('');
+    $("[data-class*='row-1']").show();
+    $("[data-class*='row-2'], [data-class*='row-3']").hide();
+    $('#append-radio-button').click();
   });
 
   // In the import view, click import button.
-  $("#import-names-wrapper [data-id='import-names-button']").on('click', function () {
+  $("[data-id='import-submit-button']").on('click', function () {
     // console.log('import button clicked')
-    var importing_names_array = $('#import-names-textarea').val().match(/.+(\n|$)/g);
+    var importing_names_array = $("[data-id='import-names-textarea']").val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
     if (importing_names_array !== null) {
@@ -433,21 +435,21 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
     }
 
     // if the import panel is visible then hide it and show the import or export links
-    if ($('#import-names-wrapper:visible').length != 0) {
-      $('#import-export-links-wrapper').show();
-      $('#import-names-wrapper').hide();
-      $('#import-names-textarea').val('');
-      $('#append-label').click();
+    if ($("[data-id='append-radio-button-wrapper']:visible").length != 0) {
+      $("[data-class*='row-1']").show();
+      $("[data-class*='row-2'], [data-class*='row-3']").hide();
+      $("[data-id='import-names-textarea']").val('');
+      $("['data-class='append-radio-button-wrapper']").click();
     }
   });
 });
 
 // When the user clicks on the minimize/maximize div, then either open or minimize the extension
-$('#troll-extension-wrapper #arrow-wrapper').click(function () {
-  if ($('#troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper:visible').length == 0) {
-    $('#troll-extension-wrapper').addClass('minimize');
+$("[data-id='troll-extension-wrapper] [data-id='arrow-wrapper']").click(function () {
+  if ($("[data-id='troll-extension-wrapper] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
+    $("[data-id='troll-extension-wrapper]").addClass('minimize');
   } else {
-    $('#troll-extension-wrapper').removeClass('minimize');
+    $("[data-id='troll-image-wrapper']").removeClass('minimize');
   }
 });
 
@@ -464,11 +466,6 @@ dom_manipulating.scrollToBottomOfChatBox();
 //   </div>
 //   </div>
 // `);
-
-
-
-
-
 
 
 

@@ -5,7 +5,7 @@
     display: flex !important; }
 
 * {
-  box-sizing: border-box;  }
+  box-sizing: border-box; }
 
 #troll-extension-wrapper {
   margin-top: 10px; }
@@ -61,10 +61,11 @@
   #troll-extension-wrapper.minimize #arrow-wrapper #expand-arrow-wrapper {
     display: block; }
   #troll-extension-wrapper #shrinkable-area {
-    margin-top: 5px; }
+    margin: 5px 0;
+    display: grid; }
     #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper {
       display: grid;
-      grid-template-columns: minmax(70px, 2fr) 6fr minmax(70px, 2fr);
+      grid-template-columns: minmax(94px, 2fr) 6fr minmax(94px, 2fr);
       grid-auto-rows: 118px;
       border: 1px solid black !important;
       border-radius: 5px;
@@ -97,6 +98,9 @@
           text-indent: 5px; }
         #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper::-webkit-scrollbar {
           width: 0 !important; }
+        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper strong {
+          color: black;
+          font-weight: 700; }
         #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .grid-header {
           border-bottom: 2px solid black;
           color: rgba(22, 122, 198, 0.90196);
@@ -126,81 +130,76 @@
           #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll .comment-counter {
             color: red;
             font-weight: bold; }
-  #troll-extension-wrapper input[type='button'] {
-    background-color: rgba(22, 122, 198, 0.9);
-    color: white;
-    font-weight: 500;
-    border-radius: 5px;
-    cursor: pointer; }
-  #troll-extension-wrapper #import-names-wrapper, #troll-extension-wrapper #export-names-wrapper {
-    margin-bottom: 5px;
-    display: none; }
-  #troll-extension-wrapper #troll-import-export-wrapper {
-    margin: 5px 0; }
-  #troll-extension-wrapper #import-export-links-wrapper {
-    width: 100%;
-    height: 15px; }
-    #troll-extension-wrapper #import-export-links-wrapper #import-names-link {
-      display: inline;
-      float: left;
-      margin-left: 50px; }
-      #troll-extension-wrapper #import-export-links-wrapper #import-names-link:link, #troll-extension-wrapper #import-export-links-wrapper #import-names-link:visited, #troll-extension-wrapper #import-export-links-wrapper #import-names-link:hover, #troll-extension-wrapper #import-export-links-wrapper #import-names-link:active {
-        color: rgba(22, 122, 198, 0.90196); }
-    #troll-extension-wrapper #import-export-links-wrapper #export-names-link {
-      display: inline;
-      float: right;
-      margin-right: 50px; }
-      #troll-extension-wrapper #import-export-links-wrapper #export-names-link:link, #troll-extension-wrapper #import-export-links-wrapper #export-names-link:visited, #troll-extension-wrapper #import-export-links-wrapper #export-names-link:hover, #troll-extension-wrapper #import-export-links-wrapper #export-names-link:active {
-        color: rgba(22, 122, 198, 0.90196); }
-  #troll-extension-wrapper #import-names-wrapper #import-buttons {
-    display: inline;
-    float: right;
-    width: 34%;
-    min-width: 107px; }
-  #troll-extension-wrapper #import-names-wrapper textarea#import-names-textarea {
-    width: 95%;
-    margin: auto;
-    position: relative;
-    top: 4px; }
-  #troll-extension-wrapper #import-names-wrapper #import-names-textarea-wrapper {
-    max-width: 200px;
-    width: 40%;
-    display: inline-block; }
-  #troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper {
-    max-width: 100px;
-    min-width: 80px;
-    width: 23%;
-    display: inline-block; }
-    #troll-extension-wrapper #import-names-wrapper #import-names-radio-wrapper * {
-      vertical-align: top; }
-  #troll-extension-wrapper #import-names-wrapper #import-names-button {
-    float: right;
-    position: relative;
-    top: 5px; }
-  #troll-extension-wrapper #import-names-wrapper #import-close-button {
-    float: right;
-    position: relative;
-    top: 5px;
-    background-color: gray;
-    margin-left: 5px; }
-  #troll-extension-wrapper #export-names-wrapper #export-close-button {
-    float: right;
-    position: relative;
-    margin: 0 23% 0 0;
-    background-color: gray; }
-  #troll-extension-wrapper textarea#export-names-textarea {
-    width: 95%;
-    margin: auto; }
-  #troll-extension-wrapper #export-names-wrapper #export-names-textarea-wrapper {
-    max-width: 200px;
-    width: 50%;
-    display: inline-block;
-    vertical-align: middle; }
-  #troll-extension-wrapper #export-names-wrapper #export-form-wrapper {
-    position: relative;
-    width: 20%;
-    float: right;
-    top: 7px; }
+    #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper {
+      display: grid;
+      grid-gap: 5px;
+      grid-template-columns: minmax(94px, 2fr) 6fr minmax(94px, 2fr);
+      grid-auto-rows: repeat(5, 20px); }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper input[type='button'] {
+        background-color: rgba(22, 122, 198, 0.9);
+        color: white;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#import-names-link {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+        justify-self: center; }
+        #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#import-names-link:link, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#import-names-link:visited, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#import-names-link:hover, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#import-names-link:active {
+          color: rgba(22, 122, 198, 0.90196); }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#export-names-link {
+        grid-column: 3;
+        grid-row: 1;
+        align-self: center;
+        justify-self: center; }
+        #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#export-names-link:link, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#export-names-link:visited, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#export-names-link:hover, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > a#export-names-link:active {
+          color: rgba(22, 122, 198, 0.90196); }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > form.append-radio-button-wrapper {
+        grid-column: 1;
+        grid-row: 2;
+        padding-right: 10px;
+        align-self: center;
+        justify-self: end; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > div.overwrite-radio-button-wrapper {
+        grid-column: 1;
+        grid-row: 3;
+        align-self: center;
+        justify-self: end; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > p#export-text {
+        grid-area: 'export-text' !important;
+        align-self: center;
+        justify-self: end;
+        grid-column: 1;
+        grid-row: 4 / 5; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > textarea#import-names-textarea {
+        grid-column: 2;
+        grid-row: 2 / 4;
+        margin: auto;
+        height: 100%;
+        width: 100%; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > input#import-submit-button {
+        grid-column: 3;
+        grid-row: 2; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > input#import-close-button {
+        background-color: gray;
+        grid-column: 3;
+        grid-row: 3; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > form#export-form {
+        grid-column: 3;
+        grid-row: 4/5; }
+        #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > form#export-form #export-close-button {
+          background-color: gray;
+          height: 100%;
+          width: 100%; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > textarea#export-names-textarea {
+        width: 100%;
+        height: 100%;
+        grid-column: 2;
+        grid-row: 4 / 5; }
+      #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-2, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-3, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-4, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-5 {
+        display: none; }
 
 /* begin -- when extension expanded */
 /*#troll-extension-wrapper #arrow-wrapper img {

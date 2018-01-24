@@ -18,22 +18,10 @@
   $TROLL_IMG: "[is='yt-img']";                     // inside this.COMMENT
   $TROLL_NAME: '#author-name';                     // inside this.COMMENT
 
+  $IMPORT_EXPORT_AREA_GRID_TEMPLATE_COLUMNS: minmax(94px, 2fr) 6fr minmax(94px, 2fr);
+  $OUTER_GRID_WRAPPER_GRID_TEMPLATE_COLUMNS: $IMPORT_EXPORT_AREA_GRID_TEMPLATE_COLUMNS;
 
-// youtube live chat style override - START
-  // #{$COMMENTS_WRAPPER} #{$COMMENT} {
-    // a.avatar {
-    //   position: absolute;
-    // }
-    // .content {
-    //   margin-left: 45px;
-    //   margin-right: 15px;
-    // }
-    // .actions-menu {
-    //   position: absolute !important;
-    //   right: 15px;
-    //   top: 10px;
-    // }
-  // }
+
   #{$COMMENTS_WRAPPER} > #{$COMMENT} {
     display: none;
     &.approved-comment {
@@ -123,12 +111,13 @@
   }
 
   #shrinkable-area {
-    margin-top: 5px;
+    margin: 5px 0;
+    display: grid;
 
     #outer-grid-wrapper {
       display: grid;
 
-      grid-template-columns: minmax(70px, 2fr) 6fr minmax(70px, 2fr);
+      grid-template-columns: $OUTER_GRID_WRAPPER_GRID_TEMPLATE_COLUMNS;
       grid-auto-rows: 118px;
 
       border: 1px solid black !important;
@@ -167,6 +156,11 @@
         & > * { display: subgrid; text-indent: 5px; }
         &::-webkit-scrollbar { width: 0 !important }
 
+        strong {
+          color: black;
+          font-weight: 700;
+        }
+
         .grid-header {
           border-bottom: 2px solid black;
           color: rgba(22, 122, 198, 0.90196);
@@ -180,7 +174,6 @@
           font-weight: bold;
           margin: 0;
         }
-
 
         .troll {
           display: contents;
@@ -211,103 +204,125 @@
         }
       }
     }
-  }
-  input[type='button'] {
-    background-color: rgba(22, 122, 198, 0.9);
-    color: white;
-    font-weight: 500;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  #import-names-wrapper, #export-names-wrapper {
-    margin-bottom: 5px;
-    display: none;
-  }
-  #troll-import-export-wrapper {
-    margin: 5px 0;
-  }
-  #import-export-links-wrapper {
-    width: 100%;
-    height: 15px;
-    #import-names-link {
-      display: inline;
-      float: left;
-      margin-left: 50px;
-      &:link, &:visited, &:hover, &:active {
-        color: rgba(22, 122, 198, 0.90196);
+
+
+    #troll-import-export-wrapper {
+      display: grid;
+      grid-gap: 5px;
+      grid-template-columns: $IMPORT_EXPORT_AREA_GRID_TEMPLATE_COLUMNS;
+      grid-auto-rows: repeat(5, 20px);
+      // grid-template-areas: 'import-names-link      .                     export-names-link'
+      //                      'append-radio-button    import-names-textarea import-submit-button'
+      //                      'overwrite-radio-button import-names-textarea import-close-button'
+      //                      'export-text            export-names-textarea export-close-button'
+      //                      'export-text            export-names-textarea export-close-button';
+
+      input[type='button'] {
+        background-color: rgba(22, 122, 198, 0.9);
+        color: white;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
       }
-    }
-    #export-names-link {
-      &:link, &:visited, &:hover, &:active {
-        color: rgba(22, 122, 198, 0.90196);
+
+      & > a#import-names-link {
+        // grid-area: 'import-names-link' !important;
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+        justify-self: center;
+
+        &:link, &:visited, &:hover, &:active {
+          color: rgba(22, 122, 198, 0.90196);
+        }
       }
-      display: inline;
-      float: right;
-      margin-right: 50px;
-    }
-  }
-  #import-names-wrapper {
-    #import-buttons {
-      display: inline;
-      float: right;
-      width: 34%;
-      min-width: 107px;
-    }
-    textarea#import-names-textarea {
-      width: 95%;
-      margin: auto;
-      position: relative;
-      top: 4px;
-    }
-    #import-names-textarea-wrapper {
-      max-width: 200px;
-      width: 40%;
-      display: inline-block;
-    }
-    #import-names-radio-wrapper {
-      max-width: 100px;
-      min-width: 80px;
-      width: 23%;
-      display: inline-block;
-      * {
-        vertical-align: top;
+      & > a#export-names-link {
+        // grid-area: 'export-names-link' !important;
+        grid-column: 3;
+        grid-row: 1;
+        align-self: center;
+        justify-self: center;
+
+        &:link, &:visited, &:hover, &:active {
+          color: rgba(22, 122, 198, 0.90196);
+        }
       }
-    }
-    #import-names-button {
-      float: right;
-      position: relative;
-      top: 5px;
-    }
-    #import-close-button {
-      float: right;
-      position: relative;
-      top: 5px;
-      background-color: gray;
-      margin-left: 5px;
-    }
-  }
-  #export-names-wrapper #export-close-button {
-    float: right;
-    position: relative;
-    margin: 0 23% 0 0;
-    background-color: gray;
-  }
-  textarea#export-names-textarea {
-    width: 95%;
-    margin: auto;
-  }
-  #export-names-wrapper {
-    #export-names-textarea-wrapper {
-      max-width: 200px;
-      width: 50%;
-      display: inline-block;
-      vertical-align: middle;
-    }
-    #export-form-wrapper {
-      position: relative;
-      width: 20%;
-      float: right;
-      top: 7px;
+
+      & > form.append-radio-button-wrapper {
+        // grid-area: 'append-radio-button' !important;
+        grid-column: 1;
+        grid-row: 2;
+        padding-right: 10px; // align the append radio button with the overwrite button
+        align-self: center;
+        justify-self: end;
+
+      }
+
+      & > div.overwrite-radio-button-wrapper {
+        // grid-area: 'overwrite-radio-button' !important;
+        grid-column: 1;
+        grid-row: 3;
+        align-self: center;
+        justify-self: end;
+
+      }
+
+      & > p#export-text {
+        grid-area: 'export-text' !important;
+        align-self: center;
+        justify-self: end;
+        grid-column: 1;
+        grid-row: 4 / 5;
+      }
+
+
+      & > textarea#import-names-textarea {
+        // grid-area: 'import-names-textarea' !important;
+        grid-column: 2;
+        grid-row: 2 / 4;
+        margin: auto;
+        height: 100%;
+        width: 100%;
+      }
+
+      & > input#import-submit-button {
+        // grid-area: 'import-submit-button' !important;
+        grid-column: 3;
+        grid-row: 2;
+      }
+
+      & > input#import-close-button {
+        background-color: gray;
+        // grid-area: 'import-close-button' !important;
+        grid-column: 3;
+        grid-row: 3;
+      }
+
+      & > form#export-form {
+        grid-column: 3;
+        grid-row: 4/5;
+
+        #export-close-button {
+          // grid-area: 'export-close-button' !important;
+          background-color: gray;
+          height: 100%;
+          width: 100%;
+        }
+      }
+      & > textarea#export-names-textarea {
+        // grid-area: 'export-names-textarea' !important;
+        width: 100%;
+        height: 100%;
+        grid-column: 2;
+        grid-row: 4 / 5;
+      }
+      & > .row-2,
+      & > .row-3,
+      & > .row-4,
+      & > .row-5 {
+        display: none;
+      }
     }
   }
 }
