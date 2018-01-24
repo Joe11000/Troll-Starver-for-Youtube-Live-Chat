@@ -6,7 +6,8 @@ const YOUTUBE_SELECTORS = {
   TROLL_IMG: "#author-photo",                     // inside this.COMMENT
   TROLL_NAME: '#author-name',                     // inside this.COMMENT
   TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint", // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
-  SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more"
+  SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more",
+  LIVE_CHAT_IFRAME_WRAPPER: 'ytd-live-chat-frame'
 }
 
 // put the widget on the screen
@@ -31,8 +32,8 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
           <div class='caption'>Blocking Comments</div>
 
           <div class='grid-header'>x</div>
-          <div class='grid-header' id='header-name'>Name<strong>(0)</strong></div>
-          <div class='grid-header' id='header-count'><strong>#(0)</strong></div>
+          <div class='grid-header' id='header-name' data-id='grid-header-name'>Name<strong>(0)</strong></div>
+          <div class='grid-header' id='header-count' data-id='grid-header-count'><strong>#(0)</strong></div>
         </div>
 
         <div id='clear-button-container'><button id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'>Clear Chat</button></div>
@@ -43,12 +44,12 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
         <a id='export-names-link' class='row-1' data-class='row-1' data-id='export-names-link' href='#'>export names</a>
 
         <form id='import-form' class='append-radio-button-wrapper row-2' data-class='append-radio-button-wrapper row-2' data-id='append-radio-button-wrapper'>
-          <input id='append-radio-button' type='radio' name='import' value='append' checked>
+          <input id='append-radio-button' data-id='append-radio-button' type='radio' name='import' value='append' checked>
           <label for='append-radio-button'>append</label>
         </form>
 
         <div id='overwrite-radio-button-wrapper' class='overwrite-radio-button-wrapper row-2 row-3' data-class='row-2 row-3'>
-          <input id='overwrite-radio-button' type='radio' name='import' value='overwrite' form='import-form'>
+          <input id='overwrite-radio-button' data-id='overwrite-radio-button' type='radio' name='import' value='overwrite' form='import-form'>
           <label for='overwrite-radio-button' form='import-form'>overwrite</label>
         </div>
 
@@ -227,8 +228,8 @@ var dom_manipulating = {
         <div class='td troll-name' data-class='troll-name'>${name}</div>
         <div class='td comment-counter' data-class='comment-counter'>${existing_comments_counter}</div>
       </div>
-    `).insertAfter($('#troll-names-wrapper .grid-header:last'));
-   $('#troll-names-wrapper').scrollTop(0);
+    `).insertAfter($("[data-id='troll-names-wrapper'] .grid-header:last"));
+   $("[data-id='troll-names-wrapper']").scrollTop(0);
   },
 
   // input: ie [name_1, name_2, name_3]               array of troll names to remove from chat
@@ -258,16 +259,16 @@ var dom_manipulating = {
 
 
   updateTotalNamesBlocked: function() {
-    var total = $("[data-id='outer-grid-wrapper'] #troll-names-wrapper img.remove-name").length || 0;
+    var total = $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] img.remove-name").length || 0;
 
-    $("[data-id='outer-grid-wrapper'] #troll-names-wrapper #header-name").html(`Name(${total})`);
+    $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-name']").html(`Name(${total})`);
   },
 
   updateTotalCommentsBlocked: function(increase_total_by=1) {
-    let string = $("[data-id='outer-grid-wrapper'] #troll-names-wrapper #header-count").html() || "";
+    let string = $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html() || "";
     let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
     let new_total = current_total + increase_total_by;
-    $("[data-id='outer-grid-wrapper'] #troll-names-wrapper #header-count").html(`#(${new_total})`);
+    $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html(`#(${new_total})`);
   },
 
   scrollToBottomOfChatBox: function(){
@@ -287,20 +288,15 @@ var dom_manipulating = {
           ((typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length === 0 )
         )
       {
-       $('#export-names-textarea').val("");
+       $("[data-id='export-names-textarea']").val("");
       }
       else if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
         let result = Object.keys(troll_names_hash).map((troll_name) => { return(troll_name) } ).join("\n");
-        $('#export-names-textarea').val(result);
+        $("[data-id='export-names-textarea']").val(result);
       }
     });
   }
 }
-
-
-
-
-
 
 
 // make all comments visible
@@ -411,7 +407,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
   $("[data-id='export-close-button']").on('click', function () {
     $("[data-class*='row-1']").show();
     $("[data-class*='row-4'], [data-class*='row-5']").hide();
-    $('#export-names-textarea').val("");
+    $("[data-id='export-names-textarea']").val("");
   });
 
   // In the import view, click the close button to exit.
@@ -419,7 +415,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
     $("[data-id='import-names-textarea']").val('');
     $("[data-class*='row-1']").show();
     $("[data-class*='row-2'], [data-class*='row-3']").hide();
-    $('#append-radio-button').click();
+    $("[data-id='append-radio-button']").click();
   });
 
   // In the import view, click import button.
@@ -437,7 +433,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
         importing_names_array[i] = importing_names_array[i].substr(0, importing_names_array[i].length - 1);
       }
 
-      let overwrite_checked = $("#import-names-radio-wrapper :checked").val() === 'overwrite' // need this inside variable set for promise
+      let overwrite_checked = $("[data-id='overwrite-radio-button']:checked").val() === 'overwrite' // need this inside variable set for promise
       new Promise((res, rej)=>{ // overwrite the db and then kick off appending names in bulk to db
         res(1)
       }).then(()=>{
@@ -482,12 +478,12 @@ dom_manipulating.scrollToBottomOfChatBox();
 
 // iframe warning html
 
-// document.querySelector('iframe#live-chat-iframe').parentNode.insertAdjacentHTML('beforeend', `
-//   <div id='troll-extension-wrapper'>
+// document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME_WRAPPER).insertAdjacentHTML('beforeend', `
+//   <div id='troll-extension-wrapper' data-id='troll-extension-wrapper'>
 //     <div id='iframe-loads-chatroom-warning'>
 //       <p class='warning-header'>TROLL BLOCKER</p>
 //       <p class='warning-orange'>Warning : The chatroom above is loaded through an iframe.</p>
 //       <p>You must either 1) Pop out the chatbox or 2) Enter "Youtube Gaming Mode" in order to use this extension.</p>
-//   </div>
+//     </div>
 //   </div>
 // `);
