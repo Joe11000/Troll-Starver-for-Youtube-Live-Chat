@@ -3,9 +3,10 @@ const YOUTUBE_SELECTORS = {
   APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer',
   COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer', // inside this.COMMENTS_WRAPPER
   COMMENT: 'yt-live-chat-text-message-renderer',  // inside this.COMMENTS_WRAPPER
-  TROLL_IMG: "[is='yt-img']",                     // inside this.COMMENT
+  TROLL_IMG: "#author-photo",                     // inside this.COMMENT
   TROLL_NAME: '#author-name',                     // inside this.COMMENT
-  TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint" // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
+  TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint", // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
+  SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more"
 }
 
 // put the widget on the screen
@@ -32,25 +33,6 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
           <div class='grid-header'>x</div>
           <div class='grid-header' id='header-name'>Name<strong>(0)</strong></div>
           <div class='grid-header' id='header-count'><strong>#(0)</strong></div>
-
-
-          <div class='troll' data-class='troll'>
-            <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
-            <div class='td troll-name' data-class='troll-name'><p>Troll Name 1</p></div>
-            <div class='td comment-counter' data-class='comment-counter'>34</div>
-          </div>
-
-          <div class='troll' data-class='troll'>
-            <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
-            <div class='td troll-name' data-class='troll-name'>Troll Name 1</div>
-            <div class='td comment-counter' data-class='comment-counter'>34</div>
-          </div>
-
-          <div class='troll' data-class='troll'>
-            <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
-            <div class='td troll-name' data-class='troll-name'>Troll Name 1</div>
-            <div class='td comment-counter' data-class='comment-counter'>34</div>
-           </div>
         </div>
 
         <div id='clear-button-container'><button id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'>Clear Chat</button></div>
@@ -244,9 +226,13 @@ var dom_manipulating = {
   },
 
   scrollToBottomOfChatBox: function(){
-    let $scroll_box = $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER)
-    $scroll_box.scrollTop($scroll_box[0].scrollHeight);
+    $(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).click();
+    $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).scrollTop(function() { return this.scrollHeight; });
   },
+  // scrollToBottomOfChatBox: function(){
+  //   let $scroll_box = $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER)
+  //   $scroll_box.scrollTop($scroll_box[0].scrollHeight);
+  // },
 
   exportTrollsNamesToTextbox: function(){
     db.get().then((troll_names_hash)=>{
@@ -342,6 +328,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IM
 
   event.dataTransfer = event.originalEvent.dataTransfer;
   let troll_name = $(this).closest(YOUTUBE_SELECTORS.COMMENT).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
+  console.log(`troll_name drag start : `, troll_name);
   event.dataTransfer.setData('troll-name', troll_name);
 });
 
@@ -352,6 +339,7 @@ $('#troll-image-wrapper').on('drop', function(event) {
   event.preventDefault();
   event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
   let troll_name = event.dataTransfer.getData('troll-name');
+  console.log(`troll_name dropped : `, troll_name);
 
   appendArrayOfTrollNames([troll_name])
 
@@ -366,6 +354,8 @@ $('#troll-image-wrapper').on('drop', function(event) {
 $("[data-id='troll-names-wrapper']").on('click', '.remove-name', function(event) {
   var $element_to_delete = $(this).closest("[data-class='troll']");
   let name = $element_to_delete.find('.troll-name').html();
+  console.log(`removing single troll name : `, name);
+
   $element_to_delete.remove();
   dom_manipulating.updateTotalNamesBlocked();
 
@@ -376,7 +366,7 @@ $("[data-id='troll-names-wrapper']").on('click', '.remove-name', function(event)
 // clear chat room
 $("[data-id='clear-all-comments']").on('click', function() {
   dom_manipulating.scrollToBottomOfChatBox();
-  $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).html('');
+  $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).empty(); // $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} .approved-comment`).remove();
 });
 
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
@@ -458,7 +448,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
       }).then(()=>{
         // delete all trolls if overwrite radio button is checked
         if(!!overwrite_checked) {
-          $("[data-id='troll-names-wrapper']" + ' .troll').each(function(idex, element){
+          $(`[data-id='troll-names-wrapper'] .troll`).each(function(idex, element){
             element.remove();
           });
           return new Promise((res, rej)=>{ // step is async...return promise to empty db and then append new people
