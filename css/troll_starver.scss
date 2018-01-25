@@ -38,22 +38,38 @@
 
   #iframe-loads-chatroom-warning {
     box-sizing: border-box;
+    border-radius: 5px;
     border: 5px solid black;
     padding: 5px;
-    background-color: orange;
-    opacity: 0.85;
+    background-color: rgba(76, 175, 80, 0.85);
 
     * { font-weight: bold }
-
-    p {
+    .warning-header {
       text-align: center;
+      font-size: 18px;
+      margin: 5px 0;
+    }
 
-      &.warning-header {
-        font-weight: bold !important;
+    .warning-orange {
+      color: gold;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
+    #warning-solutions-wrapper {
+      width: 80%;
+      margin: auto;
+      display: grid;
+      grid-gap: 4px;
+      grid-template-columns: minmax(40px, 1fr) minmax(50px, 3fr);
+      grid-auto-rows: minmax(15px, auto);
 
+      & > *:nth-child(odd){
+        justify-self: center;
       }
-      &.warning-orange {
-        // color: orangered !important;
+      & > * {
+        margin: 0;
+        font-size: 12px;
       }
     }
   }
@@ -205,7 +221,6 @@
           }
           .comment-counter {
             color: red;
-
             font-weight: bold;
           }
         }

@@ -9,8 +9,16 @@ document.querySelector('#chat').insertAdjacentHTML('beforeend', `
   <div id='troll-extension-wrapper' data-id='troll-extension-wrapper'>
     <div id='iframe-loads-chatroom-warning' data-id='iframe-loads-chatroom-warning'>
       <p class='warning-header'>TROLL BLOCKER</p>
-      <p class='warning-orange'>Warning : The chatroom above is loaded through an iframe.</p>
-      <p>Solutions: Either A) Click "Pop Out Checkbox" in chatbox settings or B) Enter "Youtube Gaming Mode" in order to use this extension.</p>
+      <p class='warning-orange'>Hey There. This version of the chatroom can't be altered by Troll Blocker.</p>
+
+      <div id='warning-solutions-wrapper'>
+        <div>(Solution 1)</div>
+        <p>Click "Popout chat" in the chatbox settings. Click the extension icon again on this page.</p>
+        <div>(Solution 2)</div>
+        <p>Enter "Youtube Gaming Mode". Click the extension icon on that page.</p>
+        <div>(Unsure?)</div>
+        <p>Helpful <a href='https://chrome.google.com/webstore/detail/youtube-live-chat-troll-s/bcikajlocgcppeihfloalfdnpgfibdpk'>Video Tutorial</a></p>
+      </div>
     </div>
   </div>
 `);

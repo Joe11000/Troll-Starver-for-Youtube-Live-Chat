@@ -11,16 +11,33 @@
   margin-top: 10px; }
   #troll-extension-wrapper #iframe-loads-chatroom-warning {
     box-sizing: border-box;
+    border-radius: 5px;
     border: 5px solid black;
     padding: 5px;
-    background-color: orange;
-    opacity: 0.85; }
+    background-color: rgba(76, 175, 80, 0.85); }
     #troll-extension-wrapper #iframe-loads-chatroom-warning * {
       font-weight: bold; }
-    #troll-extension-wrapper #iframe-loads-chatroom-warning p {
+    #troll-extension-wrapper #iframe-loads-chatroom-warning .warning-header {
+      text-align: center;
+      font-size: 18px;
+      margin: 5px 0; }
+    #troll-extension-wrapper #iframe-loads-chatroom-warning .warning-orange {
+      color: gold;
+      font-weight: bold;
+      font-size: 16px;
       text-align: center; }
-      #troll-extension-wrapper #iframe-loads-chatroom-warning p.warning-header {
-        font-weight: bold !important; }
+    #troll-extension-wrapper #iframe-loads-chatroom-warning #warning-solutions-wrapper {
+      width: 80%;
+      margin: auto;
+      display: grid;
+      grid-gap: 4px;
+      grid-template-columns: minmax(40px, 1fr) minmax(50px, 3fr);
+      grid-auto-rows: minmax(15px, auto); }
+      #troll-extension-wrapper #iframe-loads-chatroom-warning #warning-solutions-wrapper > *:nth-child(odd) {
+        justify-self: center; }
+      #troll-extension-wrapper #iframe-loads-chatroom-warning #warning-solutions-wrapper > * {
+        margin: 0;
+        font-size: 12px; }
   #troll-extension-wrapper #arrow-wrapper {
     border: 1px solid black;
     border-radius: 5px;
