@@ -17,9 +17,14 @@
 	// is chat loaded through iframe
   if(!!document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME)) {
 	// only load warning if a current warning doesn't exist
-  	if(!document.getElementById("[data-id='troll-extension-wrapper']")){
-      console.log('put out message');
-      document.querySelector("#chat").insertAdjacentHTML("beforeend","\n  <div id='troll-extension-wrapper' data-id='troll-extension-wrapper'>\n    <div id='iframe-loads-chatroom-warning' data-id='iframe-loads-chatroom-warning'>\n      <p class='warning-header'>TROLL BLOCKER</p>\n      <p class='warning-orange'>Hey There. This version of the chatroom can't be altered by Troll Blocker.</p>\n\n      <div id='warning-solutions-wrapper'>\n        <div>(Solution 1)</div>\n        <p>Click \"Popout chat\" in the chatbox settings. Click the extension icon again on this page.</p>\n        <div>(Solution 2)</div>\n        <p>Enter \"Youtube Gaming Mode\". Click the extension icon on that page.</p>\n        <div>(Unsure?)</div>\n        <p>Helpful <a href='https://chrome.google.com/webstore/detail/youtube-live-chat-troll-s/bcikajlocgcppeihfloalfdnpgfibdpk'>Video Tutorial</a></p>\n      </div>\n    </div>\n  </div>\n");
+  	if(!document.querySelector("[data-id='troll-extension-wrapper']")) {
+      document.querySelector('#chat').insertAdjacentHTML('beforeend', '\n  <div id=\'troll-extension-wrapper\' data-id=\'troll-extension-wrapper\'>\n    <div id=\'iframe-loads-chatroom-warning\' data-id=\'iframe-loads-chatroom-warning\'>\n      <div id=\'exit-warning\'>X</div>\n      <p class=\'warning-header\'>TROLL BLOCKER</p>\n      <p class=\'warning-orange\'>Hey There. This version of the chatroom can\'t be altered by Troll Blocker.</p>\n\n      <div id=\'warning-solutions-wrapper\'>\n        <div>(Solution 1)</div>\n        <p>Click "Popout chat" in the chatbox settings. Click the extension icon again on this page.</p>\n        <div>(Solution 2)</div>\n        <p>Enter "Youtube Gaming Mode". Click the extension icon on that page.</p>\n        <div>(Unsure?)</div>\n        <p>Helpful <a href=\'https://chrome.google.com/webstore/detail/youtube-live-chat-troll-s/bcikajlocgcppeihfloalfdnpgfibdpk\'>Video Tutorial</a></p>\n      </div>\n    </div>\n  </div>\n');
+
+      // add action listener to close button
+      document.querySelector('[data-id=troll-extension-wrapper]').addEventListener('click', function(e){
+        this.parentNode.removeChild(this);
+      });
+
   	}
   }
 

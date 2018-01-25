@@ -8,6 +8,7 @@ const YOUTUBE_SELECTORS = {
 document.querySelector('#chat').insertAdjacentHTML('beforeend', `
   <div id='troll-extension-wrapper' data-id='troll-extension-wrapper'>
     <div id='iframe-loads-chatroom-warning' data-id='iframe-loads-chatroom-warning'>
+      <div id='exit-warning'>X</div>
       <p class='warning-header'>TROLL BLOCKER</p>
       <p class='warning-orange'>Hey There. This version of the chatroom can't be altered by Troll Blocker.</p>
 
