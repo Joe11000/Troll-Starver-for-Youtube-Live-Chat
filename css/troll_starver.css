@@ -9,16 +9,18 @@
 
 #troll-extension-wrapper {
   margin-top: 10px; }
-  #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning {
+  #troll-extension-wrapper #iframe-loads-chatroom-warning {
     box-sizing: border-box;
-    border: 5px solid rgba(22, 122, 198, 0.90196);
-    padding: 5px; }
-    #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning p {
-      text-align: center; }
-    #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning .warning-header {
+    border: 5px solid black;
+    padding: 5px;
+    background-color: orange;
+    opacity: 0.85; }
+    #troll-extension-wrapper #iframe-loads-chatroom-warning * {
       font-weight: bold; }
-    #troll-extension-wrapper .live-chat-expander #iframe-loads-chatroom-warning .warning-orange {
-      color: orangered; }
+    #troll-extension-wrapper #iframe-loads-chatroom-warning p {
+      text-align: center; }
+      #troll-extension-wrapper #iframe-loads-chatroom-warning p.warning-header {
+        font-weight: bold !important; }
   #troll-extension-wrapper #arrow-wrapper {
     border: 1px solid black;
     border-radius: 5px;

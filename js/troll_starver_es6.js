@@ -7,7 +7,8 @@ const YOUTUBE_SELECTORS = {
   TROLL_NAME: '#author-name',                     // inside this.COMMENT
   TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint", // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
   SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more",
-  LIVE_CHAT_IFRAME_WRAPPER: 'ytd-live-chat-frame'
+  LIVE_CHAT_IFRAME_WRAPPER: '#chat',
+  LIVE_CHAT_IFRAME: '#chat > iframe'
 }
 
 // put the widget on the screen
@@ -474,16 +475,3 @@ $("[data-id='troll-extension-wrapper] [data-id='arrow-wrapper']").click( ()=> {
 });
 
 dom_manipulating.scrollToBottomOfChatBox();
-
-
-// iframe warning html
-
-// document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME_WRAPPER).insertAdjacentHTML('beforeend', `
-//   <div id='troll-extension-wrapper' data-id='troll-extension-wrapper'>
-//     <div id='iframe-loads-chatroom-warning'>
-//       <p class='warning-header'>TROLL BLOCKER</p>
-//       <p class='warning-orange'>Warning : The chatroom above is loaded through an iframe.</p>
-//       <p>You must either 1) Pop out the chatbox or 2) Enter "Youtube Gaming Mode" in order to use this extension.</p>
-//     </div>
-//   </div>
-// `);
