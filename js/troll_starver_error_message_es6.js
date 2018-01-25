@@ -8,7 +8,7 @@ const YOUTUBE_SELECTORS = {
 document.querySelector('#chat').insertAdjacentHTML('beforeend', `
   <div id='troll-extension-wrapper' data-id='troll-extension-wrapper'>
     <div id='iframe-loads-chatroom-warning' data-id='iframe-loads-chatroom-warning'>
-      <div id='exit-warning'>X</div>
+      <div id='exit-warning' data-id='exit-warning'>X</div>
       <p class='warning-header'>TROLL BLOCKER</p>
       <p class='warning-orange'>Hey There. This version of the chatroom can't be altered by Troll Blocker.</p>
 
@@ -18,7 +18,7 @@ document.querySelector('#chat').insertAdjacentHTML('beforeend', `
         <div>(Solution 2)</div>
         <p>Enter "Youtube Gaming Mode". Click the extension icon on that page.</p>
         <div>(Unsure?)</div>
-        <p>Helpful <a href='https://chrome.google.com/webstore/detail/youtube-live-chat-troll-s/bcikajlocgcppeihfloalfdnpgfibdpk'>Video Tutorial</a></p>
+        <p>2 minute <a href='https://chrome.google.com/webstore/detail/youtube-live-chat-troll-s/bcikajlocgcppeihfloalfdnpgfibdpk'>Video Tutorial</a></p>
       </div>
     </div>
   </div>

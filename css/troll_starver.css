@@ -33,7 +33,7 @@
       text-align: center;
       background-color: white; }
       #troll-extension-wrapper #iframe-loads-chatroom-warning #exit-warning:hover {
-        background-color: white;
+        background-color: lightgray;
         cursor: pointer; }
     #troll-extension-wrapper #iframe-loads-chatroom-warning .warning-header {
       text-align: center;
@@ -43,7 +43,8 @@
       color: gold;
       font-weight: bold;
       font-size: 16px;
-      text-align: center; }
+      text-align: center;
+      margin: 10px 0; }
     #troll-extension-wrapper #iframe-loads-chatroom-warning #warning-solutions-wrapper {
       width: 80%;
       margin: auto;
@@ -91,12 +92,6 @@
       transform: rotate(180deg); }
     #troll-extension-wrapper #arrow-wrapper #expand-arrow-wrapper {
       display: none; }
-  #troll-extension-wrapper.minimize #shrinkable-area {
-    display: none; }
-  #troll-extension-wrapper.minimize #arrow-wrapper #minimize-arrow-wrapper {
-    display: none; }
-  #troll-extension-wrapper.minimize #arrow-wrapper #expand-arrow-wrapper {
-    display: block; }
   #troll-extension-wrapper #shrinkable-area {
     margin: 5px 0;
     display: grid; }
@@ -126,7 +121,7 @@
           color: #dedede; }
       #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper {
         display: grid;
-        grid-template-columns: minmax(15px, 1fr) 8fr minmax(15px, 2fr);
+        grid-template-columns: minmax(15px, auto) 3fr minmax(15px, auto);
         grid-auto-rows: 18px;
         grid-gap: 2px;
         overflow-y: scroll; }
@@ -157,13 +152,9 @@
             margin-top: -1px;
             min-width: 15px; }
           #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll .troll-name {
+            text-overflow: ellipsis;
+            white-space: nowrap;
             overflow: hidden; }
-            #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll .troll-name p {
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
-              margin: 0;
-              width: 100%; }
           #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll .comment-counter {
             color: red;
             font-weight: bold; }

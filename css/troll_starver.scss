@@ -62,7 +62,7 @@
       background-color: white;
 
       &:hover {
-        background-color: white;
+        background-color: rgb(211,211,211);
         cursor: pointer;
       }
     }
@@ -78,6 +78,7 @@
       font-weight: bold;
       font-size: 16px;
       text-align: center;
+      margin: 10px 0;
     }
     #warning-solutions-wrapper {
       width: 80%;
@@ -142,19 +143,19 @@
     }
   }
 
-  &.minimize {
-    #shrinkable-area {
-      display: none;
-    }
-    #arrow-wrapper {
-      #minimize-arrow-wrapper {
-        display: none;
-      }
-      #expand-arrow-wrapper {
-        display: block;
-      }
-    }
-  }
+  // &.minimize {
+  //   #shrinkable-area {
+  //     display: none;
+  //   }
+  //   #arrow-wrapper {
+  //     #minimize-arrow-wrapper {
+  //       display: none;
+  //     }
+  //     #expand-arrow-wrapper {
+  //       display: block;
+  //     }
+  //   }
+  // }
 
   #shrinkable-area {
     margin: 5px 0;
@@ -194,7 +195,7 @@
       }
       #troll-names-wrapper {
         display: grid;
-        grid-template-columns: minmax(15px, 1fr) 8fr minmax(15px, 2fr);
+        grid-template-columns: minmax(15px, auto) 3fr minmax(15px, auto);
         grid-auto-rows: 18px;
         grid-gap: 2px;
         overflow-y: scroll;
@@ -232,15 +233,9 @@
             min-width: 15px;
           }
           .troll-name {
+            text-overflow: ellipsis;
+            white-space: nowrap;
             overflow: hidden;
-
-            p {
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
-              margin: 0;
-              width: 100%;
-            }
           }
           .comment-counter {
             color: red;

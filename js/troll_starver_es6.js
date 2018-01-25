@@ -8,8 +8,15 @@ const YOUTUBE_SELECTORS = {
   TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint", // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
   SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more",
   LIVE_CHAT_IFRAME_WRAPPER: '#chat',
-  LIVE_CHAT_IFRAME: '#chat > iframe'
+  LIVE_CHAT_IFRAME: '#chat > iframe',
 }
+
+$(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).on('DOMNodeInserted', function(e) {
+  if(!!$(`${YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON}:visible`)) {
+    dom_manipulating.scrollToBottomOfChatBox();
+  }
+});
+
 
 // put the widget on the screen
 $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
@@ -57,7 +64,7 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
         <input id='import-submit-button' data-id='import-submit-button' class='row-2' data-class='row-2' type='button' value='import' form='import-form'>
         <input id='import-close-button' data-id='import-close-button' class='row-3' data-class='row-3' type='button' value='close' form='import-form'>
 
-        <textarea id='import-names-textarea' data-id='import-names-textarea' class='row-2 row-3' data-class='row-2 row-3' placeholder="name 1\nname 2\nname 3" form='import-form'></textarea>
+        <textarea id='import-names-textarea' data-id='import-names-textarea' class='row-2 row-3' data-class='row-2 row-3' placeholder="name 1\nname 2\n...Do Not Use Extra Spaces Or Empty Lines..." form='import-form'></textarea>
 
         <p id='export-text' class='row-4 row-5' data-class='row-4 row-5'>exported names</p>
 
@@ -220,6 +227,17 @@ var dom_manipulating = {
     }
   },
 
+  minimizeShrinkableArea: function() {
+    $("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']").hide();
+    $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").hide();
+    $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").show();
+  },
+
+  expandShrinkableArea: function() {
+    $("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']").show();
+    $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").show();
+    $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").hide();
+  },
 
   // add new row on to troll table on the DOM
   addATableRowHTMLNewTroll: function (name, existing_comments_counter=0) {
@@ -230,7 +248,7 @@ var dom_manipulating = {
         <div class='td comment-counter' data-class='comment-counter'>${existing_comments_counter}</div>
       </div>
     `).insertAfter($("[data-id='troll-names-wrapper'] .grid-header:last"));
-   $("[data-id='troll-names-wrapper']").scrollTop(0);
+   $("[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper']").scrollTop(0);
   },
 
   // input: ie [name_1, name_2, name_3]               array of troll names to remove from chat
@@ -260,16 +278,16 @@ var dom_manipulating = {
 
 
   updateTotalNamesBlocked: function() {
-    var total = $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] img.remove-name").length || 0;
+    var total = $("[data-id='troll-extension-wrapper'] [data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] img.remove-name").length || 0;
 
-    $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-name']").html(`Name(${total})`);
+    $("[data-id='troll-extension-wrapper'] [data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-name']").html(`Name(${total})`);
   },
 
   updateTotalCommentsBlocked: function(increase_total_by=1) {
-    let string = $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html() || "";
+    let string = $("[data-id='troll-extension-wrapper'] [data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html() || "";
     let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
     let new_total = current_total + increase_total_by;
-    $("[data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html(`#(${new_total})`);
+    $("[data-id='troll-extension-wrapper'] [data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html(`#(${new_total})`);
   },
 
   scrollToBottomOfChatBox: function(){
@@ -289,11 +307,11 @@ var dom_manipulating = {
           ((typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length === 0 )
         )
       {
-       $("[data-id='export-names-textarea']").val("");
+       $("[data-id='troll-extension-wrapper'] [data-id='export-names-textarea']").val("");
       }
       else if( (typeof troll_names_hash == "object" ) && Object.keys(troll_names_hash).length > 0 ) {
         let result = Object.keys(troll_names_hash).map((troll_name) => { return(troll_name) } ).join("\n");
-        $("[data-id='export-names-textarea']").val(result);
+        $("[data-id='troll-extension-wrapper'] [data-id='export-names-textarea']").val(result);
       }
     });
   }
@@ -310,10 +328,11 @@ dom_manipulating.onExtensionLoadAddTableEntriesForDBEntries();
 
 // store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function(event) {
+  // debugger;
   // expand extension temporarialy if it is currently minimized
-  if($("[data-id='troll-image-wrapper'] [data-id='expand-arrow-wrapper']:visible").length > 0)
+  if(!!$("[data-id='troll-extension-wrapper'] [data-id='troll-image-wrapper'] [data-id='expand-arrow-wrapper']:visible"))
   {
-    $("[data-id='troll-image-wrapper']").removeClass('minimize');
+    dom_manipulating.expandShrinkableArea();
     dom_manipulating.expanded_for_drag = true
   }
 
@@ -326,24 +345,25 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IM
 
 
 // when a user's image is dragged and dropped onto the troll image, save the name in db
-$("[data-id='troll-image-wrapper']").on('drop', function(event) {
+$("[data-id='troll-extension-wrapper'] [data-id='troll-image-wrapper']").on('drop', function(event) {
   event.preventDefault();
   event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
   let troll_name = event.dataTransfer.getData('troll-name');
   console.log(`troll_name dropped : `, troll_name);
 
-  dom_manipulating.appendArrayOfTrollNames([troll_name])
+  dom_manipulating.appendArrayOfTrollNames([troll_name]);
 
   // reminimize the extension if it was only opened for drag process
   if(dom_manipulating.expanded_for_drag){
-    $("[data-id='troll-image-wrapper']").addClass('minimize');
+    // $("[data-id='troll-image-wrapper']").addClass('minimize');
+    dom_manipulating.minimizeShrinkableArea();
     dom_manipulating.expanded_for_drag = false;
   }
 });
 
 
 // remove single troll from list
-$("[data-id='troll-names-wrapper']").on('click', '.remove-name', function(event) {
+$("[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper']").on('click', '.remove-name', function(event) {
   var $element_to_delete = $(this).closest("[data-class='troll']");
   let name = $element_to_delete.find('.troll-name').html();
   console.log(`removing single troll name : `, name);
@@ -356,9 +376,9 @@ $("[data-id='troll-names-wrapper']").on('click', '.remove-name', function(event)
 
 
 // clear chat room
-$("[data-id='clear-all-comments']").on('click', function() {
-  dom_manipulating.scrollToBottomOfChatBox();
+$("[data-id='troll-extension-wrapper'] [data-id='clear-all-comments']").on('click', function() {
   $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).empty(); // $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} .approved-comment`).remove();
+  dom_manipulating.scrollToBottomOfChatBox();
 });
 
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
@@ -377,7 +397,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
 
       if(troll_names_hash[commenters_name] != undefined) {
         troll_names_hash[commenters_name]++;
-        $(`[data-class='troll']:contains(${commenters_name}) > [data-class='comment-counter']`).html(troll_names_hash[commenters_name]);
+        $(`[data-id='troll-extension-wrapper'] [data-class='troll']:contains(${commenters_name}) > [data-class='comment-counter']`).html(troll_names_hash[commenters_name]);
         $comment_element.remove();
         dom_manipulating.updateTotalCommentsBlocked(1);
         db.replaceWith(troll_names_hash);
@@ -390,57 +410,56 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
 
 
   // in normal view, click on export link.
-  $("[data-id='export-names-link']").on('click', function (e) {
+  $("[data-id='troll-extension-wrapper'] [data-id='export-names-link']").on('click', function (e) {
     e.preventDefault();
-    $("[data-class*='row-1']").hide();
-    $("[data-class*='row-4'], [data-class*='row-5']").show();
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-1']").hide();
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-4'], [data-class*='row-5']").show();
     dom_manipulating.exportTrollsNamesToTextbox();
   });
 
   // In normal view, click import button view
-  $("[data-id='import-names-link']").on('click', function (e) {
+  $("[data-id='troll-extension-wrapper'] [data-id='import-names-link']").on('click', function (e) {
     e.preventDefault();
-    $("[data-class*='row-1']").hide();
-    $("[data-class*='row-2'], [data-class*='row-3']").show();
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-1']").hide();
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-2'], [data-class*='row-3']").show();
   });
 
   // In export view, click close button to exit.
-  $("[data-id='export-close-button']").on('click', function () {
-    $("[data-class*='row-1']").show();
-    $("[data-class*='row-4'], [data-class*='row-5']").hide();
-    $("[data-id='export-names-textarea']").val("");
+  $("[data-id='troll-extension-wrapper'] [data-id='export-close-button']").on('click', function () {
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-1']").show();
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-4'], [data-class*='row-5']").hide();
+    $("[data-id='troll-extension-wrapper'] [data-id='export-names-textarea']").val("");
   });
 
   // In the import view, click the close button to exit.
-  $("[data-id='import-close-button']").on('click', function () {
-    $("[data-id='import-names-textarea']").val('');
-    $("[data-class*='row-1']").show();
-    $("[data-class*='row-2'], [data-class*='row-3']").hide();
-    $("[data-id='append-radio-button']").click();
+  $("[data-id='troll-extension-wrapper'] [data-id='import-close-button']").on('click', function () {
+    $("[data-id='troll-extension-wrapper'] [data-id='import-names-textarea']").val('');
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-1']").show();
+    $("[data-id='troll-extension-wrapper'] [data-class*='row-2'], [data-class*='row-3']").hide();
+    $("[data-id='troll-extension-wrapper'] [data-id='append-radio-button']").click();
   });
 
   // In the import view, click import button.
-  $("[data-id='import-submit-button']").on('click', function () {
+  $("[data-id='troll-extension-wrapper'] [data-id='import-submit-button']").on('click', function () {
     // console.log('import button clicked')
-    let importing_names_array = $("[data-id='import-names-textarea']").val().match(/.+(\n|$)/g);
+    let importing_names_array = $("[data-id='troll-extension-wrapper'] [data-id='import-names-textarea']").val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
     if(importing_names_array !== null) {
       let importing_names_array_length = importing_names_array.length;
 
-      // remove the weird '↵' at the end of each line that isn't the final line.
-      for(let i = 0; i < importing_names_array_length - 1; i++)
-      {
+      // remove the weird '↵' from any line that has it.
+      for(let i = 0; i < importing_names_array_length - 1; i++) {
         importing_names_array[i] = importing_names_array[i].substr(0, importing_names_array[i].length - 1);
       }
 
-      let overwrite_checked = $("[data-id='overwrite-radio-button']:checked").val() === 'overwrite' // need this inside variable set for promise
+      let overwrite_checked = $("[data-id='troll-extension-wrapper'] [data-id='overwrite-radio-button']:checked").val() === 'overwrite' // need this inside variable set for promise
       new Promise((res, rej)=>{ // overwrite the db and then kick off appending names in bulk to db
         res(1)
       }).then(()=>{
         // delete all trolls if overwrite radio button is checked
         if(!!overwrite_checked) {
-          $(`[data-id='troll-names-wrapper'] .troll`).each(function(idex, element){
+          $(`[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper'] .troll`).each(function(idex, element){
             element.remove();
           });
           return new Promise((res, rej)=>{ // step is async...return promise to empty db and then append new people
@@ -454,53 +473,24 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
     }
 
     // if the import panel is visible then hide it and show the import or export links
-    if($("[data-id='append-radio-button-wrapper']:visible").length != 0){
-      $("[data-class*='row-1']").show();
-      $("[data-class*='row-2'], [data-class*='row-3']").hide();
-      $("[data-id='import-names-textarea']").val('');
-      $("['data-class='append-radio-button-wrapper']").click();
+    if($("[data-id='troll-extension-wrapper'] [data-id='append-radio-button-wrapper']:visible").length != 0){
+      $("[data-id='troll-extension-wrapper'] [data-class*='row-1']").show();
+      $("[data-id='troll-extension-wrapper'] [data-class*='row-2'], [data-class*='row-3']").hide();
+      $("[data-id='troll-extension-wrapper'] [data-id='import-names-textarea']").val('');
+      $("[data-id='troll-extension-wrapper'] ['data-class='append-radio-button-wrapper']").click();
     }
   });
 });
 
-// When the user clicks on the minimize/maximize div, then either open or minimize the extension
-$("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper']").click( ()=> {
-  if ($("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
-    $("[data-id='troll-extension-wrapper']").addClass('minimize');
-  }
-  else
-  {
-    $("[data-id='troll-image-wrapper']").removeClass('minimize');
-  }
+// user clicks minimize expansion div
+$("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").click( () => {
+  dom_manipulating.minimizeShrinkableArea();
 });
 
-
-$("[data-id='troll-image-wrapper']").removeClass('minimize');
-
-$("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").click( ()=> {
-  $("[data-id='shrinkable-area']").hide();
-  $("[data-id='minimize-arrow-wrapper']").hide();
-  $("[data-id='expand-arrow-wrapper']").show();
+// user clicks expand expansion div
+$("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click( () => {
+  dom_manipulating.expandShrinkableArea();
 });
-
-$("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click( ()=> {
-  $("[data-id='shrinkable-area']").show();
-  $("[data-id='minimize-arrow-wrapper']").show();
-  $("[data-id='expand-arrow-wrapper']").hide();
-});
-
-
-// // When the user clicks on the minimize/maximize div, then either open or minimize the extension
-// $("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper']").click( ()=> {
-//   if ($("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
-//     $("[data-id='troll-extension-wrapper']").addClass('minimize');
-//   }
-//   else
-//   {
-//     $("[data-id='troll-image-wrapper']").removeClass('minimize');
-//   }
-// });
-
 
 
 dom_manipulating.scrollToBottomOfChatBox();
