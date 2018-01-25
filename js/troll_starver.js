@@ -24,7 +24,6 @@
       document.querySelector('[data-id=troll-extension-wrapper]').addEventListener('click', function(e){
         this.parentNode.removeChild(this);
       });
-
   	}
   }
 
@@ -44,9 +43,26 @@
 
 
 
+
+
+
+
+'use strict';
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-
+// 3rd party(youtube) selectors
+var YOUTUBE_SELECTORS = {
+  APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer',
+  COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer', // inside this.COMMENTS_WRAPPER
+  COMMENT: 'yt-live-chat-text-message-renderer', // inside this.COMMENTS_WRAPPER
+  TROLL_IMG: "#author-photo", // inside this.COMMENT
+  TROLL_NAME: '#author-name', // inside this.COMMENT
+  TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint", // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
+  SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more",
+  LIVE_CHAT_IFRAME_WRAPPER: '#chat',
+  LIVE_CHAT_IFRAME: '#chat > iframe'
+};
 
 // put the widget on the screen
 $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\' data-id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\' data-id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'outer-grid-wrapper\' data-id=\'outer-grid-wrapper\'>\n        <div id=\'troll-image-wrapper\' data-id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <div class=\'caption\'>Blocking Comments</div>\n\n          <div class=\'grid-header\'>x</div>\n          <div class=\'grid-header\' id=\'header-name\' data-id=\'grid-header-name\'>Name<strong>(0)</strong></div>\n          <div class=\'grid-header\' id=\'header-count\' data-id=\'grid-header-count\'><strong>#(0)</strong></div>\n        </div>\n\n        <div id=\'clear-button-container\'><button id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'>Clear Chat</button></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <a id=\'import-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'import-names-link\' href=\'#\'>import names</a>\n        <a id=\'export-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'export-names-link\' href=\'#\'>export names</a>\n\n        <form id=\'import-form\' class=\'append-radio-button-wrapper row-2\' data-class=\'append-radio-button-wrapper row-2\' data-id=\'append-radio-button-wrapper\'>\n          <input id=\'append-radio-button\' data-id=\'append-radio-button\' type=\'radio\' name=\'import\' value=\'append\' checked>\n          <label for=\'append-radio-button\'>append</label>\n        </form>\n\n        <div id=\'overwrite-radio-button-wrapper\' class=\'overwrite-radio-button-wrapper row-2 row-3\' data-class=\'row-2 row-3\'>\n          <input id=\'overwrite-radio-button\' data-id=\'overwrite-radio-button\' type=\'radio\' name=\'import\' value=\'overwrite\' form=\'import-form\'>\n          <label for=\'overwrite-radio-button\' form=\'import-form\'>overwrite</label>\n        </div>\n\n        <input id=\'import-submit-button\' data-id=\'import-submit-button\' class=\'row-2\' data-class=\'row-2\' type=\'button\' value=\'import\' form=\'import-form\'>\n        <input id=\'import-close-button\' data-id=\'import-close-button\' class=\'row-3\' data-class=\'row-3\' type=\'button\' value=\'close\' form=\'import-form\'>\n\n        <textarea id=\'import-names-textarea\' data-id=\'import-names-textarea\' class=\'row-2 row-3\' data-class=\'row-2 row-3\' placeholder="name 1\nname 2\nname 3" form=\'import-form\'></textarea>\n\n        <p id=\'export-text\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>exported names</p>\n\n        <textarea id=\'export-names-textarea\' class=\'row-4 row-5\' data-class=\'row-4 row-5\' data-id=\'export-names-textarea\'></textarea>\n\n        <form id=\'export-form\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>\n          <input id=\'export-close-button\' data-id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n  </div>\n');
@@ -451,19 +467,48 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
 });
 
 // When the user clicks on the minimize/maximize div, then either open or minimize the extension
-$("[data-id='troll-extension-wrapper] [data-id='arrow-wrapper']").click(function () {
-  if ($("[data-id='troll-extension-wrapper] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
-    $("[data-id='troll-extension-wrapper]").addClass('minimize');
+$("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper']").click(function () {
+  if ($("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
+    $("[data-id='troll-extension-wrapper']").addClass('minimize');
   } else {
     $("[data-id='troll-image-wrapper']").removeClass('minimize');
   }
 });
 
+$("[data-id='troll-image-wrapper']").removeClass('minimize');
+
+$("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").click(function () {
+  $("[data-id='shrinkable-area']").hide();
+  $("[data-id='minimize-arrow-wrapper']").hide();
+  $("[data-id='expand-arrow-wrapper']").show();
+});
+
+$("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click(function () {
+  $("[data-id='shrinkable-area']").show();
+  $("[data-id='minimize-arrow-wrapper']").show();
+  $("[data-id='expand-arrow-wrapper']").hide();
+});
+
+// // When the user clicks on the minimize/maximize div, then either open or minimize the extension
+// $("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper']").click( ()=> {
+//   if ($("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
+//     $("[data-id='troll-extension-wrapper']").addClass('minimize');
+//   }
+//   else
+//   {
+//     $("[data-id='troll-image-wrapper']").removeClass('minimize');
+//   }
+// });
+
 dom_manipulating.scrollToBottomOfChatBox();
 
-// iframe warning html
 
-document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME).parentNode.insertAdjacentHTML('beforeend', '\n  <div id=\'troll-extension-wrapper\'>\n    <div id=\'iframe-loads-chatroom-warning\'>\n      <p class=\'warning-header\'>TROLL BLOCKER</p>\n      <p class=\'warning-orange\'>Warning : The chatroom above is loaded through an iframe.</p>\n      <p>You must either \nA) Pop out the chatbox or B) Enter "Youtube Gaming Mode" in order to use this extension.</p>\n  </div>\n  </div>\n');
+
+
+
+
+
+
 
 
 
@@ -471,3 +516,19 @@ document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME).parentNode.insertAdja
   // troll_starver_es6.js ends here after being translated through Babel.
   }
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

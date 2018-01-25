@@ -464,14 +464,43 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
 });
 
 // When the user clicks on the minimize/maximize div, then either open or minimize the extension
-$("[data-id='troll-extension-wrapper] [data-id='arrow-wrapper']").click( ()=> {
-  if ($("[data-id='troll-extension-wrapper] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
-    $("[data-id='troll-extension-wrapper]").addClass('minimize');
+$("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper']").click( ()=> {
+  if ($("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
+    $("[data-id='troll-extension-wrapper']").addClass('minimize');
   }
   else
   {
     $("[data-id='troll-image-wrapper']").removeClass('minimize');
   }
 });
+
+
+$("[data-id='troll-image-wrapper']").removeClass('minimize');
+
+$("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").click( ()=> {
+  $("[data-id='shrinkable-area']").hide();
+  $("[data-id='minimize-arrow-wrapper']").hide();
+  $("[data-id='expand-arrow-wrapper']").show();
+});
+
+$("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click( ()=> {
+  $("[data-id='shrinkable-area']").show();
+  $("[data-id='minimize-arrow-wrapper']").show();
+  $("[data-id='expand-arrow-wrapper']").hide();
+});
+
+
+// // When the user clicks on the minimize/maximize div, then either open or minimize the extension
+// $("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper']").click( ()=> {
+//   if ($("[data-id='troll-extension-wrapper'] [data-id='arrow-wrapper'] [data-id='expand-arrow-wrapper']:visible").length == 0) {
+//     $("[data-id='troll-extension-wrapper']").addClass('minimize');
+//   }
+//   else
+//   {
+//     $("[data-id='troll-image-wrapper']").removeClass('minimize');
+//   }
+// });
+
+
 
 dom_manipulating.scrollToBottomOfChatBox();

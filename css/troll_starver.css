@@ -30,7 +30,8 @@
       width: 24px;
       margin: auto;
       display: inline-block;
-      text-align: center; }
+      text-align: center;
+      background-color: white; }
       #troll-extension-wrapper #iframe-loads-chatroom-warning #exit-warning:hover {
         background-color: white;
         cursor: pointer; }
