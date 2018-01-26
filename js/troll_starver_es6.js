@@ -81,14 +81,17 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
 
 // reusable db manipulting functions
 var db = {
-  get: function() {
-    let p = new Promise((res, rej) => {
-      chrome.storage.local.get('troll_names_hash', (troll_names_hash_wrapper)=>{
-        res(troll_names_hash_wrapper['troll_names_hash'])
+    get: function get() {
+    var p = new Promise(function (res, rej) {
+      chrome.storage.local.get('troll_names_hash', function (troll_names_hash_wrapper) {
+        if(typeof troll_names_hash_wrapper['troll_names_hash'] == 'undefined' ){
+          rej("troll_names_hash_wrapper doesn't exist, create and return a new 'db'");
+        }
+        res(troll_names_hash_wrapper['troll_names_hash']);
         // rej("The Trolls Name 'DB' hash does not exist. So create a new one");
-      })
-    }).catch((args)=>{
-      return db.replaceWith({})
+      });
+    }).catch(function (args) {
+      return db.replaceWith({});
     });
 
     return p;

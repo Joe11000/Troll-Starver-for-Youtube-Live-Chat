@@ -2,11 +2,6 @@
 (function(){
 
   // 3rd party(youtube) selectors
-
-
-
-
-
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -23,8 +18,6 @@ var YOUTUBE_SELECTORS = {
   LIVE_CHAT_IFRAME_WRAPPER: '#chat',
   LIVE_CHAT_IFRAME: '#chat > iframe'
 };
-
-
 
 	// is chat loaded through iframe
   if(!!document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME)) {
@@ -60,6 +53,8 @@ var YOUTUBE_SELECTORS = {
 
 
 
+
+
 $(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).on('DOMNodeInserted', function (e) {
   if ($('' + YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).is(':visible')) {
     dom_manipulating.scrollToBottomOfChatBox();
@@ -74,6 +69,9 @@ var db = {
   get: function get() {
     var p = new Promise(function (res, rej) {
       chrome.storage.local.get('troll_names_hash', function (troll_names_hash_wrapper) {
+        if (typeof troll_names_hash_wrapper['troll_names_hash'] == 'undefined') {
+          rej("troll_names_hash_wrapper doesn't exist, create and return a new 'db'");
+        }
         res(troll_names_hash_wrapper['troll_names_hash']);
         // rej("The Trolls Name 'DB' hash does not exist. So create a new one");
       });
@@ -498,6 +496,7 @@ $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click(
 });
 
 dom_manipulating.scrollToBottomOfChatBox();
+
 
 
 
