@@ -7,6 +7,7 @@
 
 
 
+
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -59,10 +60,8 @@ var YOUTUBE_SELECTORS = {
 
 
 
-
-
 $(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).on('DOMNodeInserted', function (e) {
-  if (!!$(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON + ':visible')) {
+  if ($('' + YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).is(':visible')) {
     dom_manipulating.scrollToBottomOfChatBox();
   }
 });
@@ -335,9 +334,9 @@ dom_manipulating.onExtensionLoadAddTableEntriesForDBEntries();
 
 // store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function (event) {
-   debugger;
+  // debugger;
   // expand extension temporarialy if it is currently minimized
-  if (!$("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']:visible")) {
+  if ($("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']").is(':hidden')) {
     dom_manipulating.expandShrinkableArea();
     dom_manipulating.expanded_for_drag = true;
   }
@@ -485,7 +484,7 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
     }
 
     // if the import panel is visible then hide it and show the import or export links
-    if ($("[data-id='troll-extension-wrapper'] [data-id='append-radio-button-wrapper']:visible").length != 0) {
+    if ($("[data-id='troll-extension-wrapper'] [data-id='append-radio-button-wrapper']").is(':visible')) {
       $("[data-id='troll-extension-wrapper'] [data-class*='row-1']").show();
       $("[data-id='troll-extension-wrapper'] [data-class*='row-2'], [data-class*='row-3']").hide();
       $("[data-id='troll-extension-wrapper'] [data-id='import-names-textarea']").val('');
@@ -507,7 +506,6 @@ $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click(
 });
 
 dom_manipulating.scrollToBottomOfChatBox();
-
 
 
 
