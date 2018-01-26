@@ -5,6 +5,8 @@
 
 
 
+
+
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -21,7 +23,6 @@ var YOUTUBE_SELECTORS = {
   LIVE_CHAT_IFRAME_WRAPPER: '#chat',
   LIVE_CHAT_IFRAME: '#chat > iframe'
 };
-
 
 
 
@@ -67,7 +68,7 @@ $(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).on('DOMNodeInserted', f
 });
 
 // put the widget on the screen
-$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\' data-id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\' data-id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'outer-grid-wrapper\' data-id=\'outer-grid-wrapper\'>\n        <div id=\'troll-image-wrapper\' data-id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <div class=\'caption\'>Blocking Comments</div>\n\n          <div class=\'grid-header\'>x</div>\n          <div class=\'grid-header\' id=\'header-name\' data-id=\'grid-header-name\'>Name<strong>(0)</strong></div>\n          <div class=\'grid-header\' id=\'header-count\' data-id=\'grid-header-count\'><strong>#(0)</strong></div>\n        </div>\n\n        <div id=\'clear-button-container\'><button id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'>Clear Chat</button></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <a id=\'import-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'import-names-link\' href=\'#\'>import names</a>\n        <a id=\'export-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'export-names-link\' href=\'#\'>export names</a>\n\n        <form id=\'import-form\' class=\'append-radio-button-wrapper row-2\' data-class=\'append-radio-button-wrapper row-2\' data-id=\'append-radio-button-wrapper\'>\n          <input id=\'append-radio-button\' data-id=\'append-radio-button\' type=\'radio\' name=\'import\' value=\'append\' checked>\n          <label for=\'append-radio-button\'>append</label>\n        </form>\n\n        <div id=\'overwrite-radio-button-wrapper\' class=\'overwrite-radio-button-wrapper row-2 row-3\' data-class=\'row-2 row-3\'>\n          <input id=\'overwrite-radio-button\' data-id=\'overwrite-radio-button\' type=\'radio\' name=\'import\' value=\'overwrite\' form=\'import-form\'>\n          <label for=\'overwrite-radio-button\' form=\'import-form\'>overwrite</label>\n        </div>\n\n        <input id=\'import-submit-button\' data-id=\'import-submit-button\' class=\'row-2\' data-class=\'row-2\' type=\'button\' value=\'import\' form=\'import-form\'>\n        <input id=\'import-close-button\' data-id=\'import-close-button\' class=\'row-3\' data-class=\'row-3\' type=\'button\' value=\'close\' form=\'import-form\'>\n\n        <textarea id=\'import-names-textarea\' data-id=\'import-names-textarea\' class=\'row-2 row-3\' data-class=\'row-2 row-3\' placeholder="name 1\nname 2\n...Do Not Use Extra Spaces Or Empty Lines..." form=\'import-form\'></textarea>\n\n        <p id=\'export-text\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>exported names</p>\n\n        <textarea id=\'export-names-textarea\' class=\'row-4 row-5\' data-class=\'row-4 row-5\' data-id=\'export-names-textarea\'></textarea>\n\n        <form id=\'export-form\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>\n          <input id=\'export-close-button\' data-id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n  </div>\n');
+$(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append('\n  <div id=\'troll-extension-wrapper\' data-id=\'troll-extension-wrapper\'>\n    <div id=\'arrow-wrapper\' data-id=\'arrow-wrapper\'>\n      <div id=\'expand-arrow-wrapper\' data-id=\'expand-arrow-wrapper\'>\n        <p>Expand Troll Starver</p>\n      </div>\n\n      <div id=\'minimize-arrow-wrapper\' data-id=\'minimize-arrow-wrapper\'>\n        <p>Minimize Troll Starver</p>\n      </div>\n    </div>\n\n    <div id=\'shrinkable-area\' data-id=\'shrinkable-area\'>\n      <div id=\'outer-grid-wrapper\' data-id=\'outer-grid-wrapper\'>\n        <div id=\'troll-image-wrapper\' data-id=\'troll-image-wrapper\' droppable=\'true\' ondragover="event.preventDefault();">\n        </div>\n\n        <div id=\'troll-names-wrapper\' data-id=\'troll-names-wrapper\'>\n          <div class=\'caption\' data-class=\'caption\'>Blocking Comments</div>\n\n          <div class=\'grid-header\' data-class=\'grid-header\'>x</div>\n          <div class=\'grid-header\' data-class=\'grid-header\'id=\'header-name\' data-id=\'grid-header-name\'>Name<strong>(0)</strong></div>\n          <div class=\'grid-header\' data-class=\'grid-header\'id=\'header-count\' data-id=\'grid-header-count\'><strong>#(0)</strong></div>\n        </div>\n\n        <div id=\'clear-button-container\'><button id=\'clear-all-comments\' data-id=\'clear-all-comments\' value=\'Clear Chat\'>Clear Chat</button></div>\n      </div>\n\n      <div id=\'troll-import-export-wrapper\'>\n        <a id=\'import-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'import-names-link\' href=\'#\'>import names</a>\n        <a id=\'export-names-link\' class=\'row-1\' data-class=\'row-1\' data-id=\'export-names-link\' href=\'#\'>export names</a>\n\n        <form id=\'import-form\' class=\'append-radio-button-wrapper row-2\' data-class=\'append-radio-button-wrapper row-2\' data-id=\'append-radio-button-wrapper\'>\n          <input id=\'append-radio-button\' data-id=\'append-radio-button\' type=\'radio\' name=\'import\' value=\'append\' checked>\n          <label for=\'append-radio-button\'>append</label>\n        </form>\n\n        <div id=\'overwrite-radio-button-wrapper\' class=\'overwrite-radio-button-wrapper row-2 row-3\' data-class=\'row-2 row-3\'>\n          <input id=\'overwrite-radio-button\' data-id=\'overwrite-radio-button\' type=\'radio\' name=\'import\' value=\'overwrite\' form=\'import-form\'>\n          <label for=\'overwrite-radio-button\' form=\'import-form\'>overwrite</label>\n        </div>\n\n        <input id=\'import-submit-button\' data-id=\'import-submit-button\' class=\'row-2\' data-class=\'row-2\' type=\'button\' value=\'import\' form=\'import-form\'>\n        <input id=\'import-close-button\' data-id=\'import-close-button\' class=\'row-3\' data-class=\'row-3\' type=\'button\' value=\'close\' form=\'import-form\'>\n\n        <textarea id=\'import-names-textarea\' data-id=\'import-names-textarea\' class=\'row-2 row-3\' data-class=\'row-2 row-3\' placeholder="name 1\nname 2\n...Do Not Use Extra Spaces Or Empty Lines..." form=\'import-form\'></textarea>\n\n        <p id=\'export-text\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>exported names</p>\n\n        <textarea id=\'export-names-textarea\' class=\'row-4 row-5\' data-class=\'row-4 row-5\' data-id=\'export-names-textarea\'></textarea>\n\n        <form id=\'export-form\' class=\'row-4 row-5\' data-class=\'row-4 row-5\'>\n          <input id=\'export-close-button\' data-id=\'export-close-button\' type=\'button\' value=\'close\'>\n        </form>\n      </div>\n    </div>\n  </div>\n');
 
 // reusable db manipulting functions
 var db = {
@@ -129,6 +130,7 @@ var db = {
 // reusable dom manipulting functions
 var dom_manipulating = {
   expanded_for_drag: false,
+  currently_dragging: false,
 
   // given a saved or unsaved hash, (probably a subset of troll_names_hash), remove troll comments from chatroom in bulk and save new entries in db
   // return : a promise with the updated hash
@@ -221,6 +223,8 @@ var dom_manipulating = {
     $("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']").hide();
     $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").hide();
     $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").show();
+    dom_manipulating.currently_dragging = false;
+    dom_manipulating.expanded_for_drag = false;
   },
 
   expandShrinkableArea: function expandShrinkableArea() {
@@ -331,13 +335,14 @@ dom_manipulating.onExtensionLoadAddTableEntriesForDBEntries();
 
 // store the single name of the troll you are dragging in event.dataTransfer until successful drop of the icon
 $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IMG, function (event) {
-  // debugger;
+   debugger;
   // expand extension temporarialy if it is currently minimized
-  if (!!$("[data-id='troll-extension-wrapper'] [data-id='troll-image-wrapper'] [data-id='expand-arrow-wrapper']:visible")) {
+  if (!$("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']:visible")) {
     dom_manipulating.expandShrinkableArea();
     dom_manipulating.expanded_for_drag = true;
   }
 
+  dom_manipulating.currently_dragging = true;
   event.dataTransfer = event.originalEvent.dataTransfer;
   var troll_name = $(this).closest(YOUTUBE_SELECTORS.COMMENT).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
   console.log('troll_name drag start : ', troll_name);
@@ -354,11 +359,18 @@ $("[data-id='troll-extension-wrapper'] [data-id='troll-image-wrapper']").on('dro
   dom_manipulating.appendArrayOfTrollNames([troll_name]);
 
   // reminimize the extension if it was only opened for drag process
-  if (dom_manipulating.expanded_for_drag) {
+  if (dom_manipulating.expanded_for_drag && dom_manipulating.currently_dragging) {
     // $("[data-id='troll-image-wrapper']").addClass('minimize');
     dom_manipulating.minimizeShrinkableArea();
     dom_manipulating.expanded_for_drag = false;
   }
+
+  dom_manipulating.currently_dragging = false;
+});
+
+$(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragend', function () {
+  dom_manipulating.currently_dragging = false;
+  dom_manipulating.expanded_for_drag = false;
 });
 
 // remove single troll from list
@@ -375,8 +387,8 @@ $("[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper']").on('cli
 
 // clear chat room
 $("[data-id='troll-extension-wrapper'] [data-id='clear-all-comments']").on('click', function () {
-  $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).empty(); // $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} .approved-comment`).remove();
   dom_manipulating.scrollToBottomOfChatBox();
+  $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).empty(); // $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} .approved-comment`).remove();
 });
 
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
@@ -490,9 +502,17 @@ $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").clic
 // user clicks expand expansion div
 $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click(function () {
   dom_manipulating.expandShrinkableArea();
+  dom_manipulating.expanded_for_drag = false;
+  dom_manipulating.currently_dragging = false;
 });
 
 dom_manipulating.scrollToBottomOfChatBox();
+
+
+
+
+
+
 
 
 
