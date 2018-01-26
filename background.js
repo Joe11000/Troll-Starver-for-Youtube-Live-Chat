@@ -1,7 +1,7 @@
 // var targetWindow = null;
 var CONSTANTS = {
-  TROLL_STARVER_CSS: "css/troll_starver.css",
-  TROLL_STARVER_JS: "js/troll_starver.js",
+  TROLL_STARVER_CSS: "css/troll_starver_min.css",
+  TROLL_STARVER_JS: "js/troll_starver_min.js",
   REGEX_FOR_YOUTUBE_VIDEO_W_LIVE_CHAT: /youtube.com\/watch\?.*v=([a-zA-Z0-9]*)/, // ie 'https://www.youtube.com/watch?v=fDNAHZo_pAU'
 
   REGEX_FOR_YOUTUBE_NO_VIDEO_JUST_LIVE_CHAT: /youtube.com\/live_chat\?.*v=([a-zA-Z0-9]*)/ // ie 'https://www.youtube.com/live_chat?v=fDNAHZo_pAU&is_popout=1'

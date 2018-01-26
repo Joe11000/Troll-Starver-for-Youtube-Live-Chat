@@ -2,7 +2,7 @@
 (function(){
 
   // 3rd party(youtube) selectors
-'use strict';
+
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -21,17 +21,17 @@ var YOUTUBE_SELECTORS = {
 
 
 
-	// is chat loaded through iframe
+  // is chat loaded through iframe
   if(!!document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME)) {
-	// only load warning if a current warning doesn't exist
-  	if(!document.querySelector("[data-id='troll-extension-wrapper']")) {
+  // only load warning if a current warning doesn't exist
+    if(!document.querySelector("[data-id='troll-extension-wrapper']")) {
       document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME_WRAPPER).insertAdjacentHTML('beforeend', '\n  <div id=\'troll-extension-wrapper\' data-id=\'troll-extension-wrapper\'>\n    <div id=\'iframe-loads-chatroom-warning\' data-id=\'iframe-loads-chatroom-warning\'>\n      <div id=\'exit-warning\' data-id=\'exit-warning\'>X</div>\n      <p class=\'warning-header\'>TROLL BLOCKER</p>\n      <p class=\'warning-orange\'>Hey There. This version of the chatroom can\'t be altered by Troll Blocker.</p>\n\n      <div id=\'warning-solutions-wrapper\'>\n        <div>(Solution 1)</div>\n        <p>Click "Popout chat" in the chatbox settings. Click the extension icon again on this page.</p>\n        <div>(Solution 2)</div>\n        <p>Enter "Youtube Gaming Mode". Click the extension icon on that page.</p>\n        <div>(Unsure?)</div>\n        <p>2 minute <a href=\'https://chrome.google.com/webstore/detail/youtube-live-chat-troll-s/bcikajlocgcppeihfloalfdnpgfibdpk\'>Video Tutorial</a></p>\n      </div>\n    </div>\n  </div>\n');
       // add action listener to close button
       document.querySelector("[data-id='exit-warning']").addEventListener('click', function(e){
         var extension = document.querySelector("[data-id='troll-extension-wrapper']")
         extension.parentNode.removeChild(extension);
       });
-  	}
+    }
   }
 
   // same as document.getElementById('troll-table-wrapper') === null && YOUTUBE_SELECTORS.APPEND_EXTENTION_TO !== null
@@ -144,8 +144,6 @@ var dom_manipulating = {
     var keys_in_next_bulk = troll_names_array_remaining;
     var keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize());
 
-    // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
-    // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
 
     var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
     var total_comments_blocked_in_batch = 0;
@@ -156,12 +154,10 @@ var dom_manipulating = {
       var comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
       total_comments_blocked_in_batch += comments_by_troll;
       troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
-      // console.log(`${keys_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
 
       dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
     }
 
-    // console.log(`total:${total_comments_blocked_in_batch}`)
 
     dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
     dom_manipulating.updateTotalNamesBlocked();
@@ -186,8 +182,6 @@ var dom_manipulating = {
     var keys_in_next_bulk = troll_names_array_remaining;
     var keys_in_current_bulk = keys_in_next_bulk.splice(0, db.importBulkSize());
 
-    // console.log('keys_in_next_bulk = ', keys_in_next_bulk)
-    // console.log('keys_in_current_bulk = ', keys_in_current_bulk)
 
     var comments_blocked = dom_manipulating.removeExistingCommentsFromNewTrolls(keys_in_current_bulk);
     var total_comments_blocked_in_batch = 0;
@@ -199,13 +193,11 @@ var dom_manipulating = {
         var comments_by_troll = comments_blocked[keys_in_current_bulk[i]];
         total_comments_blocked_in_batch += comments_by_troll;
         troll_names_hash[keys_in_current_bulk[i]] = comments_by_troll;
-        // console.log(`${keys_in_current_bulk[i]}: ${comments_by_troll} ... total:${total_comments_blocked_in_batch}`)
 
         dom_manipulating.addATableRowHTMLNewTroll(keys_in_current_bulk[i], comments_by_troll);
       }
     }
 
-    // console.log(`total:${total_comments_blocked_in_batch}`)
 
     dom_manipulating.updateTotalCommentsBlocked(total_comments_blocked_in_batch);
 
@@ -340,7 +332,6 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragstart', YOUTUBE_SELECTORS.TROLL_IM
   dom_manipulating.currently_dragging = true;
   event.dataTransfer = event.originalEvent.dataTransfer;
   var troll_name = $(this).closest(YOUTUBE_SELECTORS.COMMENT).find(YOUTUBE_SELECTORS.TROLL_NAME).html();
-  console.log('troll_name drag start : ', troll_name);
   event.dataTransfer.setData('troll-name', troll_name);
 });
 
@@ -349,7 +340,6 @@ $("[data-id='troll-extension-wrapper'] [data-id='troll-image-wrapper']").on('dro
   event.preventDefault();
   event.dataTransfer = event.originalEvent.dataTransfer; // found this on stack overflow. Only way to make dataTransfer work
   var troll_name = event.dataTransfer.getData('troll-name');
-  console.log('troll_name dropped : ', troll_name);
 
   dom_manipulating.appendArrayOfTrollNames([troll_name]);
 
@@ -372,7 +362,6 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragend', function () {
 $("[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper']").on('click', '.remove-name', function (event) {
   var $element_to_delete = $(this).closest("[data-class='troll']");
   var name = $element_to_delete.find('.troll-name').html();
-  console.log('removing single troll name : ', name);
 
   $element_to_delete.remove();
   dom_manipulating.updateTotalNamesBlocked();
@@ -444,7 +433,6 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function (event) {
 
   // In the import view, click import button.
   $("[data-id='troll-extension-wrapper'] [data-id='import-submit-button']").on('click', function () {
-    // console.log('import button clicked')
     var importing_names_array = $("[data-id='troll-extension-wrapper'] [data-id='import-names-textarea']").val().match(/.+(\n|$)/g);
 
     // if there is an import string in the
@@ -512,19 +500,3 @@ dom_manipulating.scrollToBottomOfChatBox();
   // troll_starver_es6.js ends here after being translated through Babel.
   }
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
