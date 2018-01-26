@@ -232,8 +232,6 @@ var dom_manipulating = {
     $("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']").hide();
     $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").hide();
     $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").show();
-    dom_manipulating.currently_dragging = false;
-    dom_manipulating.expanded_for_drag = false;
   },
 
   expandShrinkableArea: function() {
@@ -500,8 +498,6 @@ $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").clic
 // user clicks expand expansion div
 $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click( () => {
   dom_manipulating.expandShrinkableArea();
-  dom_manipulating.expanded_for_drag = false;
-  dom_manipulating.currently_dragging = false;
 });
 
 

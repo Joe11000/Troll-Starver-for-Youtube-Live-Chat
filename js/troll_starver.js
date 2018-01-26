@@ -7,7 +7,6 @@
 
 
 
-
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -59,6 +58,24 @@ var YOUTUBE_SELECTORS = {
 
 
 
+
+
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+// 3rd party(youtube) selectors
+var YOUTUBE_SELECTORS = {
+  APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer',
+  COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer', // inside this.COMMENTS_WRAPPER
+  COMMENT: 'yt-live-chat-text-message-renderer', // inside this.COMMENTS_WRAPPER
+  TROLL_IMG: "#author-photo", // inside this.COMMENT
+  TROLL_NAME: '#author-name', // inside this.COMMENT
+  TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint", // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
+  SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more",
+  LIVE_CHAT_IFRAME_WRAPPER: '#chat',
+  LIVE_CHAT_IFRAME: '#chat > iframe'
+};
 
 $(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).on('DOMNodeInserted', function (e) {
   if ($('' + YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).is(':visible')) {
@@ -222,8 +239,6 @@ var dom_manipulating = {
     $("[data-id='troll-extension-wrapper'] [data-id='shrinkable-area']").hide();
     $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").hide();
     $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").show();
-    dom_manipulating.currently_dragging = false;
-    dom_manipulating.expanded_for_drag = false;
   },
 
   expandShrinkableArea: function expandShrinkableArea() {
@@ -501,12 +516,9 @@ $("[data-id='troll-extension-wrapper'] [data-id='minimize-arrow-wrapper']").clic
 // user clicks expand expansion div
 $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click(function () {
   dom_manipulating.expandShrinkableArea();
-  dom_manipulating.expanded_for_drag = false;
-  dom_manipulating.currently_dragging = false;
 });
 
 dom_manipulating.scrollToBottomOfChatBox();
-
 
 
 
