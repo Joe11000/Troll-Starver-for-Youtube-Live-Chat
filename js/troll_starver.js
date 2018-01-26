@@ -19,6 +19,8 @@ var YOUTUBE_SELECTORS = {
   LIVE_CHAT_IFRAME: '#chat > iframe'
 };
 
+
+
 	// is chat loaded through iframe
   if(!!document.querySelector(YOUTUBE_SELECTORS.LIVE_CHAT_IFRAME)) {
 	// only load warning if a current warning doesn't exist
@@ -55,6 +57,9 @@ var YOUTUBE_SELECTORS = {
 
 
 
+
+
+
 $(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).on('DOMNodeInserted', function (e) {
   if ($('' + YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).is(':visible')) {
     dom_manipulating.scrollToBottomOfChatBox();
@@ -70,10 +75,9 @@ var db = {
     var p = new Promise(function (res, rej) {
       chrome.storage.local.get('troll_names_hash', function (troll_names_hash_wrapper) {
         if (typeof troll_names_hash_wrapper['troll_names_hash'] == 'undefined') {
-          rej("troll_names_hash_wrapper doesn't exist, create and return a new 'db'");
+          rej("The Trolls Name 'DB' hash does not exist. So create a new one");
         }
         res(troll_names_hash_wrapper['troll_names_hash']);
-        // rej("The Trolls Name 'DB' hash does not exist. So create a new one");
       });
     }).catch(function (args) {
       return db.replaceWith({});
@@ -496,7 +500,6 @@ $("[data-id='troll-extension-wrapper'] [data-id='expand-arrow-wrapper']").click(
 });
 
 dom_manipulating.scrollToBottomOfChatBox();
-
 
 
 

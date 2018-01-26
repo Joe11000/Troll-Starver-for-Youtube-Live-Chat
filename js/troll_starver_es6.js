@@ -84,11 +84,10 @@ var db = {
     get: function get() {
     var p = new Promise(function (res, rej) {
       chrome.storage.local.get('troll_names_hash', function (troll_names_hash_wrapper) {
-        if(typeof troll_names_hash_wrapper['troll_names_hash'] == 'undefined' ){
-          rej("troll_names_hash_wrapper doesn't exist, create and return a new 'db'");
+        if(typeof troll_names_hash_wrapper['troll_names_hash'] == 'undefined' ) {
+          rej("The Trolls Name 'DB' hash does not exist. So create a new one");
         }
         res(troll_names_hash_wrapper['troll_names_hash']);
-        // rej("The Trolls Name 'DB' hash does not exist. So create a new one");
       });
     }).catch(function (args) {
       return db.replaceWith({});
