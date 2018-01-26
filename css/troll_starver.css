@@ -143,21 +143,19 @@
           align-self: center;
           font-weight: bold;
           margin: 0; }
-        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll {
-          display: contents; }
-          #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll .remove-name {
-            display: inline;
-            position: relative;
-            cursor: pointer;
-            margin-top: -1px;
-            min-width: 15px; }
-          #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll .troll-name {
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden; }
-          #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll .comment-counter {
-            color: red;
-            font-weight: bold; }
+        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .remove-name {
+          display: inline;
+          position: relative;
+          cursor: pointer;
+          margin-top: -1px;
+          min-width: 15px; }
+        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .troll-name {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden; }
+        #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-names-wrapper .comment-counter {
+          color: red;
+          font-weight: bold; }
     #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper {
       display: grid;
       grid-gap: 5px;

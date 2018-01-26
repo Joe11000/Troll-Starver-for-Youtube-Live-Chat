@@ -40,8 +40,8 @@ $(YOUTUBE_SELECTORS.APPEND_EXTENTION_TO).append(`
           <div class='caption' data-class='caption'>Blocking Comments</div>
 
           <div class='grid-header' data-class='grid-header'>x</div>
-          <div class='grid-header' data-class='grid-header'id='header-name' data-id='grid-header-name'>Name<strong>(0)</strong></div>
-          <div class='grid-header' data-class='grid-header'id='header-count' data-id='grid-header-count'><strong>#(0)</strong></div>
+          <div class='grid-header' data-class='grid-header' id='header-name' data-id='grid-header-name'>Name<strong>(0)</strong></div>
+          <div class='grid-header' data-class='grid-header' id='header-count' data-id='grid-header-count'><strong>#(0)</strong></div>
         </div>
 
         <div id='clear-button-container'><button id='clear-all-comments' data-id='clear-all-comments' value='Clear Chat'>Clear Chat</button></div>
@@ -243,11 +243,9 @@ var dom_manipulating = {
   // add new row on to troll table on the DOM
   addATableRowHTMLNewTroll: function (name, existing_comments_counter=0) {
    $(`
-      <div class='troll' data-class='troll'>
         <div class='td'><img class='remove-name' data-class='remove-name' src=${chrome.extension.getURL("images/remove-name.png")}></img></div>
         <div class='td troll-name' data-class='troll-name'>${name}</div>
         <div class='td comment-counter' data-class='comment-counter'>${existing_comments_counter}</div>
-      </div>
     `).insertAfter($("[data-id='troll-names-wrapper'] .grid-header:last"));
    $("[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper']").scrollTop(0);
   },
@@ -367,11 +365,14 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('dragend', function(){
 
 // remove single troll from list
 $("[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper']").on('click', '.remove-name', function(event) {
-  var $element_to_delete = $(this).closest("[data-class='troll']");
-  let name = $element_to_delete.find('.troll-name').html();
+  let name = $(this).parent().next('.troll-name').html();
   console.log(`removing single troll name : `, name);
 
-  $element_to_delete.remove();
+  $(this).parent().next('.td').remove();
+  $(this).parent().next('.td').remove();
+  $(this).parent().remove();
+
+  // $element_to_delete.remove();
   dom_manipulating.updateTotalNamesBlocked();
 
   db.deleteNames([name]);
@@ -462,7 +463,8 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
       }).then(()=>{
         // delete all trolls if overwrite radio button is checked
         if(!!overwrite_checked) {
-          $(`[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper'] .troll`).each(function(idex, element){
+          debugger
+          $(`[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper'] > :not([data-class='caption'], [data-class='grid-header'])`).not("[data-class='caption'], [data-class='grid-header']").each(function(idex, element) {
             element.remove();
           });
           return new Promise((res, rej)=>{ // step is async...return promise to empty db and then append new people

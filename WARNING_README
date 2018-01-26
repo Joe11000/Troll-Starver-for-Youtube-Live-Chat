@@ -1,75 +1,48 @@
-!!DOUBLE UPDATE!!
+Trolls. We could do without them, am i right?
 
-Since the most recent update, I really wanted to fix the issues that Youtube created, but I CAN'T FIGURE OUT HOW. From what I know, it is impossible. If there are any web developers, or if anyone knows any web developers that can help me out, here is the problem. I would really appreciate it.
-There are 2 issues. The first is an impregnable iframe on the default chatroom, which would cause a Cross Site Request Forgery error and 2) on every other non iframe chatroom doesn't allow lazy binding of event listeners, and in my case specifically, for the new chatbox message $(chatbox).on(on('DOMNodeInserted', function(event) {...}).... if either of these problems isn't resolved then I am able to fix this chrome extension. Otherwise I am fucked and have to remove this chrome extension in order to save my users some RAM on their computers. I am so sorry about this in advance. I have to deal with the trolls too. I created this so I didn't have to. I am ANGRY as angry as you are.
+Ignore the replies of anyone you choose with this extension in Youtube Live Chatrooms.
 
-
-
-
-!! UPDATE : YOUTUBE CHANGED HOW THEIR CHATROOM WORKS !! 
-I don't know if Youtube is in a flux with their chatrooms, because of how their chatrooms are changing. Iframes prevent 3rd parties from editing anything inside them. Youtube used to only use iframes to display their chatrooms in the "gaming mode", which is why this extension couldn't work in gaming mode. Now after their update to their chatrooms, iframes are only used to display the chatrooms when watching live channels in default mode. The default chatrooms that are popped out are not displayed with iframes and neither is gaming mode when the chatroom is popped out. I could the extension to accomidate to the youtube's changes, but they don't seem to be consistant and might change again very soon. I will be giving them a week or so to make sure nothing changes again. REAL QUESTION...HOW MANY OF YOU WOULD STILL USE THIS EXTENSION IF YOUTUBE PREVENTS THIS FROM WORKING WITHOUT THE CHAT ROOM POPPED OUT OR IN GAMING MODE? 
-
-Trolls. Fuck um.
-
-Ignore the replies of anyone you choose with this extension in Youtube Live Chatrooms. 
-
-HOW TO : 
+HOW TO :
 
 FILTER TROLL
-Drag and drop the icon about onto the troll icon. A new entry will show up in the TROLLS table. Their comments won't show up in your chat anymore. 
+Drag and drop the icon about onto the troll icon. A new entry will show up in the TROLLS table. Their comments won't show up in your chat anymore.
 
 UNFILTER TROLL
-Click the (x) button in the table next to their name, 
+Click the (x) button in the table next to their name,
 
 EXPORT NAMES IN BULK
 Click the 'export names' button below the table and all the names you have accrued so far are in the text box. It is just a single username per line. Copy and Paste. Easy.
 
 IMPORT NAMES IN BULK
-Click the 'import names' button below the table and Either 
+Click the 'import names' button below the table and Either
   1) Paste an exported list of names and click import button.
   2) Type one troll's username verbatim per line and then click the import button.
 
-PS 
+PS
 (As long as you are in a normal Youtube live chatroom, not the special "Night Mode in Youtube Gaming" which accesses a chatroom through an iframe, then this will work. )
 
 CODE
 https://github.com/Joe11000/Troll-Starver-for-Youtube-Live-Chat
 
 
-RELEASE NOTES 
+RELEASE NOTES
 
 RELEASE 1.5 **********  9/9/16
   * Add import and export functionality for troll names.  Just encase each name in single quotes for import. ie 'Name 1' 'Name 2' 'Name 3'
   * made the "clear chat" button a little prettier.
 
 RELEASE 1.6 **********  9/12/16
-  * There was an import and export bug involving  regex with quotes. I removed the extra complexity and no encasing quotes or escaping single quotes are needed anymore. For importing, simply put one username per line without unnecessary spaces at the end of a line. 
+  * There was an import and export bug involving  regex with quotes. I removed the extra complexity and no encasing quotes or escaping single quotes are needed anymore. For importing, simply put one username per line without unnecessary spaces at the end of a line.
 
 
 RELEASE 1.7 **********  12/6/16
   * Added the ability to expand and collapse the Troll Blocker table. If the table is collapsed and the user drags a troll's icon, as they normally would, the table will automatically open until. If the user drops the icon in the correct location, then the table will return to the collapsed state. If the user drops the icon in the wrong location, then the table will remain open.
 
-
-
-( FUTURE RELEASE  2.0 )
-  * BUG : When you are blocking >1700 trolls, Importing names and initial loading/table population needs to stop locking the UI.
-
-  * BIGGER BUG (unresolvable in version 1.x of this extension ):  Non-Trolls, with the same usernames as blocked trolls, comment's are not visible in the chatroom.
-     ** PROBLEM 
-            If your database doesn't have unique primary keys, then your database is fucked. My database is using                     .             usernames as the primary key and I didn't realize the usernames aren't unique. Youtube had unique usernames        .             before Google acquired them, but apparently that changed.
-
-      ** REALISTIC CONCLUSION 
-             Create a new chrome extension with updates and leave current alone for those that don't want to start from            .              scratch.
-
-      ** THOUGHT PROCESS
-             The extension blocks on the exact names of the user and not on the account channel of the person ( The              .               problem is : When names are imported, The extension just reads each import line as a whole and there are no    .               exploitable delimiting symbols in the code currently that are being matched upon and break my mass import      .               process and prevent blocking them from that route. Dragging and dropping their icon would work normally.
+RELEASE 1.8.3 **********  1/26/18
+  * restyled the css with css grid styling and fixed things that youtube broke with their updates to their chatroom.
+  Temporary Release to fix larger problems.
+  Known Bugs:
+  1) Beyond +1000 troll names the names overflow in the first column. That is a CSS problem that chrome should resolve soon.
 
 
 
-STILL PIECING TOGETHER THOUGHTS
-Since I will no longer be filtering account_ids and not upon the usernames, the current database is useless since usernames are not a 1 to 1 pairings with account_ids. To prevent deleting everyones database and pissing off everyone that uses this extension so far, I would have create a new extension and rip off the band-aid instead of coming up with a difficult transitional process that no one is going be happy with.
-
-Otherwise I would have to erase the users database and start saving user's account_id and user name in. It would appear as if nothing had changed and it would fix your problem of duplicated names not being blocked. I could then send a request in the background to each channel and get the user name from their page at the expense of extending the upfront import time cost > 30x. This method at least resolves all issues. 
-
-OTHER POSSIBLE, BUT BAD SOLUTIONS
-I could create a secondary database to store new additions of troll names that would filter comments by account_id, but every entry in the original database would still filter comment by username, because that is all it has remembered up to this point. Thus not solving the issue, since is no 100% way to go back and get their account id.
