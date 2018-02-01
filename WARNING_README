@@ -38,7 +38,7 @@ RELEASE 1.6 **********  9/12/16
 RELEASE 1.7 **********  12/6/16
   * Added the ability to expand and collapse the Troll Blocker table. If the table is collapsed and the user drags a troll's icon, as they normally would, the table will automatically open until. If the user drops the icon in the correct location, then the table will return to the collapsed state. If the user drops the icon in the wrong location, then the table will remain open.
 
-RELEASE 1.8.3 **********  1/26/18
+RELEASE 1.83 **********  1/26/18
   * restyled the css with css grid styling and fixed things that youtube broke with their updates to their chatroom.
   Temporary Release to fix larger problems.
   Known Bugs:
@@ -48,4 +48,10 @@ RELEASE 1.8.3 **********  1/26/18
   4)
 
 
+RELEASE 1.84 **********  1/31/18
+  * removed outline from Clear Chat Button
+  * capitalized first letter of all words
+  * Remove <strong> from "Name" header on import
+  * Filter out paid comments of trolls
+  * On load, decrease the amount of bulk imported from 50 -> 25 and increase the amount of time to lapse so that the video doesn't decrease in quality and decreases the lagging on the chatbox.
 

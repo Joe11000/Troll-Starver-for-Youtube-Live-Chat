@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Youtube Live Chat : Troll Starver",
-  "version": "1.83",
+  "version": "1.84",
 
   "default_locale": "en",
   "description": "This extension doesn't show comments from people you don't feel like putting up with in live stream comments box.",
@@ -25,8 +25,14 @@
     "activeTab",
     "tabs",
     "storage",
+
     "http://www.youtube.com/*",
     "https://www.youtube.com/*",
+    "http://www.gaming.youtube.com/*",
+    "https://www.gaming.youtube.com/*",
+
+    "http://youtube.com/*",
+    "https://youtube.com/*",
     "http://gaming.youtube.com/*",
     "https://gaming.youtube.com/*"
   ],
@@ -35,7 +41,3 @@
     "images/*"
   ]
 }
-
-
-
-

@@ -97,14 +97,15 @@
     display: grid; }
     #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper {
       display: grid;
-      grid-template-columns: minmax(94px, 2fr) 6fr minmax(94px, 2fr);
+      grid-template-columns: minmax(97px, 2fr) 6fr minmax(94px, 2fr);
       grid-auto-rows: 118px;
       border: 1px solid black !important;
       border-radius: 5px;
       border: 1px solid #E2E2E2; }
       #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-image-wrapper, #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #clear-all-comments {
         height: 100%;
-        width: 100%; }
+        width: 100%;
+        outline: none; }
       #troll-extension-wrapper #shrinkable-area #outer-grid-wrapper #troll-image-wrapper {
         background: url("chrome-extension://__MSG_@@extension_id__/images/trollx60.png") no-repeat center center;
         border-right: 1px solid black !important;
@@ -157,9 +158,10 @@
           color: red;
           font-weight: bold; }
     #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper {
+      margin-top: 5px;
       display: grid;
       grid-gap: 5px;
-      grid-template-columns: minmax(94px, 2fr) 6fr minmax(94px, 2fr);
+      grid-template-columns: minmax(97px, 2fr) 6fr minmax(94px, 2fr);
       grid-auto-rows: repeat(5, 20px); }
       #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper input[type='button'] {
         background-color: rgba(22, 122, 198, 0.9);
@@ -220,27 +222,13 @@
           height: 100%;
           width: 100%; }
       #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > textarea#export-names-textarea {
+        overflow-x: hidden;
+        text-overflow: hidden;
         width: 100%;
         height: 100%;
         grid-column: 2;
         grid-row: 4 / 5; }
       #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-2, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-3, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-4, #troll-extension-wrapper #shrinkable-area #troll-import-export-wrapper > .row-5 {
         display: none; }
-
-/* begin -- when extension expanded */
-/*#troll-extension-wrapper #arrow-wrapper img {
-  display: inline;
-  margin: auto;
-  height: 25px;
-  width: 25px;
-  background: url('chrome-extension://__MSG_@@extension_id__/images/arrow.png') no-repeat center center;
-  vertical-align: middle;
-}*/
-/* end -- when extension expanded */
-/* begin -- animate minimizing the extension*/
-/* end -- animate minimizing the extension*/
-/* contains the troll image */
-/* contains list of troll  */
-/* Below css prevents all and selects shows approved comments */
 
 /*# sourceMappingURL=troll_starver.css.map */

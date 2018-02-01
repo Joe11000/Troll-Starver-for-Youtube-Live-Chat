@@ -1,13 +1,14 @@
-// CSS Grid 1 (Outer components)
+// -- CSS Grid 1 (Outer components)
 //#troll-extension-wrapper
   // #arrow-wrapper
   // #shrinkable-area
+    // -- CSS Grid 2 (Blocking Components Grid)
+    // #outer-grid-wrapper
+      // #troll-image-wrapper
+      // #troll-names-wrapper
+      // #clear-button-container
+// -- CSS Grid 3 (Import Export)
 
-// CSS Grid 2 (Blocking Components Grid)
-// #outer-grid-wrapper
-  // #troll-image-wrapper
-  // #troll-names-wrapper
-  // #clear-button-container
 
 
 // const YOUTUBE_SELECTORS = new function(){
@@ -18,7 +19,7 @@
   // $TROLL_IMG: "#author-photo";                     // inside this.COMMENT
   // $TROLL_NAME: '#author-name';                     // inside this.COMMENT
 
-  $IMPORT_EXPORT_AREA_GRID_TEMPLATE_COLUMNS: minmax(94px, 2fr) 6fr minmax(94px, 2fr);
+  $IMPORT_EXPORT_AREA_GRID_TEMPLATE_COLUMNS: minmax(97px, 2fr) 6fr minmax(94px, 2fr);
   $OUTER_GRID_WRAPPER_GRID_TEMPLATE_COLUMNS: $IMPORT_EXPORT_AREA_GRID_TEMPLATE_COLUMNS;
 
 
@@ -174,6 +175,7 @@
       #troll-image-wrapper, #clear-all-comments {
         height: 100%;
         width: 100%;
+        outline: none;
       }
       #troll-image-wrapper {
         background: url('chrome-extension://__MSG_@@extension_id__/images/trollx60.png') no-repeat center center;
@@ -245,6 +247,7 @@
 
 
     #troll-import-export-wrapper {
+      margin-top: 5px;
       display: grid;
       grid-gap: 5px;
       grid-template-columns: $IMPORT_EXPORT_AREA_GRID_TEMPLATE_COLUMNS;
@@ -350,6 +353,8 @@
       }
       & > textarea#export-names-textarea {
         // grid-area: 'export-names-textarea' !important;
+        overflow-x: hidden;
+        text-overflow: hidden;
         width: 100%;
         height: 100%;
         grid-column: 2;
@@ -364,26 +369,3 @@
     }
   }
 }
-
-/* begin -- when extension expanded */
-
-/*#troll-extension-wrapper #arrow-wrapper img {
-  display: inline;
-  margin: auto;
-  height: 25px;
-  width: 25px;
-  background: url('chrome-extension://__MSG_@@extension_id__/images/arrow.png') no-repeat center center;
-  vertical-align: middle;
-}*/
-
-/* end -- when extension expanded */
-
-/* begin -- animate minimizing the extension*/
-
-/* end -- animate minimizing the extension*/
-
-/* contains the troll image */
-
-/* contains list of troll  */
-
-/* Below css prevents all and selects shows approved comments */
