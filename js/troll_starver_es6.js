@@ -1,16 +1,17 @@
 // 3rd party(youtube) selectors
 const YOUTUBE_SELECTORS = {
   APPEND_EXTENTION_TO: 'yt-live-chat-message-input-renderer',
-  COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer', // inside this.COMMENTS_WRAPPER
-  COMMENT: 'yt-live-chat-text-message-renderer',  // inside this.COMMENTS_WRAPPER
-  PAID_COMMENT: 'yt-live-chat-paid-message-renderer',  // inside this.COMMENTS_WRAPPER
-  TROLL_IMG: "#author-photo",                     // inside this.COMMENT
-  TROLL_NAME: '#author-name',                     // inside this.COMMENT
+  COMMENT_HEIGHT_TRACKER: '#item-offset.yt-live-chat-item-list-renderer',
+  COMMENTS_WRAPPER: '#items.style-scope.yt-live-chat-item-list-renderer', // inside this.COMMENT_HEIGHT_TRACKER
+  COMMENT: 'yt-live-chat-text-message-renderer', // inside this.COMMENTS_WRAPPER
+  PAID_COMMENT: 'yt-live-chat-paid-message-renderer', // inside this.COMMENTS_WRAPPER
+  TROLL_IMG: "#author-photo", // inside this.COMMENT
+  TROLL_NAME: '#author-name', // inside this.COMMENT
   TROLL_CHANNEL_LINK_NODE: ".dropdown-content a.ytg-nav-endpoint", // NOT inside this.COMMENT. This is a seperate div that gets moved constantly
   SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON: "#show-more",
   LIVE_CHAT_IFRAME_WRAPPER: '#chat',
-  LIVE_CHAT_IFRAME: '#chat > iframe',
-}
+  LIVE_CHAT_IFRAME: '#chat > iframe'
+};
 
 $(YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON).on('DOMNodeInserted', function(e) {
   if($(`${YOUTUBE_SELECTORS.SCROLL_TO_BOTTOM_OF_CHECKBOX_BUTTON}`).is(':visible')) {
@@ -142,11 +143,18 @@ var dom_manipulating = {
   expanded_for_drag: false,
   currently_dragging: false,
 
+  //  this weird youtube math keeps the comment section at the bottom to see the newest comment
+  forceUpdateToYoutubesCommentOffsetTracker: function(){
+    $(YOUTUBE_SELECTORS.COMMENT_HEIGHT_TRACKER).css('style', 'height: 0px;');
+  },
+
   // given a saved or unsaved hash, (probably a subset of troll_names_hash), remove troll comments from chatroom in bulk and save new entries in db
   // return : a promise with the updated hash
   onExtensionLoadAddTableEntriesForDBEntries: function() {
    db.get().then((troll_names_hash)=>{
       dom_manipulating._onExtensionLoadAddTableEntriesForDBEntries(Object.keys(troll_names_hash), troll_names_hash);
+    }).then(()=>{
+      dom_manipulating.forceUpdateToYoutubesCommentOffsetTracker();
     })
   },
   _onExtensionLoadAddTableEntriesForDBEntries: function _onExtensionLoadAddTableEntriesForDBEntries(troll_names_array_remaining, troll_names_hash){
@@ -187,6 +195,8 @@ var dom_manipulating = {
   appendArrayOfTrollNames: function(troll_names_array) {
     db.get().then((troll_names_hash)=>{
         dom_manipulating._appendArrayOfTrollNamesByBulk(troll_names_array, troll_names_hash);
+    }).then(()=>{
+      dom_manipulating.forceUpdateToYoutubesCommentOffsetTracker();
     })
   },
   _appendArrayOfTrollNamesByBulk: function _appendArrayOfTrollNamesByBulk(troll_names_array_remaining, troll_names_hash) {
@@ -280,10 +290,11 @@ var dom_manipulating = {
   },
 
   updateTotalCommentsBlocked: function(increase_total_by=1) {
-    let string = $("[data-id='troll-extension-wrapper'] [data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html() || "";
-    let current_total = Number.parseInt(string.match(/#\((\d.*)\)/)[1]) || 0;
-    let new_total = current_total + increase_total_by;
-    $("[data-id='troll-extension-wrapper'] [data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html(`#(${new_total})`);
+    $("[data-id='troll-extension-wrapper'] [data-id='outer-grid-wrapper'] [data-id='troll-names-wrapper'] [data-id='grid-header-count']").html( function(index, old_value) {
+      let current_total = Number.parseInt(old_value.match(/#\((\d.*)\)/)[1]) || 0;
+      let new_total = current_total + increase_total_by;
+      return `#(${new_total})`;
+    });
   },
 
   scrollToBottomOfChatBox: function(){
@@ -295,7 +306,7 @@ var dom_manipulating = {
   //   $scroll_box.scrollTop($scroll_box[0].scrollHeight);
   // },
 
-  exportTrollsNamesToTextbox: function(){
+  exportTrollsNamesToTextbox: function() {
     db.get().then((troll_names_hash) => {
 
       if(
@@ -381,8 +392,9 @@ $("[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper']").on('cli
 
 // clear chat room
 $("[data-id='troll-extension-wrapper'] [data-id='clear-all-comments']").on('click', function() {
-  dom_manipulating.scrollToBottomOfChatBox();
   $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).empty(); // $(`${YOUTUBE_SELECTORS.COMMENTS_WRAPPER} .approved-comment`).remove();
+  $(YOUTUBE_SELECTORS.COMMENT_HEIGHT_TRACKER).css('style', 'height: 0px;');
+  dom_manipulating.scrollToBottomOfChatBox();
 });
 
 // if an incoming comment is written by a troll then remove it and increment the comment_counter of troll
@@ -463,7 +475,6 @@ $(YOUTUBE_SELECTORS.COMMENTS_WRAPPER).on('DOMNodeInserted', function(event) {
       }).then(()=>{
         // delete all trolls if overwrite radio button is checked
         if(!!overwrite_checked) {
-          // debugger
           $(`[data-id='troll-extension-wrapper'] [data-id='troll-names-wrapper'] > :not([data-class='caption'], [data-class='grid-header'])`).not("[data-class='caption'], [data-class='grid-header']").each(function(idex, element) {
             element.remove();
           });
